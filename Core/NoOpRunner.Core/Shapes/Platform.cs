@@ -7,15 +7,14 @@ namespace NoOpRunner.Core.Shapes
     public class Platform : BaseShape
     {
         private Random random = new Random();
-        public int roofPosY { get; set; }
+        public int bottomPosY { get; set; } // Bottom of x platform
+        public int topPosY { get; set; } // Max height of x platform
 
         public int lastPosX = 0,
                    lastPosY = 0;
 
-        public Platform(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
+        public Platform(int centerPosX, int centerPosY, int bottomPosY, int topPosY) : base(centerPosX, centerPosY)
         {
-
-            roofPosY = 10; // Max height of x platform
             while (lastPosX < 30) // TODO
             {
                 int blockLength = randomLength(4);
@@ -29,10 +28,10 @@ namespace NoOpRunner.Core.Shapes
                     lastPosY = 0;
                 } else
                 {
-                    if (lastPosY + blockHeight > roofPosY)
+                    if (lastPosY + blockHeight > topPosY)
                     {
-                        MapShapeY(lastPosX, lastPosY, (roofPosY- lastPosY), Color.Red);
-                        lastPosY = roofPosY;
+                        MapShapeY(lastPosX, lastPosY, (topPosY - lastPosY), Color.Red);
+                        lastPosY = topPosY;
                     } else
                     {
                         MapShapeY(lastPosX, lastPosY, blockHeight, Color.Red);
