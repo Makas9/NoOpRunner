@@ -50,6 +50,9 @@ namespace NoOpRunner.Client
             {
                 switch (e.Key)
                 {
+                    case Key.Up:
+                        Game.HandleKeyPress(KeyPress.Up);
+                        return;
                     case Key.Right:
                         Game.HandleKeyPress(KeyPress.Right);
                         return;

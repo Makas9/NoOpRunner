@@ -7,7 +7,8 @@ namespace NoOpRunner.Core.Shapes
     {
         public Player(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
         {
-            MapShapeX(0, 0, 1, Color.Blue);
+            MapShapeX(0, 1, 1, Color.Blue); // Top
+            MapShapeX(0, 0, 1, Color.Blue); // Bottom
         }
 
         private const int MovementIncrement = 1;
@@ -82,7 +83,7 @@ namespace NoOpRunner.Core.Shapes
                     }
 
                     return;
-                case KeyPress.Space:
+                case KeyPress.Up:
                     if (!IsJumping && CanJump && !IsShapeHit(gameScreen, CenterPosX, CenterPosY + MovementIncrement))
                     {
                         IsJumping = true;
@@ -99,6 +100,10 @@ namespace NoOpRunner.Core.Shapes
                     {
                         VerticalSpeed = -MovementIncrement;
                     }
+
+                    return;
+                case KeyPress.Space:
+                    // Use power-up
 
                     return;
             }

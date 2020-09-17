@@ -17,9 +17,12 @@ namespace NoOpRunner.Core
             GameWindow = new GameWindow(32, 32);
             Player = new Player(5, 7);
 
-            GameWindow.AddShape(new Square(5, 5));
-            GameWindow.AddShape(new Square(9, 5));
-            GameWindow.AddShape(new Square(13, 5));
+            GameWindow.AddShape(new Platform(0, 0));
+
+
+            //GameWindow.AddShape(new Square(5, 5));
+            //GameWindow.AddShape(new Square(9, 5));
+            //GameWindow.AddShape(new Square(13, 5));
 
 
             GameWindow.AddShape(Player);
