@@ -11,6 +11,18 @@
         <ViewModels:MainViewModel/>
     </Window.DataContext>
     <Grid>
-        <Canvas x:Name="game_window"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="0" Command="{Binding StartHostCommand}" IsEnabled="{Binding HostConnectButtonsEnabled}">Host</Button>
+        <Button Grid.Row="1" Command="{Binding ConnectToHostCommand}" IsEnabled="{Binding HostConnectButtonsEnabled}">Connect</Button>
+        <Button Grid.Row="2" Command="{Binding SendMessageCommand}">Send message</Button>
+
+        <TextBlock Grid.Row="3" Text="{Binding StatusMessage}"/>
+        <!--<Canvas x:Name="game_window"/>-->
     </Grid>
 </Window>
