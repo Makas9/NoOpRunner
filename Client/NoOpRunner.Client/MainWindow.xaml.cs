@@ -1,7 +1,5 @@
-﻿using NoOpRunner.Client.Logic.Rendering;
-using NoOpRunner.Client.Logic.ViewModels;
+﻿using NoOpRunner.Client.Logic.ViewModels;
 using NoOpRunner.Core.Enums;
-using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -21,15 +19,22 @@ namespace NoOpRunner.Client
         {
             this.ContentRendered += (s, e) =>
             {
-                Game = ((MainViewModel)DataContext).Game;
+                var viewModel = (MainViewModel)DataContext;
 
-                ConfigureKeys();
+                Game = viewModel.Game;
 
-                timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(10);
-                timer.Tick += (o, a) => TriggerRender();
+                Game.OnMessageReceived += (o, a) =>
+                {
+                    viewModel.StatusMessage = $"Message received: {a.Payload as string}";
+                };
 
-                timer.Start();
+                //ConfigureKeys();
+
+                //timer = new DispatcherTimer();
+                //timer.Interval = TimeSpan.FromMilliseconds(10);
+                //timer.Tick += (o, a) => TriggerRender();
+
+                //timer.Start();
             };
 
             InitializeComponent();
@@ -37,11 +42,11 @@ namespace NoOpRunner.Client
 
         private void TriggerRender()
         {
-            var canvas = game_window;
+            //var canvas = game_window;
 
-            Game.FireLoop();
+            //Game.FireLoop();
 
-            GameWindowRenderer.Render(Game.GameWindow, canvas);
+            //GameWindowRenderer.Render(Game.GameWindow, canvas);
         }
 
         private void ConfigureKeys()
@@ -50,6 +55,9 @@ namespace NoOpRunner.Client
             {
                 switch (e.Key)
                 {
+                    case Key.Up:
+                        Game.HandleKeyPress(KeyPress.Up);
+                        return;
                     case Key.Right:
                         Game.HandleKeyPress(KeyPress.Right);
                         return;
