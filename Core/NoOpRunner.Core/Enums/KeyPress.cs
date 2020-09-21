@@ -2,6 +2,7 @@
 {
     public enum KeyPress
     {
+        Up,
         Right,
         Left,
         Space,
