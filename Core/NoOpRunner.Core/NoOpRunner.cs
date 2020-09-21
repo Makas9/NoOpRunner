@@ -1,6 +1,9 @@
-﻿using NoOpRunner.Core.Enums;
+﻿using NoOpRunner.Core.Dtos;
+using NoOpRunner.Core.Enums;
+using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
 using System;
+using System.Threading.Tasks;
 
 namespace NoOpRunner.Core
 {
@@ -8,11 +11,17 @@ namespace NoOpRunner.Core
     {
         public event EventHandler OnLoopFired;
 
+        public event EventHandler<MessageDto> OnMessageReceived;
+
         public GameWindow GameWindow { get; set; }
 
         public Player Player { get; set; }
 
-        public NoOpRunner()
+        private bool IsHost { get; set; }
+
+        private readonly IConnectionManager connectionManager;
+
+        public NoOpRunner(IConnectionManager connectionManager)
         {
             GameWindow = new GameWindow(32, 32);
             Player = new Player(5, 7);
@@ -23,6 +32,36 @@ namespace NoOpRunner.Core
 
 
             GameWindow.AddShape(Player);
+
+            this.connectionManager = connectionManager;
+        }
+
+        public async Task SendMessage()
+        {
+            if (IsHost)
+            {
+                await connectionManager.SendMessageToClient(new MessageDto { Payload = "Testing message to client" });
+            }
+            else
+            {
+                await connectionManager.SendMessageToHost(new MessageDto { Payload = "Testing message to host" });
+            }
+        }
+
+        public async Task ConnectToHub()
+        {
+            await connectionManager.Connect("http://localhost:8080", HandleMessage);
+        }
+
+        private void HandleMessage(MessageDto message)
+        {
+            OnMessageReceived?.Invoke(this, message);
+        }
+
+        public void StartHosting()
+        {
+            connectionManager.Start("http://localhost:8080");
+            IsHost = true;
         }
 
         public void FireLoop()
