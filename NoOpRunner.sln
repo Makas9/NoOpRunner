@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{76A0A59E-D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoOpRunner.Core", "Core\NoOpRunner.Core\NoOpRunner.Core.csproj", "{A7F441A4-15E3-4C01-92F9-5AC2D65FF43F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoOpRunner.Networking", "Core\NoOpRunner.Networking\NoOpRunner.Networking.csproj", "{9EA7426D-ED02-4112-AE00-6D22FB7E4C8E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,10 +31,6 @@ Global
 		{A7F441A4-15E3-4C01-92F9-5AC2D65FF43F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7F441A4-15E3-4C01-92F9-5AC2D65FF43F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7F441A4-15E3-4C01-92F9-5AC2D65FF43F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9EA7426D-ED02-4112-AE00-6D22FB7E4C8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9EA7426D-ED02-4112-AE00-6D22FB7E4C8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9EA7426D-ED02-4112-AE00-6D22FB7E4C8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9EA7426D-ED02-4112-AE00-6D22FB7E4C8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -45,7 +39,6 @@ Global
 		{E3B38F3E-A1F6-4404-AB28-5088FBB36EFA} = {B4537A20-216D-40C5-94FB-F5B2EB39F5C0}
 		{274B7A8C-2C33-4650-817B-7930C5A2422F} = {B4537A20-216D-40C5-94FB-F5B2EB39F5C0}
 		{A7F441A4-15E3-4C01-92F9-5AC2D65FF43F} = {76A0A59E-D83C-4962-AE21-F16B802EB6A6}
-		{9EA7426D-ED02-4112-AE00-6D22FB7E4C8E} = {76A0A59E-D83C-4962-AE21-F16B802EB6A6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CB9F13C9-541B-4F5F-A76E-D41B814C3645}
