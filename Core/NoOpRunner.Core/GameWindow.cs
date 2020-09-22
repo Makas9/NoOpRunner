@@ -9,6 +9,9 @@ namespace NoOpRunner.Core
     {
         private List<BaseShape> shapes { get; set; }
 
+        // ?? wut
+        // private BaseShape playerPosition { get; set; }
+
         public IReadOnlyCollection<BaseShape> Shapes => shapes.AsReadOnly();
 
         public readonly int SizeX;
@@ -79,5 +82,14 @@ namespace NoOpRunner.Core
 
             return windowPixels;
         }
+
+        /// <summary>
+        /// ??? wut
+        /// </summary>
+        /// <returns></returns>
+        // public BaseShape GetPlayer()
+        // {
+        //     return playerPosition;
+        // }
     }
 }

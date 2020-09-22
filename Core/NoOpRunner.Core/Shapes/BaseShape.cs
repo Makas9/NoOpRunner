@@ -10,7 +10,7 @@ namespace NoOpRunner.Core.Entities
         public int CenterPosX { get; set; }
         public int CenterPosY { get; set; }
 
-        protected List<ShapeBlock> ShapeBlocks;
+        protected List<ShapeBlock> ShapeBlocks;//WHY just make Width and Height
 
         public BaseShape(int centerPosX, int centerPosY)
         {

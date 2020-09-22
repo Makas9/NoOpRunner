@@ -11,18 +11,30 @@
         <ViewModels:MainViewModel/>
     </Window.DataContext>
     <Grid>
+        
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+            <!-- <RowDefinition Height="*"/> -->
+            <!-- <RowDefinition Height="*"/> -->
         </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Canvas Grid.Row="0" Grid.ColumnSpan="4" x:Name="map_window"/>
+        <Canvas Grid.Row="0" Grid.ColumnSpan="4" x:Name="player_one_window"/>
 
-        <Button Grid.Row="0" Command="{Binding StartHostCommand}" IsEnabled="{Binding HostConnectButtonsEnabled}">Host</Button>
-        <Button Grid.Row="1" Command="{Binding ConnectToHostCommand}" IsEnabled="{Binding HostConnectButtonsEnabled}">Connect</Button>
-        <Button Grid.Row="2" Command="{Binding SendMessageCommand}">Send message</Button>
+        <Button Grid.Row="1" Grid.Column="0" Command="{Binding StartHostCommand}" IsEnabled="{Binding HostConnectButtonsEnabled}">Host</Button>
+        <Button Grid.Row="1" Grid.Column="1" Command="{Binding ConnectToHostCommand}" IsEnabled="{Binding HostConnectButtonsEnabled}">Connect</Button>
+        <Button Grid.Row="1" Grid.Column="2" Command="{Binding SendMessageCommand}">Send message</Button>
 
-        <TextBlock Grid.Row="3" Text="{Binding StatusMessage}"/>
-        <!--<Canvas x:Name="game_window"/>-->
+        <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding StatusMessage}" TextAlignment="Center" TextWrapping="Wrap"/>
+        
     </Grid>
 </Window>

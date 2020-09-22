@@ -1,8 +1,11 @@
-﻿using NoOpRunner.Client.Logic.ViewModels;
+﻿using System;
+using NoOpRunner.Client.Logic.ViewModels;
 using NoOpRunner.Core.Enums;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using NoOpRunner.Client.Logic.Rendering;
+using NoOpRunner.Core;
 
 namespace NoOpRunner.Client
 {
@@ -28,25 +31,48 @@ namespace NoOpRunner.Client
                     viewModel.StatusMessage = $"Message received: {a.Payload as string}";
                 };
 
-                //ConfigureKeys();
+                ConfigureKeys();
 
-                //timer = new DispatcherTimer();
-                //timer.Interval = TimeSpan.FromMilliseconds(10);
-                //timer.Tick += (o, a) => TriggerRender();
-
-                //timer.Start();
+                TriggerRender();
+                
+                timer = new DispatcherTimer();
+                timer.Interval = TimeSpan.FromMilliseconds(10);
+                // timer.Tick += (o, a) => TriggerRender();
+                timer.Tick += (o, a) => TriggerMapAndPlayerRender();
+                
+                timer.Start();
+                
             };
 
             InitializeComponent();
         }
 
+        private int renderCounter = 0;
+
+        private void TriggerMapAndPlayerRender()
+        {
+            GameWindowRenderer.RenderPlayer(Game.Player, this.player_one_window, Game.GameWindow);
+
+            #region Map update or not
+
+            if (renderCounter == 5)
+            {
+                renderCounter = 0;
+                
+                TriggerRender();
+            }
+            
+            renderCounter++;
+
+            #endregion
+        }
         private void TriggerRender()
         {
-            //var canvas = game_window;
+            var canvas = map_window;
 
-            //Game.FireLoop();
+            Game.FireLoop();
 
-            //GameWindowRenderer.Render(Game.GameWindow, canvas);
+            GameWindowRenderer.Render(Game.GameWindow, canvas);
         }
 
         private void ConfigureKeys()

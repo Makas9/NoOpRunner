@@ -35,7 +35,7 @@ namespace NoOpRunner.Core
             //GameWindow.AddShape(new Square(13, 5));
 
 
-            GameWindow.AddShape(Player);
+            // GameWindow.AddShape(Player);
 
             this.connectionManager = connectionManager;
         }
