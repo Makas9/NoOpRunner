@@ -6,9 +6,9 @@ namespace NoOpRunner.Networking
 {
     public class GameHub : Hub
     {
-        public async Task SendToHost(MessageDto message)
+        public void SendToHost(MessageDto message)
         {
-            // TODO
+            HostBridge.Bridge.HandleHostMessage(message);
         }
 
         public async Task SendToClient(MessageDto message)

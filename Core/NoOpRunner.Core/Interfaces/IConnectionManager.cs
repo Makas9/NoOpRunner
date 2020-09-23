@@ -6,7 +6,7 @@ namespace NoOpRunner.Core.Interfaces
 {
     public interface IConnectionManager
     {
-        IDisposable Start(string url);
+        IDisposable Start(string url, Action<MessageDto> callback);
 
         Task Connect(string url, Action<MessageDto> callback);
 

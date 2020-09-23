@@ -19,6 +19,8 @@ namespace NoOpRunner.Core
 
         private bool IsHost { get; set; }
 
+        public bool IsClientConnected { get; private set; }
+
         private readonly IConnectionManager connectionManager;
 
         public NoOpRunner(IConnectionManager connectionManager)
@@ -59,12 +61,17 @@ namespace NoOpRunner.Core
 
         private void HandleMessage(MessageDto message)
         {
+            if (message.MessageType == MessageType.InitialConnection)
+            {
+                IsClientConnected = true;
+            }
+
             OnMessageReceived?.Invoke(this, message);
         }
 
         public void StartHosting()
         {
-            connectionManager.Start("http://localhost:8080");
+            connectionManager.Start("http://localhost:8080", HandleMessage);
             IsHost = true;
         }
 

@@ -1,11 +1,10 @@
-﻿using System;
+﻿using NoOpRunner.Client.Logic.Rendering;
 using NoOpRunner.Client.Logic.ViewModels;
 using NoOpRunner.Core.Enums;
+using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using NoOpRunner.Client.Logic.Rendering;
-using NoOpRunner.Core;
 
 namespace NoOpRunner.Client
 {
@@ -20,55 +19,27 @@ namespace NoOpRunner.Client
 
         public MainWindow()
         {
-            this.ContentRendered += (s, e) =>
+            InitializeComponent();
+
+            play_button.Click += (s, e) =>
             {
                 var viewModel = (MainViewModel)DataContext;
 
                 Game = viewModel.Game;
 
-                Game.OnMessageReceived += (o, a) =>
-                {
-                    viewModel.StatusMessage = $"Message received: {a.Payload as string}";
-                };
-
                 ConfigureKeys();
 
-                TriggerRender();
-                
                 timer = new DispatcherTimer();
                 timer.Interval = TimeSpan.FromMilliseconds(10);
-                // timer.Tick += (o, a) => TriggerRender();
-                timer.Tick += (o, a) => TriggerMapAndPlayerRender();
-                
+                timer.Tick += (o, a) => TriggerRender();
+
                 timer.Start();
-                
             };
-
-            InitializeComponent();
         }
 
-        private int renderCounter = 0;
-
-        private void TriggerMapAndPlayerRender()
-        {
-            GameWindowRenderer.RenderPlayer(Game.Player, this.player_one_window, Game.GameWindow);
-
-            #region Map update or not
-
-            if (renderCounter == 5)
-            {
-                renderCounter = 0;
-                
-                TriggerRender();
-            }
-            
-            renderCounter++;
-
-            #endregion
-        }
         private void TriggerRender()
         {
-            var canvas = map_window;
+            var canvas = game_window;
 
             Game.FireLoop();
 

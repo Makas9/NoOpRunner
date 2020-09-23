@@ -15,8 +15,10 @@ namespace NoOpRunner.Networking
 
         private HubConnection connection;
 
-        public IDisposable Start(string url)
+        public IDisposable Start(string url, Action<MessageDto> callback)
         {
+            HostBridge.Bridge.RegisterHostMessageHandler(callback);
+
             return WebApp.Start<Startup>(url);
         }
 
@@ -32,6 +34,8 @@ namespace NoOpRunner.Networking
             });
 
             await connection.Start();
+
+            await proxy.Invoke("SendToHost", new MessageDto { MessageType = Core.Enums.MessageType.InitialConnection });
         }
 
         public async Task SendMessageToHost(MessageDto message)

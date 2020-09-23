@@ -1,4 +1,5 @@
 ﻿using NoOpRunner.Client.Logic.Base;
+using NoOpRunner.Core.Dtos;
 using NoOpRunner.Networking;
 using System.Windows.Input;
 
@@ -13,6 +14,23 @@ namespace NoOpRunner.Client.Logic.ViewModels
             var connectionManager = new ConnectionManager();
 
             Game = new Core.NoOpRunner(connectionManager);
+
+            Game.OnMessageReceived += HandleMessageReceived;
+        }
+
+        public void HandleMessageReceived(object sender, MessageDto message)
+        {
+            if (message.MessageType == Core.Enums.MessageType.InitialConnection)
+            {
+                IsClientConnected = true;
+                StatusMessage = "Client connected.";
+
+                RaisePropertyChanged(nameof(IsWaitingForClientConnection));
+            }
+            else
+            {
+                StatusMessage = $"Message received: {message.Payload as string}";
+            }
         }
 
         private string _StatusMessage = "Started";
@@ -29,6 +47,24 @@ namespace NoOpRunner.Client.Logic.ViewModels
             set => SetField(ref _HostConnectButtonsEnabled, value);
         }
 
+        private bool IsClientConnected { get; set; }
+
+        private bool _IsHosting  = true;
+        public bool IsHosting
+        {
+            get => _IsHosting;
+            set => SetField(ref _IsHosting, value);
+        }
+
+        private bool _IsPlaying = true;
+        public bool IsPlaying
+        {
+            get => _IsPlaying;
+            set => SetField(ref _IsPlaying, value);
+        }
+
+        public bool IsWaitingForClientConnection => IsHosting && !IsClientConnected;
+
         private ICommand _StartHostCommand;
 
         public ICommand StartHostCommand =>
@@ -36,8 +72,9 @@ namespace NoOpRunner.Client.Logic.ViewModels
                                                              {
                                                                  Game.StartHosting();
 
-                                                                 StatusMessage = "Hosting";
+                                                                 StatusMessage = "Waiting for client connection";
                                                                  HostConnectButtonsEnabled = false;
+                                                                 IsHosting = true;
                                                              }));
 
         private ICommand _ConnectToHostCommand;
@@ -59,6 +96,14 @@ namespace NoOpRunner.Client.Logic.ViewModels
                 await Game.SendMessage();
 
                 StatusMessage = "Message sent";
+            }));
+
+        private ICommand _StartPlayingCommand;
+
+        public ICommand StartPlayingCommand =>
+            _StartPlayingCommand ?? (_StartPlayingCommand = new RelayCommand(() =>
+            {
+                IsPlaying = true;
             }));
     }
 }

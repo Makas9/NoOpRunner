@@ -3,6 +3,6 @@
     public enum MessageType
     {
         MapUpdate,
-        PlayerPosition
+        InitialConnection
     }
 }
