@@ -1,5 +1,7 @@
-﻿using NoOpRunner.Client.Logic.ViewModels;
+﻿using NoOpRunner.Client.Logic.Rendering;
+using NoOpRunner.Client.Logic.ViewModels;
 using NoOpRunner.Core.Enums;
+using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -17,36 +19,31 @@ namespace NoOpRunner.Client
 
         public MainWindow()
         {
-            this.ContentRendered += (s, e) =>
+            InitializeComponent();
+
+            play_button.Click += (s, e) =>
             {
                 var viewModel = (MainViewModel)DataContext;
 
                 Game = viewModel.Game;
 
-                Game.OnMessageReceived += (o, a) =>
-                {
-                    viewModel.StatusMessage = $"Message received: {a.Payload as string}";
-                };
+                ConfigureKeys();
 
-                //ConfigureKeys();
+                timer = new DispatcherTimer();
+                timer.Interval = TimeSpan.FromMilliseconds(10);
+                timer.Tick += (o, a) => TriggerRender();
 
-                //timer = new DispatcherTimer();
-                //timer.Interval = TimeSpan.FromMilliseconds(10);
-                //timer.Tick += (o, a) => TriggerRender();
-
-                //timer.Start();
+                timer.Start();
             };
-
-            InitializeComponent();
         }
 
         private void TriggerRender()
         {
-            //var canvas = game_window;
+            var canvas = game_window;
 
-            //Game.FireLoop();
+            Game.FireLoop();
 
-            //GameWindowRenderer.Render(Game.GameWindow, canvas);
+            GameWindowRenderer.Render(Game.GameWindow, canvas);
         }
 
         private void ConfigureKeys()
