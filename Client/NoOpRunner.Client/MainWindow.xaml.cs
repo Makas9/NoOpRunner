@@ -5,6 +5,7 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using NoOpRunner.Core;
 
 namespace NoOpRunner.Client
 {
@@ -25,6 +26,7 @@ namespace NoOpRunner.Client
             {
                 var viewModel = (MainViewModel)DataContext;
 
+                
                 Game = viewModel.Game;
 
                 ConfigureKeys();
@@ -42,7 +44,10 @@ namespace NoOpRunner.Client
             var canvas = game_window;
 
             Game.FireLoop();
-
+            Game.Player.OnLoopFired((WindowPixel[,])Game.GameWindow.GetCurrentWindow().Clone());
+            
+            GameWindowRenderer.RenderPlayer(Game.Player, player_window, Game.GameWindow);
+            
             GameWindowRenderer.Render(Game.GameWindow, canvas);
         }
 

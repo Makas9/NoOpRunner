@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace NoOpRunner.Core
 {
-    public class GameWindow
+    public class GameWindow//GameMap ??? 
     {
         private List<BaseShape> shapes { get; set; }
 
-        // ?? wut
+        // ?? wut no
         // private BaseShape playerPosition { get; set; }
 
         public IReadOnlyCollection<BaseShape> Shapes => shapes.AsReadOnly();
@@ -41,7 +41,7 @@ namespace NoOpRunner.Core
             shapes.FirstOrDefault(s => s.IsHit(x, y))?.OnClick();
         }
 
-        public WindowPixel[,] GetCurrentWindow()
+        public WindowPixel[,] GetCurrentWindow()// Could be generator and list
         {
             var windowPixels = new WindowPixel[SizeX, SizeY];
 
@@ -69,7 +69,8 @@ namespace NoOpRunner.Core
                 }
             }
 
-            for (int i = 0; i <= windowPixels.GetUpperBound(0); i++)
+            // save space and time that give speed or breakup
+            for (int i = 0; i <= windowPixels.GetUpperBound(0); i++) 
             {
                 for (int j = 0; j <= windowPixels.GetUpperBound(1); j++)
                 {
@@ -83,8 +84,20 @@ namespace NoOpRunner.Core
             return windowPixels;
         }
 
+        public IEnumerable<WindowPixel> GetCurrentWindowEnumerable()//generator no?
+        {
+            foreach (var shape in Shapes)
+            {
+                var shapePixels = shape.Render();
+
+                foreach (var pixel in shapePixels)
+                {
+                    yield return pixel;
+                }
+            }
+        }
         /// <summary>
-        /// ??? wut
+        /// ??? wut no retarded
         /// </summary>
         /// <returns></returns>
         // public BaseShape GetPlayer()

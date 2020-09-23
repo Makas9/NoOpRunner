@@ -42,7 +42,7 @@ namespace NoOpRunner.Core.Entities
 
         public virtual void OnLoopFired(WindowPixel[,] gameScreen) { }
 
-        public virtual List<WindowPixel> Render()
+        public virtual List<WindowPixel> Render()//still generating
         {
             var windowPixels = new List<WindowPixel>();
 

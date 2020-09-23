@@ -111,6 +111,10 @@ namespace NoOpRunner.Core.Shapes
 
         private bool IsShapeHit(WindowPixel[,] gameScreen, int x, int y)
         {
+            if (gameScreen[x, y] == default)
+            {
+                return false;
+            }
             return x > gameScreen.GetUpperBound(0) ||
                 y > gameScreen.GetUpperBound(1) ||
                 x < 0 || 

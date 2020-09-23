@@ -17,27 +17,58 @@ namespace NoOpRunner.Client.Logic.Rendering
             var rectangleWidth = canvas.ActualWidth / window.SizeX;
             var rectangleHeight = canvas.ActualHeight / window.SizeY;
 
-            canvas.Children.Clear();
+
+            var pixels = window.GetCurrentWindowEnumerable().ToList();
+            if (canvas.Children.Count != pixels.Count)
+            {
+                foreach (var pixel in pixels)
+                {
+                    var rec = new Rectangle
+                    {
+                        Width = rectangleWidth,
+                        Height = rectangleHeight,
+                        Fill = ColorBrushMap[pixel.Color]
+                    };
+                    Canvas.SetLeft(rec, rectangleWidth * pixel.X);
+                    Canvas.SetBottom(rec, rectangleHeight * pixel.Y);
+                    
+                    canvas.Children.Add(rec);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < pixels.Count; i++)
+                {
+                    canvas.Children[i].SetValue(Canvas.WidthProperty, rectangleWidth);
+                    canvas.Children[i].SetValue(Canvas.HeightProperty, rectangleHeight);
+
+                    Canvas.SetLeft(canvas.Children[i], rectangleWidth * pixels[i].X);
+                    Canvas.SetBottom(canvas.Children[i], rectangleHeight * pixels[i].Y);
+                }
+            }
+
 
             // this still retarded, why generate empty pixels?? make canvas background color
-            var pixels = window.GetCurrentWindow();
-            foreach (var pixel in pixels)
-            {
-                var rec = new Rectangle
-                {
-                    Width = rectangleWidth,
-                    Height = rectangleHeight,
-                    Fill = ColorBrushMap[pixel.Color]
-                };
-
-                Canvas.SetLeft(rec, rectangleWidth * pixel.X);
-                Canvas.SetBottom(rec, rectangleHeight * pixel.Y);
-
-
-                rec.MouseLeftButtonDown += (s, e) => { window.ClickShape(pixel.X, pixel.Y); };
-
-                canvas.Children.Add(rec);
-            }
+            // var pixels = window.GetCurrentWindow();
+            // canvas.Children.Clear();
+            // foreach (var pixel in pixels)
+            // {
+            //     
+            //     var rec = new Rectangle
+            //     {
+            //         Width = rectangleWidth,
+            //         Height = rectangleHeight,
+            //         Fill = ColorBrushMap[pixel.Color]
+            //     };
+            //
+            //     Canvas.SetLeft(rec, rectangleWidth * pixel.X);
+            //     Canvas.SetBottom(rec, rectangleHeight * pixel.Y);
+            //
+            //
+            //     rec.MouseLeftButtonDown += (s, e) => { window.ClickShape(pixel.X, pixel.Y); };
+            //
+            //     canvas.Children.Add(rec);
+            // }
         }
 
         public static void RenderPlayer(Player player, Canvas canvas, GameWindow window)
@@ -57,15 +88,15 @@ namespace NoOpRunner.Client.Logic.Rendering
                 {
                     canvas.Children[i].SetValue(Canvas.WidthProperty, rectangleWidth);
                     canvas.Children[i].SetValue(Canvas.HeightProperty, rectangleHeight);
-                    
+
                     Canvas.SetLeft(canvas.Children[i], rectangleWidth * playerPixels[i].X);
                     Canvas.SetBottom(canvas.Children[i], rectangleHeight * playerPixels[i].Y);
 
                     #region Animation rectangle move, need non static method
-                    
+
                     // var lastPositionY = (int) canvasPixels[i].GetValue(Canvas.BottomProperty);
                     // var lastPositionX = (int) canvasPixels[i].GetValue(Canvas.LeftProperty);
-                    
+
                     // var moveAnimX =
                     //     new DoubleAnimation(lastPositionX, playerPixels[i].X, TimeSpan.FromMilliseconds(10));
                     // var moveAnimY =
