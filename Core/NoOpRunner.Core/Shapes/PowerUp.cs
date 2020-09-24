@@ -19,21 +19,21 @@ namespace NoOpRunner.Core.Shapes
 
         public PowerUp(int centerPosX, int centerPosY, int[] platformXCoords, int[] platformYCoords) : base(centerPosX, centerPosY)
         {
-            int randomLocation = randLocation(platformXCoords, platformYCoords);
+            int randomLocation = RandLocation(platformXCoords, platformYCoords);
 
-            spawnPowerUp(platformXCoords[randomLocation], platformYCoords[randomLocation] + 2);
+            SpawnPowerUp(platformXCoords[randomLocation], platformYCoords[randomLocation] + 2);
         }
 
-        public void spawnPowerUp(int x, int y) // TODO (Image instead of color)
+        public void SpawnPowerUp(int x, int y) // TODO (Image instead of color)
         {
-            Color powerup = randomPowerUp();
+            Color powerup = RandomPowerUp();
 
             MapShapeX(x, y, 1, powerup);
         }
 
-        public Color randomPowerUp()
+        public Color RandomPowerUp()
         {
-            int powerUp = RandomNumber.Instance.getRandom(0, powerUps.Count);
+            int powerUp = RandomNumber.Instance.GetRandom(0, powerUps.Count);
             String key = powerUps.Keys.ElementAt(powerUp);
 
             switch (key)
@@ -47,12 +47,12 @@ namespace NoOpRunner.Core.Shapes
             return Color.Black;
         }
 
-        public int randLocation(int[] platformXCoords, int[] platformYCoords)
+        public int RandLocation(int[] platformXCoords, int[] platformYCoords)
         {
             int found = -1, x = -1;
             while (found == -1)
             {
-                x = RandomNumber.Instance.getRandom(2, platformXCoords.Length - 2);
+                x = RandomNumber.Instance.GetRandom(2, platformXCoords.Length - 2);
                 if (platformYCoords[x - 2] == platformYCoords[x] &&
                     platformYCoords[x - 1] == platformYCoords[x] &&
                     platformYCoords[x + 1] == platformYCoords[x] &&

@@ -32,7 +32,7 @@ namespace NoOpRunner.Core
             }
         }
 
-        public int getRandom(int from, int to)
+        public int GetRandom(int from, int to)
         {
             return random.Next(from, to);
         }

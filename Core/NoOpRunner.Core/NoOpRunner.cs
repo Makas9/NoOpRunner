@@ -34,8 +34,8 @@ namespace NoOpRunner.Core
             Platform secondPlatform = new Platform(0, 10, 10, 20);
             GameWindow.AddShape(secondPlatform); // Second platform
 
-            GameWindow.AddShape(new PowerUp(0, 0, firstPlatform.getCoordsX(), firstPlatform.getCoordsY()));
-            GameWindow.AddShape(new PowerUp(0, 10, secondPlatform.getCoordsX(), secondPlatform.getCoordsY()));
+            GameWindow.AddShape(new PowerUp(0, 0, firstPlatform.GetCoordsX(), firstPlatform.GetCoordsY()));
+            GameWindow.AddShape(new PowerUp(0, 10, secondPlatform.GetCoordsX(), secondPlatform.GetCoordsY()));
 
             //GameWindow.AddShape(new Square(5, 5));
             //GameWindow.AddShape(new Square(9, 5));

@@ -20,8 +20,8 @@ namespace NoOpRunner.Core.Shapes
         {
             while (lastPosX < 28) // TODO
             {
-                int blockLength = randomLength(4);
-                int blockHeight = randomHeight(4); // Lower than jump height
+                int blockLength = RandomLength(4);
+                int blockHeight = RandomHeight(4); // Lower than jump height
 
                 AddShape(true, lastPosX, lastPosY, blockLength);
                 lastPosX += blockLength;
@@ -67,30 +67,30 @@ namespace NoOpRunner.Core.Shapes
             }
         }
 
-        public int[] getCoordsX()
+        public int[] GetCoordsX()
         {
             return xCoords.ToArray();
         }
 
-        public int[] getCoordsY()
+        public int[] GetCoordsY()
         {
             return yCoords.ToArray();
         }
 
-        public int randomHeight(int maxLength)
+        public int RandomHeight(int maxLength)
         {
-            int number = RandomNumber.Instance.getRandom(maxLength * -1, maxLength);
+            int number = RandomNumber.Instance.GetRandom(maxLength * -1, maxLength);
             while (number == 0)
             {
-                number = RandomNumber.Instance.getRandom(maxLength * -1, maxLength);
+                number = RandomNumber.Instance.GetRandom(maxLength * -1, maxLength);
             }
 
-            return RandomNumber.Instance.getRandom(maxLength*-1, maxLength);
+            return RandomNumber.Instance.GetRandom(maxLength*-1, maxLength);
         }
 
-        public int randomLength(int maxLength)
+        public int RandomLength(int maxLength)
         {
-            return RandomNumber.Instance.getRandom(2, maxLength);
+            return RandomNumber.Instance.GetRandom(2, maxLength);
         }
     }
 }
