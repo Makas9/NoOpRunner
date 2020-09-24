@@ -1,14 +1,10 @@
 ﻿using NoOpRunner.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NoOpRunner.Core.Enums;
 
 namespace NoOpRunner.Core.Shapes
 {
     public abstract class AbstractFactory
     {
-        public abstract BaseShape GetShape(String shape, int x, int y);
+        public abstract BaseShape GetShape(Shape shape, int x, int y);
     }
 }

@@ -2,7 +2,6 @@
 using NoOpRunner.Core.Enums;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace NoOpRunner.Core.Shapes

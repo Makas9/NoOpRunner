@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Dtos\MessageDto.cs" />
     <Compile Include="Dtos\MessageEventArgs.cs" />
+    <Compile Include="Enums\Shape.cs" />
     <Compile Include="Enums\Color.cs" />
     <Compile Include="Enums\KeyPress.cs" />
     <Compile Include="Enums\MessageType.cs" />

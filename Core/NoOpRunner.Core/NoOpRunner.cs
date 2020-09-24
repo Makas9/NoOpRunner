@@ -31,16 +31,16 @@ namespace NoOpRunner.Core
 
             /* SHAPE FACTORY DESIGN PATTERN */
             ShapeFactory shapeFactory = new ShapeFactory();
-            BaseShape shape1 = shapeFactory.GetShape("square", 5, 5);
-            BaseShape shape2 = shapeFactory.GetShape("circle", 10, 5);
-            BaseShape shape3 = shapeFactory.GetShape("rectangle", 15, 5);
+            BaseShape shape1 = shapeFactory.GetShape(Shape.Square, 5, 5);
+            BaseShape shape2 = shapeFactory.GetShape(Shape.Circle, 10, 5);
+            BaseShape shape3 = shapeFactory.GetShape(Shape.Rectangle, 15, 5);
             GameWindow.AddShape(shape1);
             GameWindow.AddShape(shape2);
             GameWindow.AddShape(shape3);
 
             /* ABSTRACT SHAPE FACTORY DESIGN PATTERN */
-            AbstractFactory abstractShapeFactory = FactoryProducer.getFactory(true);
-            BaseShape aShape1 = abstractShapeFactory.GetShape("stairs", 20, 5);
+            AbstractFactory abstractShapeFactory = FactoryProducer.GetFactory(true);
+            BaseShape aShape1 = abstractShapeFactory.GetShape(Shape.Stairs, 20, 5);
             GameWindow.AddShape(aShape1);
 
 
