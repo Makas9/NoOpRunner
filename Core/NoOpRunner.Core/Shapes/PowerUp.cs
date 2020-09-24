@@ -57,7 +57,13 @@ namespace NoOpRunner.Core.Shapes
             while (found == -1)
             {
                 x = randomNumber.Next(2, platformXCoords.Length - 2);
-                if (platformYCoords[x - 2] == platformYCoords[x] && platformYCoords[x - 1] == platformYCoords[x] && platformYCoords[x + 1] == platformYCoords[x] && platformYCoords[x + 2] == platformYCoords[x]) found = x; // Spawn power up between flat platform
+                if (platformYCoords[x - 2] == platformYCoords[x] &&
+                    platformYCoords[x - 1] == platformYCoords[x] &&
+                    platformYCoords[x + 1] == platformYCoords[x] &&
+                    platformYCoords[x + 2] == platformYCoords[x])
+                {
+                    found = x; // Spawn power up between flat platform
+                }
             }
             return x;
         }

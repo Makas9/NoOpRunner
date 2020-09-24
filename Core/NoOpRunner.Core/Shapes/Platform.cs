@@ -27,32 +27,34 @@ namespace NoOpRunner.Core.Shapes
                 int blockLength = randomLength(4);
                 int blockHeight = randomHeight(4); // Lower than jump height
 
-                addShape(true, lastPosX, lastPosY, blockLength);
+                AddShape(true, lastPosX, lastPosY, blockLength);
                 lastPosX += blockLength;
 
                 if(blockHeight < 0)
                 {
-                    addShape(false, lastPosX, 1, lastPosY);
+                    AddShape(false, lastPosX, 1, lastPosY);
                     lastPosY = 0;
                 } else
                 {
                     if (lastPosY + blockHeight > topPosY)
                     {
-                        addShape(false, lastPosX, lastPosY, (topPosY - lastPosY) < bottomPosY ? bottomPosY : (topPosY - lastPosY));
+                        AddShape(false, lastPosX, lastPosY, (topPosY - lastPosY) < bottomPosY ? bottomPosY : (topPosY - lastPosY));
                         lastPosY = topPosY;
                     } else
                     {
-                        addShape(false, lastPosX, lastPosY, blockHeight);
+                        AddShape(false, lastPosX, lastPosY, blockHeight);
                         lastPosY = lastPosY + blockHeight;
                     }
                 }
             }
         }
 
-        public void addShape(bool horizontal, int posX, int posY, int blockLength)
+        public void AddShape(bool horizontal, int posX, int posY, int blockLength)
         {
-            if (horizontal) MapShapeX(posX, posY, blockLength, Color.Red);
-            else MapShapeY(posX, posY, blockLength, Color.Red);
+            if (horizontal) 
+                MapShapeX(posX, posY, blockLength, Color.Red);
+            else
+                MapShapeY(posX, posY, blockLength, Color.Red);
 
             for (int i = 0; i < blockLength; i++)
             {
