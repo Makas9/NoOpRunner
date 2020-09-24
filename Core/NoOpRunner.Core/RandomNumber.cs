@@ -8,28 +8,18 @@ namespace NoOpRunner.Core
 {
     class RandomNumber
     {
-        private static readonly object padlock = new object();
-        private static RandomNumber instance = null;
         private Random random;
 
-        RandomNumber()
-        {
-            random = new Random();
-        }
+        private static readonly Lazy<RandomNumber> _instance = new Lazy<RandomNumber>(() => new RandomNumber());
 
         public static RandomNumber Instance
         {
-            get
-            {
-                lock (padlock)
-                {
-                    if (instance == null)
-                    {
-                        instance = new RandomNumber();
-                    }
-                    return instance;
-                }
-            }
+            get { return _instance.Value; }
+        }
+
+        private RandomNumber()
+        {
+            random = new Random();
         }
 
         public int GetRandom(int from, int to)
