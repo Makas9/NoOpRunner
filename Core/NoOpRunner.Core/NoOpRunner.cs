@@ -1,4 +1,5 @@
 ﻿using NoOpRunner.Core.Dtos;
+using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
@@ -28,19 +29,33 @@ namespace NoOpRunner.Core
             GameWindow = new GameWindow(32, 32);
             Player = new Player(1, 2);
 
-            Platform firstPlatform = new Platform(0, 0, 0, 10);
+            /* SHAPE FACTORY DESIGN PATTERN */
+            ShapeFactory shapeFactory = new ShapeFactory();
+            BaseShape shape1 = shapeFactory.GetShape("square", 5, 5);
+            BaseShape shape2 = shapeFactory.GetShape("circle", 10, 5);
+            BaseShape shape3 = shapeFactory.GetShape("rectangle", 15, 5);
+            GameWindow.AddShape(shape1);
+            GameWindow.AddShape(shape2);
+            GameWindow.AddShape(shape3);
+
+            /* ABSTRACT SHAPE FACTORY DESIGN PATTERN */
+            AbstractFactory abstractShapeFactory = FactoryProducer.getFactory(true);
+            BaseShape aShape1 = abstractShapeFactory.GetShape("stairs", 20, 5);
+            GameWindow.AddShape(aShape1);
+
+
+            /*Platform firstPlatform = new Platform(0, 0, 0, 10);
             GameWindow.AddShape(firstPlatform); // Main platform
 
             Platform secondPlatform = new Platform(0, 10, 10, 20);
             GameWindow.AddShape(secondPlatform); // Second platform
 
             GameWindow.AddShape(new PowerUp(0, 0, firstPlatform.GetCoordsX(), firstPlatform.GetCoordsY()));
-            GameWindow.AddShape(new PowerUp(0, 10, secondPlatform.GetCoordsX(), secondPlatform.GetCoordsY()));
+            GameWindow.AddShape(new PowerUp(0, 10, secondPlatform.GetCoordsX(), secondPlatform.GetCoordsY()));*/
 
             //GameWindow.AddShape(new Square(5, 5));
             //GameWindow.AddShape(new Square(9, 5));
             //GameWindow.AddShape(new Square(13, 5));
-
 
             GameWindow.AddShape(Player);
 
