@@ -20,9 +20,7 @@ namespace NoOpRunner.Core.Shapes
 
         public Platform(int centerPosX, int centerPosY, int bottomPosY, int topPosY, Random random) : base(centerPosX, centerPosY)
         {
-            randomNumber = random;
-
-            while (lastPosX < 30) // TODO
+            while (lastPosX < 28) // TODO
             {
                 int blockLength = randomLength(4);
                 int blockHeight = randomHeight(3); // Lower than jump height

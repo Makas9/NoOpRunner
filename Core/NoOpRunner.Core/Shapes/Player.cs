@@ -108,14 +108,5 @@ namespace NoOpRunner.Core.Shapes
                     return;
             }
         }
-
-        private bool IsShapeHit(WindowPixel[,] gameScreen, int x, int y)
-        {
-            return x > gameScreen.GetUpperBound(0) ||
-                y > gameScreen.GetUpperBound(1) ||
-                x < 0 || 
-                y < 0 ||
-                gameScreen[x, y].IsShape;
-        }
     }
 }
