@@ -51,6 +51,7 @@
     <Compile Include="Enums\KeyPress.cs" />
     <Compile Include="Enums\MessageType.cs" />
     <Compile Include="Interfaces\IConnectionManager.cs" />
+    <Compile Include="RandomNumber.cs" />
     <Compile Include="Shapes\BaseShape.cs" />
     <Compile Include="GameWindow.cs" />
     <Compile Include="NoOpRunner.cs" />

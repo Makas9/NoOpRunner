@@ -9,8 +9,6 @@ namespace NoOpRunner.Core.Shapes
 {
     public class PowerUp : BaseShape
     {
-        private Random randomNumber;
-
         // Player 1 PowerUp | Player 2 PowerUp
         Dictionary<string, string> powerUps = new Dictionary<string, string>(){
             { "speed_boost", "rocket" },
@@ -19,10 +17,8 @@ namespace NoOpRunner.Core.Shapes
             { "double_jump", "knockback_bomb" }
         };
 
-        public PowerUp(int centerPosX, int centerPosY, int[] platformXCoords, int[] platformYCoords, Random random) : base(centerPosX, centerPosY)
+        public PowerUp(int centerPosX, int centerPosY, int[] platformXCoords, int[] platformYCoords) : base(centerPosX, centerPosY)
         {
-            randomNumber = random;
-
             int randomLocation = randLocation(platformXCoords, platformYCoords);
 
             spawnPowerUp(platformXCoords[randomLocation], platformYCoords[randomLocation] + 2);
@@ -37,7 +33,7 @@ namespace NoOpRunner.Core.Shapes
 
         public Color randomPowerUp()
         {
-            int powerUp = randomNumber.Next(0, powerUps.Count);
+            int powerUp = RandomNumber.Instance.getRandom(0, powerUps.Count);
             String key = powerUps.Keys.ElementAt(powerUp);
 
             switch (key)
@@ -56,7 +52,7 @@ namespace NoOpRunner.Core.Shapes
             int found = -1, x = -1;
             while (found == -1)
             {
-                x = randomNumber.Next(2, platformXCoords.Length - 2);
+                x = RandomNumber.Instance.getRandom(2, platformXCoords.Length - 2);
                 if (platformYCoords[x - 2] == platformYCoords[x] &&
                     platformYCoords[x - 1] == platformYCoords[x] &&
                     platformYCoords[x + 1] == platformYCoords[x] &&

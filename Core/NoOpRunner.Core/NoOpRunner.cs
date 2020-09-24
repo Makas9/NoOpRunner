@@ -25,18 +25,17 @@ namespace NoOpRunner.Core
 
         public NoOpRunner(IConnectionManager connectionManager)
         {
-            Random randomNumber = new Random();
             GameWindow = new GameWindow(32, 32);
             Player = new Player(1, 2);
 
-            Platform firstPlatform = new Platform(0, 0, 0, 10, randomNumber);
+            Platform firstPlatform = new Platform(0, 0, 0, 10);
             GameWindow.AddShape(firstPlatform); // Main platform
 
-            Platform secondPlatform = new Platform(0, 10, 10, 20, randomNumber);
+            Platform secondPlatform = new Platform(0, 10, 10, 20);
             GameWindow.AddShape(secondPlatform); // Second platform
 
-            GameWindow.AddShape(new PowerUp(0, 0, firstPlatform.getCoordsX(), firstPlatform.getCoordsY(), randomNumber));
-            GameWindow.AddShape(new PowerUp(0, 10, secondPlatform.getCoordsX(), secondPlatform.getCoordsY(), randomNumber));
+            GameWindow.AddShape(new PowerUp(0, 0, firstPlatform.getCoordsX(), firstPlatform.getCoordsY()));
+            GameWindow.AddShape(new PowerUp(0, 10, secondPlatform.getCoordsX(), secondPlatform.getCoordsY()));
 
             //GameWindow.AddShape(new Square(5, 5));
             //GameWindow.AddShape(new Square(9, 5));

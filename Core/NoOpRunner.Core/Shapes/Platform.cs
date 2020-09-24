@@ -10,18 +10,14 @@ namespace NoOpRunner.Core.Shapes
         public int bottomPosY { get; set; } // Bottom of x platform
         public int topPosY { get; set; } // Max height of x platform
 
-        private Random randomNumber;
-
         public int lastPosX = 0,
                    lastPosY = 0;
 
         private List<int> xCoords = new List<int>();
         private List<int> yCoords = new List<int>();
 
-        public Platform(int centerPosX, int centerPosY, int bottomPosY, int topPosY, Random random) : base(centerPosX, centerPosY)
+        public Platform(int centerPosX, int centerPosY, int bottomPosY, int topPosY) : base(centerPosX, centerPosY)
         {
-            randomNumber = random;
-
             while (lastPosX < 28) // TODO
             {
                 int blockLength = randomLength(4);
@@ -83,18 +79,18 @@ namespace NoOpRunner.Core.Shapes
 
         public int randomHeight(int maxLength)
         {
-            int number = randomNumber.Next(maxLength * -1, maxLength);
+            int number = RandomNumber.Instance.getRandom(maxLength * -1, maxLength);
             while (number == 0)
             {
-                number = randomNumber.Next(maxLength * -1, maxLength);
+                number = RandomNumber.Instance.getRandom(maxLength * -1, maxLength);
             }
 
-            return randomNumber.Next(maxLength*-1, maxLength);
+            return RandomNumber.Instance.getRandom(maxLength*-1, maxLength);
         }
 
         public int randomLength(int maxLength)
         {
-            return randomNumber.Next(2, maxLength);
+            return RandomNumber.Instance.getRandom(2, maxLength);
         }
     }
 }
