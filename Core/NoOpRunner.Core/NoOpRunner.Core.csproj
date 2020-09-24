@@ -51,13 +51,11 @@
     <Compile Include="Enums\KeyPress.cs" />
     <Compile Include="Enums\MessageType.cs" />
     <Compile Include="Interfaces\IConnectionManager.cs" />
-    <Compile Include="RandomNumber.cs" />
     <Compile Include="Shapes\BaseShape.cs" />
     <Compile Include="GameWindow.cs" />
     <Compile Include="NoOpRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shapes\MovingShape.cs" />
-    <Compile Include="Shapes\PowerUp.cs" />
     <Compile Include="Shapes\Platform.cs" />
     <Compile Include="Shapes\Player.cs" />
     <Compile Include="Shapes\ShapeBlock.cs" />
