@@ -53,7 +53,7 @@
     <Compile Include="Enums\KeyPress.cs" />
     <Compile Include="Enums\MessageType.cs" />
     <Compile Include="Interfaces\IConnectionManager.cs" />
-    <Compile Include="DesignPatterns\_Singleton\RandomNumber.cs" />
+    <Compile Include="RandomNumber.cs" />
     <Compile Include="DesignPatterns\_AbstractFactory\AbstractFactory.cs" />
     <Compile Include="Shapes\BaseShape.cs" />
     <Compile Include="GameWindow.cs" />

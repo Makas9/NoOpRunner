@@ -2,6 +2,7 @@
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Shapes.RegularShapes;
 using NoOpRunner.Core.DesignPatterns._AbstractFactory;
+using System;
 
 namespace NoOpRunner.Core.DesignPatterns._Factory
 {
@@ -14,7 +15,7 @@ namespace NoOpRunner.Core.DesignPatterns._Factory
                 case Shape.Square: return new Square(x, y);
                 case Shape.Circle: return new Circle(x, y);
                 case Shape.Rectangle: return new Rectangle(x, y);
-                default: return null;
+                default: throw new Exception("Shape is not found");
             }
         }
 

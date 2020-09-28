@@ -1,7 +1,6 @@
 ﻿using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
 using System.Collections.Generic;
-using NoOpRunner.Core.DesignPatterns._Singleton;
 
 namespace NoOpRunner.Core.Shapes
 {

@@ -1,6 +1,7 @@
 ﻿using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Shapes.RealisticShapes;
+using System;
 
 namespace NoOpRunner.Core.DesignPatterns._AbstractFactory
 {
@@ -13,7 +14,7 @@ namespace NoOpRunner.Core.DesignPatterns._AbstractFactory
                 case Shape.Stairs: return new Stairs(x, y);
                 case Shape.Stone: return new Stone(x, y);
                 case Shape.Fence: return new Fence(x, y);
-                default: return null;
+                default: throw new Exception("Shape is not found");
             }
         }
     }
