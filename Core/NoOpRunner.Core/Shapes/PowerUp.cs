@@ -1,66 +1,32 @@
 ﻿using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
+using NoOpRunner.Core.DesignPatterns._Singleton;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace NoOpRunner.Core.Shapes
 {
     public class PowerUp : BaseShape
     {
-        // Player 1 PowerUp | Player 2 PowerUp
-        Dictionary<string, string> powerUps = new Dictionary<string, string>(){
-            { "speed_boost", "rocket" },
-            { "invisibility", "proximity_mine" },
-            { "invulnerablity", "saw" },
-            { "double_jump", "knockback_bomb" }
-        };
-
-        public PowerUp(int centerPosX, int centerPosY, int[] platformXCoords, int[] platformYCoords) : base(centerPosX, centerPosY)
+        public PowerUp(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
         {
-            int randomLocation = RandLocation(platformXCoords, platformYCoords);
+            Color powerup = GetRandomPowerUp();
 
-            SpawnPowerUp(platformXCoords[randomLocation], platformYCoords[randomLocation] + 2);
+            MapShapeX(0, 2, 1, powerup);
         }
 
-        public void SpawnPowerUp(int x, int y) // TODO (Image instead of color)
+        private Color GetRandomPowerUp()
         {
-            Color powerup = RandomPowerUp();
+            Array powerups = Enum.GetValues(typeof(PowerUps));
+            int index = RandomNumber.GetInstance().Next(0, powerups.Length - 1);
 
-            MapShapeX(x, y, 1, powerup);
-        }
-
-        public Color RandomPowerUp()
-        {
-            int powerUp = RandomNumber.Instance.Next(0, powerUps.Count);
-            String key = powerUps.Keys.ElementAt(powerUp);
-
-            switch (key)
+            switch (powerups.GetValue(index))
             {
-                case "speed_boost": return Color.Red;
-                case "invisibility": return Color.Blue;
-                case "invulnerablity": return Color.Green;
-                case "double_jump": return Color.Yellow;
+                case PowerUps.Speed_Boost: return Color.Red;
+                case PowerUps.Invisibility: return Color.Blue;
+                case PowerUps.Invulnerability: return Color.Green;
+                case PowerUps.Double_Jump: return Color.Yellow;
+                default: return Color.Black;
             }
-
-            return Color.Black;
-        }
-
-        public int RandLocation(int[] platformXCoords, int[] platformYCoords)
-        {
-            int found = -1, x = -1;
-            while (found == -1)
-            {
-                x = RandomNumber.Instance.Next(2, platformXCoords.Length - 2);
-                if (platformYCoords[x - 2] == platformYCoords[x] &&
-                    platformYCoords[x - 1] == platformYCoords[x] &&
-                    platformYCoords[x + 1] == platformYCoords[x] &&
-                    platformYCoords[x + 2] == platformYCoords[x])
-                {
-                    found = x; // Spawn power up between flat platform
-                }
-            }
-            return x;
         }
     }
 }

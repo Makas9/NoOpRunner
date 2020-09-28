@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NoOpRunner.Core.DesignPatterns._Factory;
 
-namespace NoOpRunner.Core.Shapes
+namespace NoOpRunner.Core.DesignPatterns._AbstractFactory
 {
     public class FactoryProducer
     {
-        public static AbstractFactory GetFactory(Boolean realistic)
+        public static AbstractFactory GetFactory(bool realistic)
         {
             if (realistic)
             {

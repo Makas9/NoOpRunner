@@ -1,33 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NoOpRunner.Core
+namespace NoOpRunner.Core.DesignPatterns._Singleton
 {
     class RandomNumber
     {
         private static Random random = null;
-        private static readonly object padlock = new object();
+        private static object padlock = new object();
 
-        RandomNumber()
+        private RandomNumber()
         {
         }
 
-        public static Random Instance
+        public static Random GetInstance()
         {
-            get
+            if (random == null)
             {
                 lock (padlock)
                 {
                     if (random == null)
-                    {
                         random = new Random();
-                    }
+
                     return random;
                 }
             }
+
+            return random;
         }
     }
 }

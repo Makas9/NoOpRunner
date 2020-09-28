@@ -1,7 +1,8 @@
 ﻿using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
+using NoOpRunner.Core.Shapes.RealisticShapes;
 
-namespace NoOpRunner.Core.Shapes
+namespace NoOpRunner.Core.DesignPatterns._AbstractFactory
 {
     class RealisticShapeFactory : AbstractFactory
     {
@@ -12,9 +13,8 @@ namespace NoOpRunner.Core.Shapes
                 case Shape.Stairs: return new Stairs(x, y);
                 case Shape.Stone: return new Stone(x, y);
                 case Shape.Fence: return new Fence(x, y);
+                default: return null;
             }
-
-            return null;
         }
     }
 }

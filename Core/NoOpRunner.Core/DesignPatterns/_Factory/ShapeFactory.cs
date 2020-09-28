@@ -1,7 +1,9 @@
 ﻿using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
+using NoOpRunner.Core.Shapes.RegularShapes;
+using NoOpRunner.Core.DesignPatterns._AbstractFactory;
 
-namespace NoOpRunner.Core.Shapes
+namespace NoOpRunner.Core.DesignPatterns._Factory
 {
     class ShapeFactory : AbstractFactory
     {
@@ -12,9 +14,8 @@ namespace NoOpRunner.Core.Shapes
                 case Shape.Square: return new Square(x, y);
                 case Shape.Circle: return new Circle(x, y);
                 case Shape.Rectangle: return new Rectangle(x, y);
+                default: return null;
             }
-
-            return null;
         }
 
     }

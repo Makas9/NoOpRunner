@@ -3,6 +3,9 @@ using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
+using NoOpRunner.Core.DesignPatterns._Singleton;
+using NoOpRunner.Core.DesignPatterns._Factory;
+using NoOpRunner.Core.DesignPatterns._AbstractFactory;
 using System;
 using System.Threading.Tasks;
 
@@ -47,15 +50,16 @@ namespace NoOpRunner.Core
             GameWindow.AddShape(aShape2);
             GameWindow.AddShape(aShape3);
 
-
             /*Platform firstPlatform = new Platform(0, 0, 0, 10);
             GameWindow.AddShape(firstPlatform); // Main platform
 
             Platform secondPlatform = new Platform(0, 10, 10, 20);
             GameWindow.AddShape(secondPlatform); // Second platform
 
-            GameWindow.AddShape(new PowerUp(0, 0, firstPlatform.GetCoordsX(), firstPlatform.GetCoordsY()));
-            GameWindow.AddShape(new PowerUp(0, 10, secondPlatform.GetCoordsX(), secondPlatform.GetCoordsY()));*/
+            int[] firstPlatformX = firstPlatform.GetCoordsX();
+            int[] firstPlatformY = firstPlatform.GetCoordsY();
+            int randomLocation = RandLocation(firstPlatformX, firstPlatformY);
+            GameWindow.AddShape(new PowerUp(firstPlatformX[randomLocation], firstPlatformY[randomLocation]));*/
 
             //GameWindow.AddShape(new Square(5, 5));
             //GameWindow.AddShape(new Square(9, 5));
@@ -64,6 +68,22 @@ namespace NoOpRunner.Core
             GameWindow.AddShape(Player);
 
             this.connectionManager = connectionManager;
+        }
+        private int RandLocation(int[] platformXCoords, int[] platformYCoords)
+        {
+            int found = -1, x = -1;
+            while (found == -1)
+            {
+                x = RandomNumber.GetInstance().Next(2, platformXCoords.Length - 2);
+                if (platformYCoords[x - 2] == platformYCoords[x] &&
+                    platformYCoords[x - 1] == platformYCoords[x] &&
+                    platformYCoords[x + 1] == platformYCoords[x] &&
+                    platformYCoords[x + 2] == platformYCoords[x])
+                {
+                    found = x; // Spawn power up between flat platform
+                }
+            }
+            return x;
         }
 
         public async Task SendMessage()

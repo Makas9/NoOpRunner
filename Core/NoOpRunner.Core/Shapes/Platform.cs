@@ -1,7 +1,7 @@
 ﻿using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
-using System;
 using System.Collections.Generic;
+using NoOpRunner.Core.DesignPatterns._Singleton;
 
 namespace NoOpRunner.Core.Shapes
 {
@@ -79,18 +79,18 @@ namespace NoOpRunner.Core.Shapes
 
         public int RandomHeight(int maxLength)
         {
-            int number = RandomNumber.Instance.Next(maxLength * -1, maxLength);
+            int number = RandomNumber.GetInstance().Next(maxLength * -1, maxLength);
             while (number == 0)
             {
-                number = RandomNumber.Instance.Next(maxLength * -1, maxLength);
+                number = RandomNumber.GetInstance().Next(maxLength * -1, maxLength);
             }
 
-            return RandomNumber.Instance.Next(maxLength*-1, maxLength);
+            return RandomNumber.GetInstance().Next(maxLength*-1, maxLength);
         }
 
         public int RandomLength(int maxLength)
         {
-            return RandomNumber.Instance.Next(2, maxLength);
+            return RandomNumber.GetInstance().Next(2, maxLength);
         }
     }
 }

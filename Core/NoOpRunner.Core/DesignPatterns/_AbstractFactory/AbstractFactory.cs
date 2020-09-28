@@ -1,7 +1,7 @@
 ﻿using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
 
-namespace NoOpRunner.Core.Shapes
+namespace NoOpRunner.Core.DesignPatterns._AbstractFactory
 {
     public abstract class AbstractFactory
     {
