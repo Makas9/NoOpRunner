@@ -12,11 +12,6 @@ namespace NoOpRunner.Core.Entities
 
         protected List<ShapeBlock> ShapeBlocks = new List<ShapeBlock>();
 
-        public BaseShape()
-        {
-
-        }
-
         public BaseShape(int centerPosX, int centerPosY)
         {
             CenterPosX = centerPosX;
