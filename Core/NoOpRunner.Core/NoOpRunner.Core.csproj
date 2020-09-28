@@ -59,6 +59,8 @@
     <Compile Include="NoOpRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DesignPatterns\AbstractFactory\FactoryProducer.cs" />
+    <Compile Include="Shapes\RealisticShapes\Fence.cs" />
+    <Compile Include="Shapes\RealisticShapes\Stone.cs" />
     <Compile Include="Shapes\RegularShapes\Rectangle.cs" />
     <Compile Include="Shapes\MovingShape.cs" />
     <Compile Include="Shapes\PowerUp.cs" />

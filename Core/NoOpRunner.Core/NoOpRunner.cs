@@ -41,7 +41,11 @@ namespace NoOpRunner.Core
             /* ABSTRACT SHAPE FACTORY DESIGN PATTERN */
             AbstractFactory abstractShapeFactory = FactoryProducer.GetFactory(true);
             BaseShape aShape1 = abstractShapeFactory.GetShape(Shape.Stairs, 20, 5);
+            BaseShape aShape2 = abstractShapeFactory.GetShape(Shape.Stone, 22, 5);
+            BaseShape aShape3 = abstractShapeFactory.GetShape(Shape.Fence, 24, 5);
             GameWindow.AddShape(aShape1);
+            GameWindow.AddShape(aShape2);
+            GameWindow.AddShape(aShape3);
 
 
             /*Platform firstPlatform = new Platform(0, 0, 0, 10);

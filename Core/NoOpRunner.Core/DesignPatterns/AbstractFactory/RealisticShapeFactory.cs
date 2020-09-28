@@ -10,6 +10,8 @@ namespace NoOpRunner.Core.Shapes
             switch (shape)
             {
                 case Shape.Stairs: return new Stairs(x, y);
+                case Shape.Stone: return new Stone(x, y);
+                case Shape.Fence: return new Fence(x, y);
             }
 
             return null;

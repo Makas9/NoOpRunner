@@ -5,6 +5,8 @@
         Square,
         Circle,
         Rectangle,
-        Stairs
+        Stairs,
+        Stone,
+        Fence
     }
 }
