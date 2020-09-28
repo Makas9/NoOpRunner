@@ -85,7 +85,7 @@ namespace NoOpRunner.Client.Logic.Rendering
 
         public static void RenderPlayer(Player player, Canvas canvas, GameWindow window)
         {
-
+            //TODO: player size, adjust animation speed for better UX 
             var rectangleWidth = canvas.ActualWidth / window.SizeX;
             var rectangleHeight = canvas.ActualHeight / window.SizeY;
 

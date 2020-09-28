@@ -16,7 +16,7 @@ namespace NoOpRunner.Core.Shapes
         }
 
         private const int MovementIncrement = 1;
-        public PlayerOneStateMachine StateMachine { get; }
+        public PlayerOneStateMachine StateMachine { get; }//shit
 
         private const decimal JumpAcceleration = 0.1m;
         private const decimal JumpAccelerationPool = 0.5m;

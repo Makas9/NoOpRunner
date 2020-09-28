@@ -37,7 +37,7 @@ namespace NoOpRunner.Client
                 ConfigureKeys();
 
                 timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(1000 / 30); // ~30 fps
+                timer.Interval = TimeSpan.FromMilliseconds(1000 / 30); // ~30 fps TODO: need slow down, character move like 5 yo on caffeine, this even less fps than at start
                 timer.Tick += (o, a) => TriggerRender();
 
                 timer.Start();
@@ -52,12 +52,12 @@ namespace NoOpRunner.Client
 
             GameWindowRenderer.RenderPlayer(Game.Player, player_window, Game.GameWindow);
 
-            GameWindowRenderer.Render(Game.GameWindow, canvas);
+            GameWindowRenderer.Render(Game.GameWindow, canvas);//TODO: don't render if platforms don't move, event on window resize to change platforms W, H 
         }
 
         private void SetUpBackground()
         {
-            game_window.Background = new ImageBrush(InitBitmapImage(SpritesUriHandler.GetBackground()));
+            game_window.Background = new ImageBrush(InitBitmapImage(SpritesUriHandler.GetBackground()));//SHIT
         }
 
         private static BitmapImage InitBitmapImage(Uri uri)
@@ -88,7 +88,7 @@ namespace NoOpRunner.Client
                         Game.HandleKeyPress(KeyPress.Space);
                         return;
                     case Key.Down:
-                        Game.HandleKeyPress(KeyPress.Down);
+                        Game.HandleKeyPress(KeyPress.Down);//TODO: bug, player leave screen on jump and down spawn
                         return;
                     default:
                         return;
