@@ -32,7 +32,7 @@ namespace NoOpRunner.Core.Shapes
 
         public Color RandomPowerUp()
         {
-            int powerUp = RandomNumber.Instance.GetRandom(0, powerUps.Count);
+            int powerUp = RandomNumber.Instance.Next(0, powerUps.Count);
             String key = powerUps.Keys.ElementAt(powerUp);
 
             switch (key)
@@ -51,7 +51,7 @@ namespace NoOpRunner.Core.Shapes
             int found = -1, x = -1;
             while (found == -1)
             {
-                x = RandomNumber.Instance.GetRandom(2, platformXCoords.Length - 2);
+                x = RandomNumber.Instance.Next(2, platformXCoords.Length - 2);
                 if (platformYCoords[x - 2] == platformYCoords[x] &&
                     platformYCoords[x - 1] == platformYCoords[x] &&
                     platformYCoords[x + 1] == platformYCoords[x] &&

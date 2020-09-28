@@ -79,18 +79,18 @@ namespace NoOpRunner.Core.Shapes
 
         public int RandomHeight(int maxLength)
         {
-            int number = RandomNumber.Instance.GetRandom(maxLength * -1, maxLength);
+            int number = RandomNumber.Instance.Next(maxLength * -1, maxLength);
             while (number == 0)
             {
-                number = RandomNumber.Instance.GetRandom(maxLength * -1, maxLength);
+                number = RandomNumber.Instance.Next(maxLength * -1, maxLength);
             }
 
-            return RandomNumber.Instance.GetRandom(maxLength*-1, maxLength);
+            return RandomNumber.Instance.Next(maxLength*-1, maxLength);
         }
 
         public int RandomLength(int maxLength)
         {
-            return RandomNumber.Instance.GetRandom(2, maxLength);
+            return RandomNumber.Instance.Next(2, maxLength);
         }
     }
 }
