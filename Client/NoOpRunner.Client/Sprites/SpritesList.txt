@@ -1,0 +1,6 @@
+platform:/Platforms/tile0.png
+run:/PlayerOne/run.gif
+idle:/PlayerOne/idle.gif
+jump:/PlayerOne/jump.gif
+landing:/PlayerOne/landing.gif
+background:/Background/plx-5.png

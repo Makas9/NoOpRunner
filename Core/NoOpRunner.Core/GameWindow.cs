@@ -9,9 +9,6 @@ namespace NoOpRunner.Core
     {
         private List<BaseShape> shapes { get; set; }
 
-        // ?? wut no
-        // private BaseShape playerPosition { get; set; }
-
         public IReadOnlyCollection<BaseShape> Shapes => shapes.AsReadOnly();
 
         public readonly int SizeX;
@@ -70,16 +67,16 @@ namespace NoOpRunner.Core
             }
 
             // save space and time that give speed or breakup
-            for (int i = 0; i <= windowPixels.GetUpperBound(0); i++) 
-            {
-                for (int j = 0; j <= windowPixels.GetUpperBound(1); j++)
-                {
-                    if (windowPixels[i, j] == default)
-                    {
-                        windowPixels[i, j] = new WindowPixel(i, j, Enums.Color.Black, false);
-                    }
-                }
-            }
+            // for (int i = 0; i <= windowPixels.GetUpperBound(0); i++) 
+            // {
+            //     for (int j = 0; j <= windowPixels.GetUpperBound(1); j++)
+            //     {
+            //         if (windowPixels[i, j] == default)
+            //         {
+            //             windowPixels[i, j] = new WindowPixel(i, j, Enums.Color.Black, false);
+            //         }
+            //     }
+            // }
 
             return windowPixels;
         }
@@ -96,13 +93,5 @@ namespace NoOpRunner.Core
                 }
             }
         }
-        /// <summary>
-        /// ??? wut no retarded
-        /// </summary>
-        /// <returns></returns>
-        // public BaseShape GetPlayer()
-        // {
-        //     return playerPosition;
-        // }
     }
 }

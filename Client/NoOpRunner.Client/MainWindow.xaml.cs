@@ -2,8 +2,12 @@
 using NoOpRunner.Client.Logic.ViewModels;
 using NoOpRunner.Core.Enums;
 using System;
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using NoOpRunner.Core;
 
@@ -24,15 +28,16 @@ namespace NoOpRunner.Client
 
             play_button.Click += (s, e) =>
             {
-                var viewModel = (MainViewModel)DataContext;
-
+                SetUpBackground();
                 
+                var viewModel = (MainViewModel) DataContext;
+
                 Game = viewModel.Game;
 
                 ConfigureKeys();
 
                 timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(10);
+                timer.Interval = TimeSpan.FromMilliseconds(1000 / 30); // ~30 fps
                 timer.Tick += (o, a) => TriggerRender();
 
                 timer.Start();
@@ -44,13 +49,26 @@ namespace NoOpRunner.Client
             var canvas = game_window;
 
             Game.FireLoop();
-            Game.Player.OnLoopFired((WindowPixel[,])Game.GameWindow.GetCurrentWindow().Clone());
-            
+
             GameWindowRenderer.RenderPlayer(Game.Player, player_window, Game.GameWindow);
-            
+
             GameWindowRenderer.Render(Game.GameWindow, canvas);
         }
 
+        private void SetUpBackground()
+        {
+            game_window.Background = new ImageBrush(InitBitmapImage(SpritesUriHandler.GetBackground()));
+        }
+
+        private static BitmapImage InitBitmapImage(Uri uri)
+        {
+            var bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.UriSource = uri;
+            bitmapImage.EndInit();
+
+            return bitmapImage;
+        }
         private void ConfigureKeys()
         {
             this.KeyDown += (s, e) =>

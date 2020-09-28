@@ -2,9 +2,11 @@
 using NoOpRunner.Core;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using NoOpRunner.Core.Shapes;
 
@@ -12,6 +14,9 @@ namespace NoOpRunner.Client.Logic.Rendering
 {
     public static class GameWindowRenderer
     {
+        // private static AnimationRenderer _animationRenderer;
+        private static UIElement lastElement;
+
         public static void Render(GameWindow window, Canvas canvas) //Rename:RenderMap???
         {
             var rectangleWidth = canvas.ActualWidth / window.SizeX;
@@ -21,17 +26,21 @@ namespace NoOpRunner.Client.Logic.Rendering
             var pixels = window.GetCurrentWindowEnumerable().ToList();
             if (canvas.Children.Count != pixels.Count)
             {
+                canvas.Children.Clear();
+
+                var imageBrush = InitImageBrush(SpritesUriHandler.GetPlatformUri());
+
                 foreach (var pixel in pixels)
                 {
                     var rec = new Rectangle
                     {
                         Width = rectangleWidth,
                         Height = rectangleHeight,
-                        Fill = ColorBrushMap[pixel.Color]
+                        Fill = imageBrush
                     };
                     Canvas.SetLeft(rec, rectangleWidth * pixel.X);
                     Canvas.SetBottom(rec, rectangleHeight * pixel.Y);
-                    
+
                     canvas.Children.Add(rec);
                 }
             }
@@ -47,8 +56,9 @@ namespace NoOpRunner.Client.Logic.Rendering
                 }
             }
 
+            #region Old code
 
-            // this still retarded, why generate empty pixels?? make canvas background color
+// this still retarded, why generate empty pixels?? make canvas background color
             // var pixels = window.GetCurrentWindow();
             // canvas.Children.Clear();
             // foreach (var pixel in pixels)
@@ -69,11 +79,12 @@ namespace NoOpRunner.Client.Logic.Rendering
             //
             //     canvas.Children.Add(rec);
             // }
+
+            #endregion
         }
 
         public static void RenderPlayer(Player player, Canvas canvas, GameWindow window)
         {
-            player.OnLoopFired((WindowPixel[,]) window.GetCurrentWindow().Clone());
 
             var rectangleWidth = canvas.ActualWidth / window.SizeX;
             var rectangleHeight = canvas.ActualHeight / window.SizeY;
@@ -82,28 +93,30 @@ namespace NoOpRunner.Client.Logic.Rendering
 
             if (canvas.Children.Count == playerPixels.Count)
             {
-                var canvasPixels = canvas.Children;
-
                 for (int i = 0; i < playerPixels.Count; i++)
                 {
-                    canvas.Children[i].SetValue(Canvas.WidthProperty, rectangleWidth);
-                    canvas.Children[i].SetValue(Canvas.HeightProperty, rectangleHeight);
+                    
+                    if (player.StateMachine.CompareStates)
+                    {
+                        canvas.Children[i].SetValue(GifImage.GifSourceProperty,
+                            player.StateMachine.GetStatusUri());
+                        
+                        canvas.Children[i].SetValue(Canvas.WidthProperty, rectangleWidth);
+                        canvas.Children[i].SetValue(Canvas.HeightProperty, rectangleHeight);
+                    }
 
-                    Canvas.SetLeft(canvas.Children[i], rectangleWidth * playerPixels[i].X);
-                    Canvas.SetBottom(canvas.Children[i], rectangleHeight * playerPixels[i].Y);
+                    if (player.StateMachine.IsTurning)
+                    {
+                        canvas.Children[i].SetValue(UIElement.RenderTransformProperty,
+                            player.StateMachine.IsTurnedLeft
+                                ? new ScaleTransform() {ScaleX = -1}
+                                : new ScaleTransform() {ScaleX = 1});
+                    }
 
                     #region Animation rectangle move, need non static method
 
-                    // var lastPositionY = (int) canvasPixels[i].GetValue(Canvas.BottomProperty);
-                    // var lastPositionX = (int) canvasPixels[i].GetValue(Canvas.LeftProperty);
-
-                    // var moveAnimX =
-                    //     new DoubleAnimation(lastPositionX, playerPixels[i].X, TimeSpan.FromMilliseconds(10));
-                    // var moveAnimY =
-                    //     new DoubleAnimation(lastPositionY, playerPixels[i].Y, TimeSpan.FromMilliseconds(10));
-
-                    // Rectangle.BeginAnimation(Canvas.LeftProperty, moveAnimX); // Need non static method
-                    // Rectangle.BeginAnimation(Canvas.BottomProperty, moveAnimY);
+                    SetAnimation(canvas.Children[i], rectangleWidth * playerPixels[i].X,
+                        rectangleHeight * playerPixels[i].Y);
 
                     #endregion
                 }
@@ -112,18 +125,55 @@ namespace NoOpRunner.Client.Logic.Rendering
             {
                 canvas.Children.Clear();
 
-                foreach (var windowPixel in playerPixels)
+                foreach (var windowPixel in playerPixels) 
                 {
-                    var playerPixel = new Rectangle()
-                        {Width = rectangleWidth, Height = rectangleHeight, Fill = ColorBrushMap[windowPixel.Color]};
+                    var playerPixel = new GifImage()
+                    {
+                        Width = rectangleWidth, Height = rectangleHeight,
+                        GifSource = player.StateMachine.GetStatusUri()
+                    };
 
                     Canvas.SetLeft(playerPixel, rectangleWidth * windowPixel.X);
                     Canvas.SetBottom(playerPixel, rectangleHeight * windowPixel.Y);
 
                     canvas.Children.Add(playerPixel);
+                    
+                    playerPixel.StartAnimation();
                 }
             }
         }
+        private static void SetAnimation(UIElement uiElement, double newPosX, double newPosY)
+        {
+            var lastPositionY = (double) uiElement.GetValue(Canvas.BottomProperty);
+            var lastPositionX = (double) uiElement.GetValue(Canvas.LeftProperty);
+
+            var moveAnimX =
+                new DoubleAnimation(lastPositionX, newPosX, TimeSpan.FromMilliseconds(1000/20));
+            var moveAnimY =
+                new DoubleAnimation(lastPositionY, newPosY, TimeSpan.FromMilliseconds(1000/20));
+
+            uiElement.BeginAnimation(Canvas.LeftProperty, moveAnimX);
+            uiElement.BeginAnimation(Canvas.BottomProperty, moveAnimY);
+        }
+        private static ImageBrush InitImageBrush(Uri uri)
+        {
+            var bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.UriSource = uri;
+            bitmapImage.EndInit();
+
+            return new ImageBrush(bitmapImage);
+        }
+
+        // private static BitmapImage InitBitmapImage(Uri uri)
+        // {
+        //     var bitmapImage = new BitmapImage();
+        //     bitmapImage.BeginInit();
+        //     bitmapImage.UriSource = uri;
+        //     bitmapImage.EndInit();
+        //
+        //     return bitmapImage;
+        // }
 
         private static Dictionary<Core.Enums.Color, SolidColorBrush> ColorBrushMap =
             new Dictionary<Core.Enums.Color, SolidColorBrush>

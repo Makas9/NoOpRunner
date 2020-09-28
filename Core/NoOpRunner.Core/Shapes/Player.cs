@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NoOpRunner.Core.Enums;
+using NoOpRunner.Core.PlayerStates;
 
 namespace NoOpRunner.Core.Shapes
 {
@@ -7,11 +9,14 @@ namespace NoOpRunner.Core.Shapes
     {
         public Player(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
         {
-            MapShapeX(0, 1, 1, Color.Blue); // Top
+            SpritesUriHandler.LoadSprites();
+            StateMachine = new PlayerOneStateMachine();
+            // MapShapeX(0, 1, 1, Color.Blue); // Top
             MapShapeX(0, 0, 1, Color.Blue); // Bottom
         }
 
         private const int MovementIncrement = 1;
+        public PlayerOneStateMachine StateMachine { get; }
 
         private const decimal JumpAcceleration = 0.1m;
         private const decimal JumpAccelerationPool = 0.5m;
@@ -25,6 +30,15 @@ namespace NoOpRunner.Core.Shapes
         public override void OnLoopFired(WindowPixel[,] gameScreen)
         {
             base.OnLoopFired(gameScreen);
+
+            if (HorizontalSpeed == 0 && CanJump)
+            {
+                StateMachine.Idl();
+            }
+            else if (Math.Abs(HorizontalSpeed) > 0)
+            {
+                StateMachine.Run();
+            }
 
             if (IsJumping)
             {
@@ -44,6 +58,7 @@ namespace NoOpRunner.Core.Shapes
             {
                 if (!IsShapeHit(gameScreen, CenterPosX, CenterPosY - MovementIncrement))
                 {
+                    StateMachine.Land();
                     CenterPosY -= MovementIncrement;
                     CanJump = false;
                 }
@@ -73,6 +88,8 @@ namespace NoOpRunner.Core.Shapes
                     if (!IsShapeHit(gameScreen, CenterPosX + MovementIncrement, CenterPosY))
                     {
                         HorizontalSpeed = MovementIncrement;
+                        StateMachine.TurnRight();
+                        StateMachine.Run();
                     }
 
                     return;
@@ -80,12 +97,15 @@ namespace NoOpRunner.Core.Shapes
                     if (!IsShapeHit(gameScreen, CenterPosX - MovementIncrement, CenterPosY))
                     {
                         HorizontalSpeed = -MovementIncrement;
+                        StateMachine.TurnLeft();
+                        StateMachine.Run();
                     }
 
                     return;
                 case KeyPress.Up:
                     if (!IsJumping && CanJump && !IsShapeHit(gameScreen, CenterPosX, CenterPosY + MovementIncrement))
                     {
+                        StateMachine.Jump();
                         IsJumping = true;
                         CanJump = false;
 
@@ -98,6 +118,7 @@ namespace NoOpRunner.Core.Shapes
                 case KeyPress.Down:
                     if (!IsShapeHit(gameScreen, CenterPosX, CenterPosY - MovementIncrement))
                     {
+                        StateMachine.Land();
                         VerticalSpeed = -MovementIncrement;
                     }
 
@@ -111,15 +132,8 @@ namespace NoOpRunner.Core.Shapes
 
         private bool IsShapeHit(WindowPixel[,] gameScreen, int x, int y)
         {
-            if (gameScreen[x, y] == default)
-            {
-                return false;
-            }
-            return x > gameScreen.GetUpperBound(0) ||
-                y > gameScreen.GetUpperBound(1) ||
-                x < 0 || 
-                y < 0 ||
-                gameScreen[x, y].IsShape;
+            return x < 0 || y < 0 || x > gameScreen.GetUpperBound(0) ||
+                   y > gameScreen.GetUpperBound(1) || (gameScreen[x, y] != default && gameScreen[x, y].IsShape);
         }
     }
 }

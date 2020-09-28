@@ -77,6 +77,7 @@ namespace NoOpRunner.Core
 
         public void FireLoop()
         {
+            Player.OnLoopFired((WindowPixel[,])GameWindow.GetCurrentWindow().Clone());
             GameWindow.OnLoopFired((WindowPixel[,])GameWindow.GetCurrentWindow().Clone());
         }
 

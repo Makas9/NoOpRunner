@@ -34,6 +34,8 @@
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http.WebRequest" />
@@ -50,7 +52,12 @@
     <Compile Include="Enums\Color.cs" />
     <Compile Include="Enums\KeyPress.cs" />
     <Compile Include="Enums\MessageType.cs" />
+    <Compile Include="Enums\PlayerOneState.cs" />
     <Compile Include="Interfaces\IConnectionManager.cs" />
+    <Compile Include="PlayerStates\PlayerOneStateMachine.cs" />
+    <Compile Include="ShapeFactory\BaseShapeFactory.cs" />
+    <Compile Include="ShapeFactory\MovingShapeFactory.cs" />
+    <Compile Include="ShapeFactory\StaticShapeFactory.cs" />
     <Compile Include="Shapes\BaseShape.cs" />
     <Compile Include="GameWindow.cs" />
     <Compile Include="NoOpRunner.cs" />
@@ -60,6 +67,7 @@
     <Compile Include="Shapes\Player.cs" />
     <Compile Include="Shapes\ShapeBlock.cs" />
     <Compile Include="Shapes\Square.cs" />
+    <Compile Include="SpritesUriHandler.cs" />
     <Compile Include="WindowPixel.cs" />
   </ItemGroup>
   <ItemGroup>
