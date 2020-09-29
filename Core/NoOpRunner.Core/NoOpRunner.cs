@@ -1,7 +1,9 @@
 ﻿using NoOpRunner.Core.Dtos;
+using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
+using NoOpRunner.Core.Shapes.ShapeFactories;
 using System;
 using System.Threading.Tasks;
 
@@ -26,18 +28,61 @@ namespace NoOpRunner.Core
         public NoOpRunner(IConnectionManager connectionManager)
         {
             GamePlatforms = new GamePlatforms(32, 32);
-            Player = new Player(5, 7);
+            Player = new Player(1, 2);
 
-            GamePlatforms.AddShape(new Platform(0, 0, 0, 10)); // Main platform
-            GamePlatforms.AddShape(new Platform(0, 10, 10, 20)); // Second platform
+            /* SHAPE FACTORY DESIGN PATTERN */
+            ShapeFactory shapeFactory = new ShapeFactory();
+            BaseShape shape1 = shapeFactory.GetShape(Shape.Square, 5, 5);
+            BaseShape shape2 = shapeFactory.GetShape(Shape.Circle, 10, 5);
+            BaseShape shape3 = shapeFactory.GetShape(Shape.Rectangle, 15, 5);
+            GamePlatforms.AddShape(shape1);
+            GamePlatforms.AddShape(shape2);
+            GamePlatforms.AddShape(shape3);
 
+            /* ABSTRACT SHAPE FACTORY DESIGN PATTERN */
+            AbstractFactory abstractShapeFactory = FactoryProducer.GetFactory(true);
+            BaseShape aShape1 = abstractShapeFactory.GetShape(Shape.Stairs, 20, 5);
+            BaseShape aShape2 = abstractShapeFactory.GetShape(Shape.Stone, 22, 5);
+            BaseShape aShape3 = abstractShapeFactory.GetShape(Shape.Fence, 24, 5);
+            GamePlatforms.AddShape(aShape1);
+            GamePlatforms.AddShape(aShape2);
+            GamePlatforms.AddShape(aShape3);
+
+            /*Platform firstPlatform = new Platform(0, 0, 0, 10);
+            GameWindow.AddShape(firstPlatform); // Main platform
+
+            Platform secondPlatform = new Platform(0, 10, 10, 20);
+            GameWindow.AddShape(secondPlatform); // Second platform
+
+            var coordinates = firstPlatform.GetCoords();
+            int[] xCoords = coordinates.Item1;
+            int[] yCoords = coordinates.Item2;
+            int randomLocation = RandLocation(xCoords, yCoords);
+            PowerUp testPowerUp = new PowerUp(xCoords[randomLocation], yCoords[randomLocation], PowerUps.Double_Jump);
+            GameWindow.AddShape(testPowerUp.SpawnPowerUp());*/
 
             //GameWindow.AddShape(new Square(5, 5));
             //GameWindow.AddShape(new Square(9, 5));
             //GameWindow.AddShape(new Square(13, 5));
-            
+
 
             this.connectionManager = connectionManager;
+        }
+        private int RandLocation(int[] platformXCoords, int[] platformYCoords)
+        {
+            int found = -1, x = -1;
+            while (found == -1)
+            {
+                x = RandomNumber.GetInstance().Next(2, platformXCoords.Length - 2);
+                if (platformYCoords[x - 2] == platformYCoords[x] &&
+                    platformYCoords[x - 1] == platformYCoords[x] &&
+                    platformYCoords[x + 1] == platformYCoords[x] &&
+                    platformYCoords[x + 2] == platformYCoords[x])
+                {
+                    found = x; // Spawn power up between flat platform
+                }
+            }
+            return x;
         }
 
         public async Task SendMessage()
