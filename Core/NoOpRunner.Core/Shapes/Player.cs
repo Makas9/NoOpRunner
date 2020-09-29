@@ -9,14 +9,12 @@ namespace NoOpRunner.Core.Shapes
     {
         public Player(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
         {
-            SpritesUriHandler.LoadSprites();
             StateMachine = new PlayerOneStateMachine();
-            // MapShapeX(0, 1, 1, Color.Blue); // Top
-            MapShapeX(0, 0, 1, Color.Blue); // Bottom
+            MapShapeX(0, 0, 1, Color.Blue);
         }
 
         private const int MovementIncrement = 1;
-        public PlayerOneStateMachine StateMachine { get; }//shit
+        private PlayerOneStateMachine StateMachine { get; set; }//dumb implementation of State machine pattern
 
         private const decimal JumpAcceleration = 0.1m;
         private const decimal JumpAccelerationPool = 0.5m;
@@ -33,7 +31,7 @@ namespace NoOpRunner.Core.Shapes
 
             if (HorizontalSpeed == 0 && CanJump)
             {
-                StateMachine.Idl();
+                StateMachine.Idle();
             }
             else if (Math.Abs(HorizontalSpeed) > 0)
             {
@@ -130,10 +128,24 @@ namespace NoOpRunner.Core.Shapes
             }
         }
 
-        private bool IsShapeHit(WindowPixel[,] gameScreen, int x, int y)
+        public bool StateHasChanged()
         {
-            return x < 0 || y < 0 || x > gameScreen.GetUpperBound(0) ||
-                   y > gameScreen.GetUpperBound(1) || (gameScreen[x, y] != default && gameScreen[x, y].IsShape);
+            return StateMachine.StateHasChanged;
+        }
+
+        public Uri GetStateAnimationUri()
+        {
+            return StateMachine.GetStatusUri();
+        }
+
+        public bool IsPlayerTurning()
+        {
+            return StateMachine.IsTurning;
+        }
+
+        public bool IsLookingLeft()
+        {
+            return StateMachine.IsTurnedLeft;
         }
     }
 }

@@ -42,10 +42,11 @@ namespace NoOpRunner.Core.Entities
 
         public virtual void OnLoopFired(WindowPixel[,] gameScreen) { }
 
-        public virtual List<WindowPixel> Render()//still generating
+        public virtual List<WindowPixel> Render()
         {
             var windowPixels = new List<WindowPixel>();
 
+            //Could use Flyweight pattern or Prototype pattern in the future
             ShapeBlocks.ForEach(x =>
             {
                 var absX = CenterPosX + x.OffsetX;

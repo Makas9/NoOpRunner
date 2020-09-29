@@ -5,81 +5,68 @@ namespace NoOpRunner.Core.PlayerStates
 {
     public class PlayerOneStateMachine
     {
-        private PlayerOneState _currentState = PlayerOneState.IdleState;
-        private PlayerOneState _lastState;
+        private PlayerOneState _currentState = PlayerOneState.Idle;
+        private PlayerOneState _lastState { get; set; }
 
-        private bool _leftDirection;
-        private bool _lastDirection;
+        private bool _isLastDirectionLeft;
 
-        public bool CompareStates => _currentState == _lastState;
-        
-        public bool IsTurnedLeft => _leftDirection;
+        public bool StateHasChanged => _currentState != _lastState;
+
+        public bool IsTurnedLeft { get; private set; }
 
         public Uri GetStatusUri()
         {
             switch (_currentState)
             {
-                case PlayerOneState.IdleState:
+                case PlayerOneState.Idle:
                     return SpritesUriHandler.GetIdleAnimationUri();
-                case PlayerOneState.JumpingState:
+                case PlayerOneState.Jumping:
                     return SpritesUriHandler.GetJumpingAnimationUri();
-                case PlayerOneState.LandingState:
+                case PlayerOneState.Landing:
                     return SpritesUriHandler.GetLandingAnimationUri();
-                case PlayerOneState.RunningState:
+                case PlayerOneState.Running:
                     return SpritesUriHandler.GetRunningAnimationUri();
                 default:
                     return null;
             }
         }
 
-
-        public bool IsAnimatedState =>
-            _currentState == PlayerOneState.IdleState || _currentState == PlayerOneState.RunningState;
-
-        public bool IsTurning => _lastDirection != _leftDirection;
+        public bool IsTurning => _isLastDirectionLeft != IsTurnedLeft;
 
         public void Jump()
         {
             _lastState = _currentState;
-            _currentState = PlayerOneState.JumpingState;
+            _currentState = PlayerOneState.Jumping;
         }
 
         public void Land()
         {
             _lastState = _currentState;
-            _currentState = PlayerOneState.LandingState;
+            _currentState = PlayerOneState.Landing;
         }
 
         public void Run()
         {
             _lastState = _currentState;
-            _currentState = PlayerOneState.RunningState;
+            _currentState = PlayerOneState.Running;
         }
 
-        public void Idl()
+        public void Idle()
         {
             _lastState = _currentState;
-            _currentState = PlayerOneState.IdleState;
+            _currentState = PlayerOneState.Idle;
         }
 
         public void TurnRight()
         {
-            _lastDirection = _leftDirection;
-            _leftDirection = false;
+            _isLastDirectionLeft = IsTurnedLeft;
+            IsTurnedLeft = false;
         }
 
         public void TurnLeft()
         {
-            _lastDirection = _leftDirection;
-            _leftDirection = true;
+            _isLastDirectionLeft = IsTurnedLeft;
+            IsTurnedLeft = true;
         }
-
-        public PlayerOneState GetState()
-        {
-            return _currentState;
-        }
-
-        
-        
     }
 }

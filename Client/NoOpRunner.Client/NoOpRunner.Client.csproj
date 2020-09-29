@@ -112,5 +112,24 @@
       <Name>NoOpRunner.Client.Logic</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Sprites\Background\plx-5.png" />
+    <Content Include="Resources\Sprites\Platforms\jungle tileset.png" />
+    <Content Include="Resources\Sprites\Platforms\plx-1.png" />
+    <Content Include="Resources\Sprites\Platforms\plx-2.png" />
+    <Content Include="Resources\Sprites\Platforms\plx-3.png" />
+    <Content Include="Resources\Sprites\Platforms\plx-4.png" />
+    <Content Include="Resources\Sprites\Platforms\plx-5.png" />
+    <Content Include="Resources\Sprites\Platforms\tile0.png" />
+    <Content Include="Resources\Sprites\PlayerOne\idle.gif" />
+    <Content Include="Resources\Sprites\PlayerOne\jump.gif" />
+    <Content Include="Resources\Sprites\PlayerOne\jump.png" />
+    <Content Include="Resources\Sprites\PlayerOne\landing.gif" />
+    <Content Include="Resources\Sprites\PlayerOne\landing.png" />
+    <Content Include="Resources\Sprites\PlayerOne\ledge grab.gif" />
+    <Content Include="Resources\Sprites\PlayerOne\mid air.gif" />
+    <Content Include="Resources\Sprites\PlayerOne\run.gif" />
+    <Content Include="Resources\Sprites\SpritesList.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

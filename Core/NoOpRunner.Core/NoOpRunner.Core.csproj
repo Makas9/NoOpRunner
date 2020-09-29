@@ -55,11 +55,8 @@
     <Compile Include="Enums\PlayerOneState.cs" />
     <Compile Include="Interfaces\IConnectionManager.cs" />
     <Compile Include="PlayerStates\PlayerOneStateMachine.cs" />
-    <Compile Include="ShapeFactory\BaseShapeFactory.cs" />
-    <Compile Include="ShapeFactory\MovingShapeFactory.cs" />
-    <Compile Include="ShapeFactory\StaticShapeFactory.cs" />
     <Compile Include="Shapes\BaseShape.cs" />
-    <Compile Include="GameWindow.cs" />
+    <Compile Include="GamePlatforms.cs" />
     <Compile Include="NoOpRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shapes\MovingShape.cs" />

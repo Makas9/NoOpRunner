@@ -13,7 +13,7 @@ namespace NoOpRunner.Core
 
         public event EventHandler<MessageDto> OnMessageReceived;
 
-        public GameWindow GameWindow { get; set; }
+        public GamePlatforms GamePlatforms { get; set; }
 
         public Player Player { get; set; }
 
@@ -25,19 +25,17 @@ namespace NoOpRunner.Core
 
         public NoOpRunner(IConnectionManager connectionManager)
         {
-            GameWindow = new GameWindow(32, 32);
+            GamePlatforms = new GamePlatforms(32, 32);
             Player = new Player(5, 7);
 
-            GameWindow.AddShape(new Platform(0, 0, 0, 10)); // Main platform
-            GameWindow.AddShape(new Platform(0, 10, 10, 20)); // Second platform
+            GamePlatforms.AddShape(new Platform(0, 0, 0, 10)); // Main platform
+            GamePlatforms.AddShape(new Platform(0, 10, 10, 20)); // Second platform
 
 
             //GameWindow.AddShape(new Square(5, 5));
             //GameWindow.AddShape(new Square(9, 5));
             //GameWindow.AddShape(new Square(13, 5));
-
-
-            // GameWindow.AddShape(Player);
+            
 
             this.connectionManager = connectionManager;
         }
@@ -77,13 +75,16 @@ namespace NoOpRunner.Core
 
         public void FireLoop()
         {
-            Player.OnLoopFired((WindowPixel[,])GameWindow.GetCurrentWindow().Clone());
-            GameWindow.OnLoopFired((WindowPixel[,])GameWindow.GetCurrentWindow().Clone());
+            var map = (WindowPixel[,]) GamePlatforms.GetCurrentMap().Clone();
+            //this need to be separated, player and map move at diff speed
+            //right now map dont move at all
+            Player.OnLoopFired(map);
+            GamePlatforms.OnLoopFired(map);
         }
 
         public void HandleKeyPress(KeyPress keyPress)
         {
-            Player.HandleKeyPress(keyPress, (WindowPixel[,])GameWindow.GetCurrentWindow().Clone());
+            Player.HandleKeyPress(keyPress, (WindowPixel[,])GamePlatforms.GetCurrentMap().Clone());
         }
     }
 }

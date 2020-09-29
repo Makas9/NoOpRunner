@@ -10,7 +10,7 @@
     <Window.DataContext>
         <ViewModels:MainViewModel/>
     </Window.DataContext>
-    <Grid>
+    <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="40"/>

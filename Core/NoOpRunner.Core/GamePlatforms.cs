@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace NoOpRunner.Core
 {
-    public class GameWindow//GameMap ??? 
+    public class GamePlatforms
     {
         private List<BaseShape> shapes { get; set; }
 
@@ -15,7 +15,7 @@ namespace NoOpRunner.Core
 
         public readonly int SizeY;
 
-        public GameWindow(int sizeX, int sizeY)
+        public GamePlatforms(int sizeX, int sizeY)
         {
             SizeX = sizeX;
             SizeY = sizeY;
@@ -28,9 +28,9 @@ namespace NoOpRunner.Core
             shapes.Add(shape);
         }
 
-        public void OnLoopFired(WindowPixel[,] gameScreen)
+        public void OnLoopFired(WindowPixel[,] gameMap)
         {
-            shapes.ForEach(x => x.OnLoopFired(gameScreen));
+            shapes.ForEach(x => x.OnLoopFired(gameMap));
         }
 
         public void ClickShape(int x, int y)
@@ -38,7 +38,7 @@ namespace NoOpRunner.Core
             shapes.FirstOrDefault(s => s.IsHit(x, y))?.OnClick();
         }
 
-        public WindowPixel[,] GetCurrentWindow()// Could be generator and list
+        public WindowPixel[,] GetCurrentMap()
         {
             var windowPixels = new WindowPixel[SizeX, SizeY];
 
@@ -66,22 +66,10 @@ namespace NoOpRunner.Core
                 }
             }
 
-            // save space and time that give speed or breakup
-            // for (int i = 0; i <= windowPixels.GetUpperBound(0); i++) 
-            // {
-            //     for (int j = 0; j <= windowPixels.GetUpperBound(1); j++)
-            //     {
-            //         if (windowPixels[i, j] == default)
-            //         {
-            //             windowPixels[i, j] = new WindowPixel(i, j, Enums.Color.Black, false);
-            //         }
-            //     }
-            // }
-
             return windowPixels;
         }
 
-        public IEnumerable<WindowPixel> GetCurrentWindowEnumerable()//generator no?
+        public IEnumerable<WindowPixel> GetCurrentMapEnumerable()
         {
             foreach (var shape in Shapes)
             {

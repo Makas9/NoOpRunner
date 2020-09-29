@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using NoOpRunner.Client.Rendering;
 using NoOpRunner.Core;
 
 namespace NoOpRunner.Client
@@ -29,15 +30,16 @@ namespace NoOpRunner.Client
             play_button.Click += (s, e) =>
             {
                 SetUpBackground();
-                
+
                 var viewModel = (MainViewModel) DataContext;
 
                 Game = viewModel.Game;
 
                 ConfigureKeys();
 
+                
                 timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(1000 / 30); // ~30 fps TODO: need slow down, character move like 5 yo on caffeine, this even less fps than at start
+                timer.Interval = TimeSpan.FromMilliseconds(1000 / 30);
                 timer.Tick += (o, a) => TriggerRender();
 
                 timer.Start();
@@ -46,29 +48,23 @@ namespace NoOpRunner.Client
 
         private void TriggerRender()
         {
-            var canvas = game_window;
-
             Game.FireLoop();
 
-            GameWindowRenderer.RenderPlayer(Game.Player, player_window, Game.GameWindow);
+            GameWindowRenderer.RenderPlayer(Game.Player, player_window, Game.GamePlatforms);
 
-            GameWindowRenderer.Render(Game.GameWindow, canvas);//TODO: don't render if platforms don't move, event on window resize to change platforms W, H 
+            GameWindowRenderer.RenderMap(Game.GamePlatforms, game_window);
+
+            //Use one more canvas for power-ups and one more for traps
         }
 
+        /// <summary>
+        /// Set up background, could use more images to make depth feel
+        /// </summary>
         private void SetUpBackground()
         {
-            game_window.Background = new ImageBrush(InitBitmapImage(SpritesUriHandler.GetBackground()));//SHIT
+            game_window.Background = new ImageBrush(new BitmapImage(SpritesUriHandler.GetBackground()));
         }
 
-        private static BitmapImage InitBitmapImage(Uri uri)
-        {
-            var bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.UriSource = uri;
-            bitmapImage.EndInit();
-
-            return bitmapImage;
-        }
         private void ConfigureKeys()
         {
             this.KeyDown += (s, e) =>
@@ -88,7 +84,7 @@ namespace NoOpRunner.Client
                         Game.HandleKeyPress(KeyPress.Space);
                         return;
                     case Key.Down:
-                        Game.HandleKeyPress(KeyPress.Down);//TODO: bug, player leave screen on jump and down spawn
+                        Game.HandleKeyPress(KeyPress.Down);
                         return;
                     default:
                         return;

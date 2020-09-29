@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
+using System.Resources;
 
 namespace NoOpRunner.Core
 {
     public static class SpritesUriHandler
     {
-        private static string spritesDirectory = AppDomain.CurrentDomain.BaseDirectory + @"..\..\Sprites";
+        private static string spritesDirectory = AppDomain.CurrentDomain.BaseDirectory + @"..\..\Resources\Sprites";
         private static string spritesList = "SpritesList.txt";
 
         private static Dictionary<string, Uri> sprites;
 
-        public static void LoadSprites()
+        /// <summary>
+        /// Static but still bad
+        /// </summary>
+        static SpritesUriHandler()
         {
+            
             sprites = new Dictionary<string, Uri>();
 
             var spritesLines = File.ReadAllLines(spritesDirectory + "\\" + spritesList);

@@ -2,9 +2,9 @@
 {
     public enum PlayerOneState
     {
-        IdleState,
-        RunningState,
-        JumpingState,
-        LandingState
+        Idle,
+        Running,
+        Jumping,
+        Landing
     }
 }
