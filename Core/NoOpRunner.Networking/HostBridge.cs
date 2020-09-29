@@ -10,9 +10,9 @@ namespace NoOpRunner.Networking
 
         }
 
-        private static readonly Lazy<HostBridge> Lazy = new Lazy<HostBridge>(() => new HostBridge());
+        private static readonly Lazy<HostBridge> lazy = new Lazy<HostBridge>(() => new HostBridge());
 
-        public static HostBridge Bridge => Lazy.Value;
+        public static HostBridge Bridge => lazy.Value;
 
         private Action<MessageDto> MessageHandler;
 
