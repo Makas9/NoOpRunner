@@ -41,7 +41,7 @@ namespace NoOpRunner.Core.Shapes
                 y > gameScreen.GetUpperBound(1) ||
                 x < 0 ||
                 y < 0 ||
-                gameScreen[x, y].IsShape;
+                (gameScreen[x,y] != default && gameScreen[x, y].IsShape);
         }
     }
 }

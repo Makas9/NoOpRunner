@@ -64,6 +64,7 @@ namespace NoOpRunner.Core.Entities
         {
             var windowPixels = new List<WindowPixel>();
 
+            //Could use Flyweight pattern or Prototype pattern in the future
             ShapeBlocks.ForEach(x =>
             {
                 var absX = CenterPosX + x.OffsetX;

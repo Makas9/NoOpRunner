@@ -1,10 +1,15 @@
-﻿using NoOpRunner.Client.Logic.Rendering;
-using NoOpRunner.Client.Logic.ViewModels;
+﻿using NoOpRunner.Client.Logic.ViewModels;
 using NoOpRunner.Core.Enums;
 using System;
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using NoOpRunner.Client.Rendering;
+using NoOpRunner.Core;
 
 namespace NoOpRunner.Client
 {
@@ -23,14 +28,17 @@ namespace NoOpRunner.Client
 
             play_button.Click += (s, e) =>
             {
-                var viewModel = (MainViewModel)DataContext;
+                SetUpBackground();
+
+                var viewModel = (MainViewModel) DataContext;
 
                 Game = viewModel.Game;
 
                 ConfigureKeys();
 
+                
                 timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(10);
+                timer.Interval = TimeSpan.FromMilliseconds(1000 / 30);
                 timer.Tick += (o, a) => TriggerRender();
 
                 timer.Start();
@@ -39,11 +47,21 @@ namespace NoOpRunner.Client
 
         private void TriggerRender()
         {
-            var canvas = game_window;
-
             Game.FireLoop();
 
-            GameWindowRenderer.Render(Game.GameWindow, canvas);
+            GameWindowRenderer.RenderPlayer(Game.Player, player_window, Game.GamePlatforms);
+
+            GameWindowRenderer.RenderMap(Game.GamePlatforms, game_window);
+
+            //Use one more canvas for power-ups and one more for traps
+        }
+
+        /// <summary>
+        /// Set up background, could use more images to make depth feel
+        /// </summary>
+        private void SetUpBackground()
+        {
+            game_window.Background = new ImageBrush(new BitmapImage(SpritesUriHandler.GetBackground()));
         }
 
         private void ConfigureKeys()

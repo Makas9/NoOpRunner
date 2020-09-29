@@ -15,7 +15,7 @@ namespace NoOpRunner.Core
 
         public event EventHandler<MessageDto> OnMessageReceived;
 
-        public GameWindow GameWindow { get; set; }
+        public GamePlatforms GamePlatforms { get; set; }
 
         public Player Player { get; set; }
 
@@ -27,7 +27,7 @@ namespace NoOpRunner.Core
 
         public NoOpRunner(IConnectionManager connectionManager)
         {
-            GameWindow = new GameWindow(32, 32);
+            GamePlatforms = new GamePlatforms(32, 32);
             Player = new Player(1, 2);
 
             /* SHAPE FACTORY DESIGN PATTERN */
@@ -35,18 +35,18 @@ namespace NoOpRunner.Core
             BaseShape shape1 = shapeFactory.GetShape(Shape.Square, 5, 5);
             BaseShape shape2 = shapeFactory.GetShape(Shape.Circle, 10, 5);
             BaseShape shape3 = shapeFactory.GetShape(Shape.Rectangle, 15, 5);
-            GameWindow.AddShape(shape1);
-            GameWindow.AddShape(shape2);
-            GameWindow.AddShape(shape3);
+            GamePlatforms.AddShape(shape1);
+            GamePlatforms.AddShape(shape2);
+            GamePlatforms.AddShape(shape3);
 
             /* ABSTRACT SHAPE FACTORY DESIGN PATTERN */
             AbstractFactory abstractShapeFactory = FactoryProducer.GetFactory(true);
             BaseShape aShape1 = abstractShapeFactory.GetShape(Shape.Stairs, 20, 5);
             BaseShape aShape2 = abstractShapeFactory.GetShape(Shape.Stone, 22, 5);
             BaseShape aShape3 = abstractShapeFactory.GetShape(Shape.Fence, 24, 5);
-            GameWindow.AddShape(aShape1);
-            GameWindow.AddShape(aShape2);
-            GameWindow.AddShape(aShape3);
+            GamePlatforms.AddShape(aShape1);
+            GamePlatforms.AddShape(aShape2);
+            GamePlatforms.AddShape(aShape3);
 
             /*Platform firstPlatform = new Platform(0, 0, 0, 10);
             GameWindow.AddShape(firstPlatform); // Main platform
@@ -65,7 +65,6 @@ namespace NoOpRunner.Core
             //GameWindow.AddShape(new Square(9, 5));
             //GameWindow.AddShape(new Square(13, 5));
 
-            GameWindow.AddShape(Player);
 
             this.connectionManager = connectionManager;
         }
@@ -121,12 +120,16 @@ namespace NoOpRunner.Core
 
         public void FireLoop()
         {
-            GameWindow.OnLoopFired((WindowPixel[,])GameWindow.GetCurrentWindow().Clone());
+            var map = (WindowPixel[,]) GamePlatforms.GetCurrentMap().Clone();
+            //this need to be separated, player and map move at diff speed
+            //right now map dont move at all
+            Player.OnLoopFired(map);
+            GamePlatforms.OnLoopFired(map);
         }
 
         public void HandleKeyPress(KeyPress keyPress)
         {
-            Player.HandleKeyPress(keyPress, (WindowPixel[,])GameWindow.GetCurrentWindow().Clone());
+            Player.HandleKeyPress(keyPress, (WindowPixel[,])GamePlatforms.GetCurrentMap().Clone());
         }
     }
 }
