@@ -54,10 +54,11 @@ namespace NoOpRunner.Core
             Platform secondPlatform = new Platform(0, 10, 10, 20);
             GameWindow.AddShape(secondPlatform); // Second platform
 
-            int[] firstPlatformX = firstPlatform.GetCoordsX();
-            int[] firstPlatformY = firstPlatform.GetCoordsY();
-            int randomLocation = RandLocation(firstPlatformX, firstPlatformY);
-            PowerUp testPowerUp = new PowerUp(firstPlatformX[randomLocation], firstPlatformY[randomLocation], PowerUps.Double_Jump);
+            var coordinates = firstPlatform.GetCoords();
+            int[] xCoords = coordinates.Item1;
+            int[] yCoords = coordinates.Item2;
+            int randomLocation = RandLocation(xCoords, yCoords);
+            PowerUp testPowerUp = new PowerUp(xCoords[randomLocation], yCoords[randomLocation], PowerUps.Double_Jump);
             GameWindow.AddShape(testPowerUp.SpawnPowerUp());*/
 
             //GameWindow.AddShape(new Square(5, 5));

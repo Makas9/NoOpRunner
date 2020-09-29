@@ -6,16 +6,16 @@ namespace NoOpRunner.Core.Shapes
 {
     public class PowerUp : BaseShape
     {
-        public readonly PowerUps powerup;
+        public readonly PowerUps PowerUpType;
 
         public PowerUp(int centerPosX, int centerPosY, PowerUps powerup) : base(centerPosX, centerPosY)
         {
-            this.powerup = powerup;
+            this.PowerUpType = powerup;
         }
 
         public BaseShape SpawnPowerUp()
         {
-            Color spawn = GetPowerUpColor(powerup);
+            Color spawn = GetPowerUpColor(PowerUpType);
 
             return MapShapeX(0, 2, 1, spawn);
         }

@@ -1,5 +1,6 @@
 ﻿using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Shapes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,6 +19,23 @@ namespace NoOpRunner.Core.Entities
             CenterPosY = centerPosY;
 
             ShapeBlocks = new List<ShapeBlock>();
+        }
+
+        public (int[], int[]) GetCoords()
+        {
+            List<int> xCoords = new List<int>();
+            List<int> yCoords = new List<int>();
+
+            ShapeBlocks.ForEach(x =>
+            {
+                var absX = CenterPosX + x.OffsetX;
+                var absY = CenterPosY + x.OffsetY;
+
+                xCoords.Add(absX);
+                yCoords.Add(absY);
+            });
+
+            return (xCoords.ToArray(), yCoords.ToArray());
         }
 
         protected BaseShape MapShapeX(int offsetX, int offsetY, int length, Color color)

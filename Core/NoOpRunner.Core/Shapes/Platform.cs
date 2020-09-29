@@ -12,12 +12,9 @@ namespace NoOpRunner.Core.Shapes
         public int lastPosX = 0,
                    lastPosY = 0;
 
-        private List<int> xCoords = new List<int>();
-        private List<int> yCoords = new List<int>();
-
         public Platform(int centerPosX, int centerPosY, int bottomPosY, int topPosY) : base(centerPosX, centerPosY)
         {
-            while (lastPosX < 28) // TODO
+            while (lastPosX < 28)
             {
                 int blockLength = RandomLength(4);
                 int blockHeight = RandomHeight(4); // Lower than jump height
@@ -51,30 +48,6 @@ namespace NoOpRunner.Core.Shapes
                 MapShapeX(posX, posY, blockLength, Color.Red);
             else
                 MapShapeY(posX, posY, blockLength, Color.Red);
-
-            for (int i = 0; i < blockLength; i++)
-            {
-                if (horizontal)
-                {
-                    xCoords.Add(posX + i);
-                    yCoords.Add(posY);
-                }
-                else
-                {
-                    xCoords.Add(posX);
-                    yCoords.Add(posY + i);
-                }
-            }
-        }
-
-        public int[] GetCoordsX()
-        {
-            return xCoords.ToArray();
-        }
-
-        public int[] GetCoordsY()
-        {
-            return yCoords.ToArray();
         }
 
         private int RandomHeight(int maxLength)
