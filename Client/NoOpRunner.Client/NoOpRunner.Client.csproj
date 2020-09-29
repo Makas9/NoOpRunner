@@ -129,7 +129,6 @@
     <Content Include="Resources\Sprites\PlayerOne\ledge grab.gif" />
     <Content Include="Resources\Sprites\PlayerOne\mid air.gif" />
     <Resource Include="Resources\Sprites\PlayerOne\run.gif" />
-    <Content Include="Resources\Sprites\SpritesList.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
