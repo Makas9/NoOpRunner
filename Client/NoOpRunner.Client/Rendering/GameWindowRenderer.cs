@@ -7,7 +7,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using NoOpRunner.Client.Logic.Rendering;
 using NoOpRunner.Core;
 using NoOpRunner.Core.Shapes;
 
@@ -66,19 +65,19 @@ namespace NoOpRunner.Client.Rendering
             {
                 for (int i = 0; i < playerPixels.Count; i++)
                 {
-                    if (player.StateHasChanged())
+                    if (player.StateHasChanged)
                     {
                         canvas.Children[i].SetValue(GifImage.GifSourceProperty,
-                            player.GetStateAnimationUri());
+                            player.GetStateAnimationUri);
 
                         canvas.Children[i].SetValue(Canvas.WidthProperty, rectangleWidth);
                         canvas.Children[i].SetValue(Canvas.HeightProperty, rectangleHeight);
                     }
 
-                    if (player.IsPlayerTurning())
+                    if (player.IsPlayerTurning)
                     {
                         canvas.Children[i].SetValue(UIElement.RenderTransformProperty,
-                            player.IsLookingLeft()
+                            player.IsLookingLeft
                                 ? new ScaleTransform() {ScaleX = -1}
                                 : new ScaleTransform() {ScaleX = 1});
                     }
@@ -96,7 +95,7 @@ namespace NoOpRunner.Client.Rendering
                     var playerPixel = new GifImage()
                     {
                         Width = rectangleWidth, Height = rectangleHeight,
-                        GifSource = player.GetStateAnimationUri()
+                        GifSource = player.GetStateAnimationUri
                     };
 
                     Canvas.SetLeft(playerPixel, rectangleWidth * windowPixel.X);

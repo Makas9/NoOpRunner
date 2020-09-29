@@ -4,13 +4,13 @@ using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 
-namespace NoOpRunner.Client.Logic.Rendering
+namespace NoOpRunner.Client.Rendering
 {
     public class GifImage : Image
     {
-        private bool _isInitialized;
-        private GifBitmapDecoder _gifDecoder;
-        private Int32Animation _animation;
+        private bool isInitialized;
+        private GifBitmapDecoder gifDecoder;
+        private Int32Animation animation;
 
         public int FrameIndex
         {
@@ -21,15 +21,15 @@ namespace NoOpRunner.Client.Logic.Rendering
         //Adjust frames per second
         private void Initialize()
         {
-            _gifDecoder = new GifBitmapDecoder(this.GifSource,
+            gifDecoder = new GifBitmapDecoder(this.GifSource,
                 BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
-            _animation = new Int32Animation(0, _gifDecoder.Frames.Count - 1,
-                new Duration(new TimeSpan(0, 0, 0, _gifDecoder.Frames.Count / 30,
-                    (int) ((_gifDecoder.Frames.Count / 10.0 - _gifDecoder.Frames.Count / 30) * 1000))));
-            _animation.RepeatBehavior = RepeatBehavior.Forever;
-            this.Source = _gifDecoder.Frames[0];
+            animation = new Int32Animation(0, gifDecoder.Frames.Count - 1,
+                new Duration(new TimeSpan(0, 0, 0, gifDecoder.Frames.Count / 30,
+                    (int) ((gifDecoder.Frames.Count / 10.0 - gifDecoder.Frames.Count / 30) * 1000))));
+            animation.RepeatBehavior = RepeatBehavior.Forever;
+            this.Source = gifDecoder.Frames[0];
 
-            _isInitialized = true;
+            isInitialized = true;
         }
 
         static GifImage()
@@ -57,7 +57,7 @@ namespace NoOpRunner.Client.Logic.Rendering
         static void ChangingFrameIndex(DependencyObject obj, DependencyPropertyChangedEventArgs ev)
         {
             var gifImage = obj as GifImage;
-            gifImage.Source = gifImage._gifDecoder.Frames[(int) ev.NewValue];
+            gifImage.Source = gifImage.gifDecoder.Frames[(int) ev.NewValue];
         }
 
         public Uri GifSource
@@ -78,10 +78,10 @@ namespace NoOpRunner.Client.Logic.Rendering
 
         public void StartAnimation()
         {
-            if (!_isInitialized)
+            if (!isInitialized)
                 this.Initialize();
 
-            BeginAnimation(FrameIndexProperty, _animation);
+            BeginAnimation(FrameIndexProperty, animation);
         }
 
         public void StopAnimation()

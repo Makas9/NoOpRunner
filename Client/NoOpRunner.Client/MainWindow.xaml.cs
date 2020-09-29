@@ -1,5 +1,4 @@
-﻿using NoOpRunner.Client.Logic.Rendering;
-using NoOpRunner.Client.Logic.ViewModels;
+﻿using NoOpRunner.Client.Logic.ViewModels;
 using NoOpRunner.Core.Enums;
 using System;
 using System.Collections.Generic;

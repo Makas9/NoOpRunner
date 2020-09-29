@@ -5,18 +5,18 @@ namespace NoOpRunner.Core.PlayerStates
 {
     public class PlayerOneStateMachine
     {
-        private PlayerOneState _currentState = PlayerOneState.Idle;
-        private PlayerOneState _lastState { get; set; }
+        private PlayerOneState currentState = PlayerOneState.Idle;
+        private PlayerOneState LastState { get; set; }
 
-        private bool _isLastDirectionLeft;
+        private bool isLastDirectionLeft;
 
-        public bool StateHasChanged => _currentState != _lastState;
+        public bool StateHasChanged => currentState != LastState;
 
         public bool IsTurnedLeft { get; private set; }
 
         public Uri GetStatusUri()
         {
-            switch (_currentState)
+            switch (currentState)
             {
                 case PlayerOneState.Idle:
                     return SpritesUriHandler.GetIdleAnimationUri();
@@ -31,41 +31,41 @@ namespace NoOpRunner.Core.PlayerStates
             }
         }
 
-        public bool IsTurning => _isLastDirectionLeft != IsTurnedLeft;
+        public bool IsTurning => isLastDirectionLeft != IsTurnedLeft;
 
         public void Jump()
         {
-            _lastState = _currentState;
-            _currentState = PlayerOneState.Jumping;
+            LastState = currentState;
+            currentState = PlayerOneState.Jumping;
         }
 
         public void Land()
         {
-            _lastState = _currentState;
-            _currentState = PlayerOneState.Landing;
+            LastState = currentState;
+            currentState = PlayerOneState.Landing;
         }
 
         public void Run()
         {
-            _lastState = _currentState;
-            _currentState = PlayerOneState.Running;
+            LastState = currentState;
+            currentState = PlayerOneState.Running;
         }
 
         public void Idle()
         {
-            _lastState = _currentState;
-            _currentState = PlayerOneState.Idle;
+            LastState = currentState;
+            currentState = PlayerOneState.Idle;
         }
 
         public void TurnRight()
         {
-            _isLastDirectionLeft = IsTurnedLeft;
+            isLastDirectionLeft = IsTurnedLeft;
             IsTurnedLeft = false;
         }
 
         public void TurnLeft()
         {
-            _isLastDirectionLeft = IsTurnedLeft;
+            isLastDirectionLeft = IsTurnedLeft;
             IsTurnedLeft = true;
         }
     }

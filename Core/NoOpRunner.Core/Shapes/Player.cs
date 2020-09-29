@@ -14,7 +14,7 @@ namespace NoOpRunner.Core.Shapes
         }
 
         private const int MovementIncrement = 1;
-        private PlayerOneStateMachine StateMachine { get; set; }//dumb implementation of State machine pattern
+        private PlayerOneStateMachine StateMachine { get; set; } //dumb implementation of State machine pattern
 
         private const decimal JumpAcceleration = 0.1m;
         private const decimal JumpAccelerationPool = 0.5m;
@@ -128,24 +128,15 @@ namespace NoOpRunner.Core.Shapes
             }
         }
 
-        public bool StateHasChanged()
-        {
-            return StateMachine.StateHasChanged;
-        }
+        public bool StateHasChanged => StateMachine.StateHasChanged;
 
-        public Uri GetStateAnimationUri()
-        {
-            return StateMachine.GetStatusUri();
-        }
 
-        public bool IsPlayerTurning()
-        {
-            return StateMachine.IsTurning;
-        }
+        public Uri GetStateAnimationUri => StateMachine.GetStatusUri();
 
-        public bool IsLookingLeft()
-        {
-            return StateMachine.IsTurnedLeft;
-        }
+
+        public bool IsPlayerTurning => StateMachine.IsTurning;
+
+
+        public bool IsLookingLeft => StateMachine.IsTurnedLeft;
     }
 }

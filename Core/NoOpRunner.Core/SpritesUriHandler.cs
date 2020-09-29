@@ -8,8 +8,8 @@ namespace NoOpRunner.Core
 {
     public static class SpritesUriHandler
     {
-        private static string spritesDirectory = AppDomain.CurrentDomain.BaseDirectory + @"..\..\Resources\Sprites";
-        private static string spritesList = "SpritesList.txt";
+        private static readonly string SpritesDirectory = AppDomain.CurrentDomain.BaseDirectory + @"..\..\Resources";
+        private static readonly string SpritesList = "SpritesList.txt";
 
         private static Dictionary<string, Uri> sprites;
 
@@ -18,14 +18,14 @@ namespace NoOpRunner.Core
         /// </summary>
         static SpritesUriHandler()
         {
-            
             sprites = new Dictionary<string, Uri>();
 
-            var spritesLines = File.ReadAllLines(spritesDirectory + "\\" + spritesList);
+            var spritesLines = File.ReadAllLines(SpritesDirectory + "\\" + SpritesList);
 
             foreach (var spriteLine in spritesLines)
             {
-                sprites.Add(spriteLine.Split(':')[0], new Uri(spritesDirectory + spriteLine.Split(':')[1]));
+                sprites.Add(spriteLine.Split('=')[0],
+                    new Uri(SpritesDirectory + "\\Sprites" + spriteLine.Split('=')[1]));
             }
         }
 
