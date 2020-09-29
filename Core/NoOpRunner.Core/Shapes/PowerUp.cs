@@ -6,19 +6,23 @@ namespace NoOpRunner.Core.Shapes
 {
     public class PowerUp : BaseShape
     {
-        public PowerUp(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
-        {
-            Color powerup = GetRandomPowerUp();
+        public readonly PowerUps powerup;
 
-            MapShapeX(0, 2, 1, powerup);
+        public PowerUp(int centerPosX, int centerPosY, PowerUps powerup) : base(centerPosX, centerPosY)
+        {
+            this.powerup = powerup;
         }
 
-        private Color GetRandomPowerUp()
+        public BaseShape SpawnPowerUp()
         {
-            Array powerups = Enum.GetValues(typeof(PowerUps));
-            int index = RandomNumber.GetInstance().Next(0, powerups.Length - 1);
+            Color spawn = GetPowerUpColor(powerup);
 
-            switch (powerups.GetValue(index))
+            return MapShapeX(0, 2, 1, spawn);
+        }
+
+        private Color GetPowerUpColor(PowerUps powerup)
+        {
+            switch (powerup)
             {
                 case PowerUps.Speed_Boost: return Color.Red;
                 case PowerUps.Invisibility: return Color.Blue;
