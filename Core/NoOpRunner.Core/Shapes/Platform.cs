@@ -1,12 +1,11 @@
 ﻿using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
-using System;
+using System.Collections.Generic;
 
 namespace NoOpRunner.Core.Shapes
 {
     public class Platform : BaseShape
     {
-        private Random random = new Random();
         public int bottomPosY { get; set; } // Bottom of x platform
         public int topPosY { get; set; } // Max height of x platform
 
@@ -15,47 +14,56 @@ namespace NoOpRunner.Core.Shapes
 
         public Platform(int centerPosX, int centerPosY, int bottomPosY, int topPosY) : base(centerPosX, centerPosY)
         {
-            while (lastPosX < 28) // TODO
+            while (lastPosX < 28)
             {
-                int blockLength = randomLength(4);
-                int blockHeight = randomHeight(4); // Lower than jump height
+                int blockLength = RandomLength(4);
+                int blockHeight = RandomHeight(4); // Lower than jump height
 
-                MapShapeX(lastPosX, lastPosY, blockLength, Color.Red);
+                AddShape(true, lastPosX, lastPosY, blockLength);
                 lastPosX += blockLength;
+
                 if(blockHeight < 0)
                 {
-                    MapShapeY(lastPosX, 1, lastPosY, Color.Red);
+                    AddShape(false, lastPosX, 1, lastPosY);
                     lastPosY = 0;
                 } else
                 {
                     if (lastPosY + blockHeight > topPosY)
                     {
-                        MapShapeY(lastPosX, lastPosY, (topPosY - lastPosY), Color.Red);
+                        int length = (topPosY - lastPosY) < bottomPosY ? bottomPosY : (topPosY - lastPosY);
+                        AddShape(false, lastPosX, lastPosY, length);
                         lastPosY = topPosY;
                     } else
                     {
-                        MapShapeY(lastPosX, lastPosY, blockHeight, Color.Red);
+                        AddShape(false, lastPosX, lastPosY, blockHeight);
                         lastPosY = lastPosY + blockHeight;
                     }
                 }
             }
         }
 
-
-        public int randomHeight(int maxLength)
+        private void AddShape(bool horizontal, int posX, int posY, int blockLength)
         {
-            int number = random.Next(maxLength * -1, maxLength);
-            while (number == 0)
-            {
-                number = random.Next(maxLength * -1, maxLength);
-            }
-
-            return random.Next(maxLength*-1, maxLength);
+            if (horizontal) 
+                MapShapeX(posX, posY, blockLength, Color.Red);
+            else
+                MapShapeY(posX, posY, blockLength, Color.Red);
         }
 
-        public int randomLength(int maxLength)
+        private int RandomHeight(int maxLength)
         {
-            return random.Next(2, maxLength);
+            int number = RandomNumber.GetInstance().Next(maxLength * -1, maxLength);
+            while (number == 0)
+            {
+                number = RandomNumber.GetInstance().Next(maxLength * -1, maxLength);
+            }
+
+            return RandomNumber.GetInstance().Next(maxLength*-1, maxLength);
+        }
+
+        private int RandomLength(int maxLength)
+        {
+            return RandomNumber.GetInstance().Next(2, maxLength);
         }
     }
 }
