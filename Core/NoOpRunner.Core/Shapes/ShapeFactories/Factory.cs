@@ -1,9 +1,9 @@
 ﻿using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
 
-namespace NoOpRunner.Core.DesignPatterns._AbstractFactory
+namespace NoOpRunner.Core.Shapes.ShapeFactories
 {
-    public abstract class AbstractFactory
+    public abstract class Factory
     {
         public abstract BaseShape GetShape(Shape shape, int x, int y);
     }

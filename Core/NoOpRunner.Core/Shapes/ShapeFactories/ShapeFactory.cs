@@ -1,12 +1,11 @@
 ﻿using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Shapes.RegularShapes;
-using NoOpRunner.Core.DesignPatterns._AbstractFactory;
 using System;
 
-namespace NoOpRunner.Core.DesignPatterns._Factory
+namespace NoOpRunner.Core.Shapes.ShapeFactories
 {
-    class ShapeFactory : AbstractFactory
+    class ShapeFactory : Factory
     {
         public override BaseShape GetShape(Shape shape, int x, int y)
         {

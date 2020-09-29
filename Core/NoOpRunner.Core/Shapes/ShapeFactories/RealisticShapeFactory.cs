@@ -3,7 +3,7 @@ using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Shapes.RealisticShapes;
 using System;
 
-namespace NoOpRunner.Core.DesignPatterns._AbstractFactory
+namespace NoOpRunner.Core.Shapes.ShapeFactories
 {
     class RealisticShapeFactory : AbstractFactory
     {

@@ -3,8 +3,7 @@ using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
-using NoOpRunner.Core.DesignPatterns._Factory;
-using NoOpRunner.Core.DesignPatterns._AbstractFactory;
+using NoOpRunner.Core.Shapes.ShapeFactories;
 using System;
 using System.Threading.Tasks;
 

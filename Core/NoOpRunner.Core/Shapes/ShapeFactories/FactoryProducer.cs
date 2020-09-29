@@ -1,6 +1,4 @@
-﻿using NoOpRunner.Core.DesignPatterns._Factory;
-
-namespace NoOpRunner.Core.DesignPatterns._AbstractFactory
+﻿namespace NoOpRunner.Core.Shapes.ShapeFactories
 {
     public class FactoryProducer
     {
@@ -11,7 +9,7 @@ namespace NoOpRunner.Core.DesignPatterns._AbstractFactory
                 return new RealisticShapeFactory();
             }
             
-            return new ShapeFactory();
+            return new GeometricShapeFactory();
         }
     }
 }
