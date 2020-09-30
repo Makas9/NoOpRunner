@@ -1,9 +1,9 @@
-﻿using NoOpRunner.Core.Entities;
+using NoOpRunner.Core.Entities;
 using System;
 
 namespace NoOpRunner.Core.Shapes
 {
-    public class MovingShape : BaseShape
+    public abstract class MovingShape : BaseShape
     {
         public MovingShape(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
         {

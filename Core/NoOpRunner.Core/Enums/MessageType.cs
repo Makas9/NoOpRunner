@@ -2,7 +2,7 @@
 {
     public enum MessageType
     {
-        MapUpdate,
+        GameStateUpdate,
         InitialConnection
     }
 }
