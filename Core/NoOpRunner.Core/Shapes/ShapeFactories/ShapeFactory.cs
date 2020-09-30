@@ -1,4 +1,5 @@
-﻿using NoOpRunner.Core.Entities;
+﻿using NoOpRunner.Core.Dtos;
+using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Shapes.RegularShapes;
 using System;
@@ -17,6 +18,5 @@ namespace NoOpRunner.Core.Shapes.ShapeFactories
                 default: throw new Exception("Shape is not found");
             }
         }
-
     }
 }

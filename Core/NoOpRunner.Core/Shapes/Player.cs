@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.PlayerStates;
 

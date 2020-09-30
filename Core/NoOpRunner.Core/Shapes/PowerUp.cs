@@ -1,6 +1,6 @@
-﻿using NoOpRunner.Core.Entities;
+﻿using NoOpRunner.Core.Dtos;
+using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
-using System;
 
 namespace NoOpRunner.Core.Shapes
 {

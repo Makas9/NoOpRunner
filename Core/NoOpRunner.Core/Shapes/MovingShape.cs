@@ -1,8 +1,10 @@
-﻿using NoOpRunner.Core.Entities;
+﻿using NoOpRunner.Core.Dtos;
+using NoOpRunner.Core.Entities;
+using NoOpRunner.Core.Enums;
 
 namespace NoOpRunner.Core.Shapes
 {
-    public class MovingShape : BaseShape
+    public abstract class MovingShape : BaseShape
     {
         public MovingShape(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
         {

@@ -1,4 +1,5 @@
-﻿using NoOpRunner.Core.Entities;
+﻿using Newtonsoft.Json;
+using NoOpRunner.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,8 @@ namespace NoOpRunner.Core
 {
     public class GamePlatforms
     {
+        [JsonProperty]
         private List<BaseShape> shapes { get; set; }
-
-        public IReadOnlyCollection<BaseShape> Shapes => shapes.AsReadOnly();
 
         public readonly int SizeX;
 
@@ -42,7 +42,7 @@ namespace NoOpRunner.Core
         {
             var windowPixels = new WindowPixel[SizeX, SizeY];
 
-            foreach (var shape in Shapes)
+            foreach (var shape in shapes)
             {
                 var shapePixels = shape.Render();
 
@@ -71,7 +71,7 @@ namespace NoOpRunner.Core
 
         public IEnumerable<WindowPixel> GetCurrentMapEnumerable()
         {
-            foreach (var shape in Shapes)
+            foreach (var shape in shapes)
             {
                 var shapePixels = shape.Render();
 
