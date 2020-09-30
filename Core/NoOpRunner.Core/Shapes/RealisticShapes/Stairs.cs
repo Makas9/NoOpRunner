@@ -1,9 +1,8 @@
-﻿using NoOpRunner.Core.Entities;
-using NoOpRunner.Core.Enums;
+﻿using NoOpRunner.Core.Enums;
 
 namespace NoOpRunner.Core.Shapes.RealisticShapes
 {
-    public class Stairs : BaseShape
+    public class Stairs : RealisticShape
     {
         public Stairs(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
         {

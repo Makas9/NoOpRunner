@@ -1,6 +1,5 @@
 ﻿using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Shapes;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

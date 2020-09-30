@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Shapes\RealisticShape.cs" />
+    <Compile Include="Shapes\GeometricShape.cs" />
     <Compile Include="Shapes\ShapeFactories\GeometricShapeFactory.cs" />
     <Compile Include="Shapes\ShapeFactories\Factory.cs" />
     <Compile Include="Dtos\MessageDto.cs" />
@@ -58,7 +60,6 @@
     <Compile Include="Enums\MessageType.cs" />
     <Compile Include="Enums\PlayerOneState.cs" />
     <Compile Include="Interfaces\IConnectionManager.cs" />
-
     <Compile Include="PlayerStates\PlayerOneStateMachine.cs" />
     <Compile Include="RandomNumber.cs" />
     <Compile Include="Shapes\ShapeFactories\AbstractFactory.cs" />
@@ -81,7 +82,6 @@
     <Compile Include="Shapes\RegularShapes\Circle.cs" />
     <Compile Include="Shapes\RealisticShapes\Stairs.cs" />
     <Compile Include="Shapes\RegularShapes\Square.cs" />
-
     <Compile Include="WindowPixel.cs" />
   </ItemGroup>
   <ItemGroup>

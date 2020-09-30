@@ -1,9 +1,8 @@
-﻿using NoOpRunner.Core.Entities;
-using NoOpRunner.Core.Enums;
+﻿using NoOpRunner.Core.Enums;
 
 namespace NoOpRunner.Core.Shapes.RegularShapes
 {
-    public class Rectangle : BaseShape
+    public class Rectangle : GeometricShape
     {
         public Rectangle(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
         {

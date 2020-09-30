@@ -1,9 +1,8 @@
-﻿using NoOpRunner.Core.Entities;
-using NoOpRunner.Core.Enums;
+﻿using NoOpRunner.Core.Enums;
 
 namespace NoOpRunner.Core.Shapes.RealisticShapes
 {
-    public class Fence : BaseShape
+    class Fence : RealisticShape
     {
         public Fence(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
         {

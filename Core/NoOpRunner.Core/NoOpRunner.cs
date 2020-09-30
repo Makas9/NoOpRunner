@@ -32,39 +32,34 @@ namespace NoOpRunner.Core
 
             /* SHAPE FACTORY DESIGN PATTERN */
             ShapeFactory shapeFactory = new ShapeFactory();
-            BaseShape shape1 = shapeFactory.GetShape(Shape.Square, 5, 5);
-            BaseShape shape2 = shapeFactory.GetShape(Shape.Circle, 10, 5);
-            BaseShape shape3 = shapeFactory.GetShape(Shape.Rectangle, 15, 5);
-            GamePlatforms.AddShape(shape1);
-            GamePlatforms.AddShape(shape2);
-            GamePlatforms.AddShape(shape3);
-
+             BaseShape shape1 = shapeFactory.GetShape(Shape.Square, 5, 5);
+             BaseShape shape2 = shapeFactory.GetShape(Shape.Circle, 10, 5);
+             BaseShape shape3 = shapeFactory.GetShape(Shape.Rectangle, 15, 5);
+             GamePlatforms.AddShape(shape1);
+             GamePlatforms.AddShape(shape2);
+             GamePlatforms.AddShape(shape3);
+             
             /* ABSTRACT SHAPE FACTORY DESIGN PATTERN */
-            AbstractFactory abstractShapeFactory = FactoryProducer.GetFactory(true);
-            BaseShape aShape1 = abstractShapeFactory.GetShape(Shape.Stairs, 20, 5);
-            BaseShape aShape2 = abstractShapeFactory.GetShape(Shape.Stone, 22, 5);
-            BaseShape aShape3 = abstractShapeFactory.GetShape(Shape.Fence, 24, 5);
-            GamePlatforms.AddShape(aShape1);
-            GamePlatforms.AddShape(aShape2);
-            GamePlatforms.AddShape(aShape3);
+             AbstractFactory abstractShapeFactory = FactoryProducer.GetFactory(true);
+             BaseShape aShape1 = abstractShapeFactory.GetShape(Shape.Stairs, 20, 5);
+             BaseShape aShape2 = abstractShapeFactory.GetShape(Shape.Stone, 22, 5);
+             BaseShape aShape3 = abstractShapeFactory.GetShape(Shape.Fence, 24, 5);
+             GamePlatforms.AddShape(aShape1);
+             GamePlatforms.AddShape(aShape2);
+             GamePlatforms.AddShape(aShape3);
 
             /*Platform firstPlatform = new Platform(0, 0, 0, 10);
-            GameWindow.AddShape(firstPlatform); // Main platform
+            GamePlatforms.AddShape(firstPlatform); // Main platform
 
             Platform secondPlatform = new Platform(0, 10, 10, 20);
-            GameWindow.AddShape(secondPlatform); // Second platform
+            GamePlatforms.AddShape(secondPlatform); // Second platform
 
             var coordinates = firstPlatform.GetCoords();
             int[] xCoords = coordinates.Item1;
             int[] yCoords = coordinates.Item2;
             int randomLocation = RandLocation(xCoords, yCoords);
             PowerUp testPowerUp = new PowerUp(xCoords[randomLocation], yCoords[randomLocation], PowerUps.Double_Jump);
-            GameWindow.AddShape(testPowerUp.SpawnPowerUp());*/
-
-            //GameWindow.AddShape(new Square(5, 5));
-            //GameWindow.AddShape(new Square(9, 5));
-            //GameWindow.AddShape(new Square(13, 5));
-
+            GamePlatforms.AddShape(testPowerUp.SpawnPowerUp());*/
 
             this.connectionManager = connectionManager;
         }
