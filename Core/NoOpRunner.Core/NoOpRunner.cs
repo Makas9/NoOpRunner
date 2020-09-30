@@ -27,7 +27,7 @@ namespace NoOpRunner.Core
 
         public NoOpRunner(IConnectionManager connectionManager)
         {
-            GamePlatforms = new GamePlatforms(32, 32);
+            GamePlatforms = new GamePlatforms(50, 20);
             Player = new Player(1, 2);
 
             /* SHAPE FACTORY DESIGN PATTERN */

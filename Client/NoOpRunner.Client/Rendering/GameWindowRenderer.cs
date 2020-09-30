@@ -69,21 +69,23 @@ namespace NoOpRunner.Client.Rendering
                     {
                         canvas.Children[i].SetValue(GifImage.GifSourceProperty,
                             player.GetStateAnimationUri);
-
-                        canvas.Children[i].SetValue(Canvas.WidthProperty, rectangleWidth);
-                        canvas.Children[i].SetValue(Canvas.HeightProperty, rectangleHeight);
                     }
+
+                    canvas.Children[i].SetValue(Canvas.WidthProperty, rectangleWidth);
+                    canvas.Children[i].SetValue(Canvas.HeightProperty, rectangleHeight);
 
                     if (player.IsPlayerTurning)
                     {
                         canvas.Children[i].SetValue(UIElement.RenderTransformProperty,
                             player.IsLookingLeft
-                                ? new ScaleTransform() {ScaleX = -1}
-                                : new ScaleTransform() {ScaleX = 1});
+                                ? new ScaleTransform() {ScaleX = -1, CenterX = rectangleWidth/2}
+                                : new ScaleTransform() {ScaleX = 1, CenterX = rectangleWidth/2});
                     }
 
                     SetAnimation(canvas.Children[i], rectangleWidth * playerPixels[i].X,
                         rectangleHeight * playerPixels[i].Y);
+                    
+
                 }
             }
             else
@@ -97,7 +99,9 @@ namespace NoOpRunner.Client.Rendering
                         Width = rectangleWidth, Height = rectangleHeight,
                         GifSource = player.GetStateAnimationUri
                     };
-
+                    
+                    playerPixel.Stretch = Stretch.Fill;
+                    
                     Canvas.SetLeft(playerPixel, rectangleWidth * windowPixel.X);
                     Canvas.SetBottom(playerPixel, rectangleHeight * windowPixel.Y);
 
