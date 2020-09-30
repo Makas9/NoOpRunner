@@ -1,6 +1,6 @@
 ﻿using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
-using NoOpRunner.Core.Shapes.RegularShapes;
+using NoOpRunner.Core.Shapes.EntityShapes;
 using System;
 
 namespace NoOpRunner.Core.Shapes.ShapeFactories
@@ -11,9 +11,10 @@ namespace NoOpRunner.Core.Shapes.ShapeFactories
         {
             switch (shape)
             {
-                case Shape.Square: return new Square(x, y);
-                case Shape.Circle: return new Circle(x, y);
-                case Shape.Rectangle: return new Rectangle(x, y);
+                case Shape.HealthCrystal: return new HealthCrystal(x, y);
+                case Shape.DamageCrystal: return new DamageCrystal(x, y);
+                case Shape.Saw: return new Saw(x, y);
+                case Shape.Rocket: return new Rocket(x, y);
                 default: throw new Exception("Shape is not found");
             }
         }

@@ -47,9 +47,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Shapes\RealisticShape.cs" />
-    <Compile Include="Shapes\GeometricShape.cs" />
-    <Compile Include="Shapes\ShapeFactories\GeometricShapeFactory.cs" />
+    <Compile Include="Shapes\EntityShapes\Rocket.cs" />
+    <Compile Include="Shapes\EntityShapes\Saw.cs" />
+    <Compile Include="Shapes\EntityShapes\DamageCrystal.cs" />
+    <Compile Include="Shapes\EntityShape.cs" />
+    <Compile Include="Shapes\ShapeFactories\ImpassableShapeFactory.cs" />
+    <Compile Include="Shapes\StaticShape.cs" />
+    <Compile Include="Shapes\ShapeFactories\PassableShapeFactory.cs" />
     <Compile Include="Shapes\ShapeFactories\Factory.cs" />
     <Compile Include="Dtos\MessageDto.cs" />
     <Compile Include="Dtos\MessageEventArgs.cs" />
@@ -68,20 +72,15 @@
     <Compile Include="NoOpRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shapes\ShapeFactories\FactoryProducer.cs" />
-    <Compile Include="Shapes\RealisticShapes\Fence.cs" />
-    <Compile Include="Shapes\RealisticShapes\Stone.cs" />
-    <Compile Include="Shapes\RegularShapes\Rectangle.cs" />
+    <Compile Include="Shapes\EntityShapes\HealthCrystal.cs" />
     <Compile Include="Shapes\MovingShape.cs" />
     <Compile Include="Shapes\PowerUp.cs" />
-    <Compile Include="Shapes\Platform.cs" />
+    <Compile Include="Shapes\StaticShapes\ImpassablePlatform.cs" />
+    <Compile Include="Shapes\StaticShapes\PassablePlatform.cs" />
     <Compile Include="Shapes\Player.cs" />
     <Compile Include="Shapes\ShapeBlock.cs" />
     <Compile Include="SpritesUriHandler.cs" />
-    <Compile Include="Shapes\ShapeFactories\RealisticShapeFactory.cs" />
     <Compile Include="Shapes\ShapeFactories\ShapeFactory.cs" />
-    <Compile Include="Shapes\RegularShapes\Circle.cs" />
-    <Compile Include="Shapes\RealisticShapes\Stairs.cs" />
-    <Compile Include="Shapes\RegularShapes\Square.cs" />
     <Compile Include="WindowPixel.cs" />
   </ItemGroup>
   <ItemGroup>

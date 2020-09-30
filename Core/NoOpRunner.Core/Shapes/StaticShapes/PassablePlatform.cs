@@ -1,9 +1,8 @@
-﻿using NoOpRunner.Core.Entities;
-using NoOpRunner.Core.Enums;
+﻿using NoOpRunner.Core.Enums;
 
 namespace NoOpRunner.Core.Shapes
 {
-    public class Platform : BaseShape
+    public class PassablePlatform : StaticShape
     {
         public int bottomPosY { get; set; } // Bottom of x platform
         public int topPosY { get; set; } // Max height of x platform
@@ -11,7 +10,7 @@ namespace NoOpRunner.Core.Shapes
         public int lastPosX = 0,
                    lastPosY = 0;
 
-        public Platform(int centerPosX, int centerPosY, int bottomPosY, int topPosY) : base(centerPosX, centerPosY)
+        public PassablePlatform(int centerPosX, int centerPosY, int bottomPosY, int topPosY) : base(centerPosX, centerPosY)
         {
             while (lastPosX < 28)
             {

@@ -2,14 +2,14 @@
 {
     public class FactoryProducer
     {
-        public static AbstractFactory GetFactory(bool realistic)
+        public static AbstractFactory GetFactory(bool passable)
         {
-            if (realistic)
+            if (passable)
             {
-                return new RealisticShapeFactory();
+                return new PassableShapeFactory();
             }
             
-            return new GeometricShapeFactory();
+            return new ImpassableShapeFactory();
         }
     }
 }

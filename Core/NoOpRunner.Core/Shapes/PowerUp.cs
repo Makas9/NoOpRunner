@@ -5,7 +5,7 @@ namespace NoOpRunner.Core.Shapes
 {
     public class PowerUp : BaseShape
     {
-        public readonly PowerUps PowerUpType;
+        protected PowerUps PowerUpType;
 
         public PowerUp(int centerPosX, int centerPosY, PowerUps powerup) : base(centerPosX, centerPosY)
         {
