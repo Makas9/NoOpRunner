@@ -7,9 +7,13 @@ namespace NoOpRunner.Core.Shapes
 {
     public class Player : MovingShape
     {
+        private const int MaxHealth = 3;
+        private int CurrentHealth = 0;
+
         public Player(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
         {
             StateMachine = new PlayerOneStateMachine();
+            CurrentHealth = MaxHealth;
             MapShapeX(0, 0, 1, Color.Blue);
         }
 
@@ -125,6 +129,27 @@ namespace NoOpRunner.Core.Shapes
                     // Use power-up
 
                     return;
+            }
+        }
+
+        public void DoDamage(int damage)
+        {
+            CurrentHealth -= damage;
+
+            if(CurrentHealth < 1)
+            {
+                CurrentHealth = 0;
+                // Stop the game
+            }
+        }
+
+        public void DoHeal(int heal)
+        {
+            CurrentHealth += heal;
+
+            if (CurrentHealth > MaxHealth)
+            {
+                CurrentHealth = MaxHealth;
             }
         }
 

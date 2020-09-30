@@ -100,5 +100,11 @@ namespace NoOpRunner.Core.Entities
 
         public abstract bool CanOverlap(BaseShape other);
         public abstract void OnCollision(BaseShape other);
+
+        public virtual void DoDamage(int damage) { }
+
+        public virtual void DoHeal(int heal) { }
+
+
     }
 }
