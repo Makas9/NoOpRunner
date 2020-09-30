@@ -1,4 +1,4 @@
-﻿using NoOpRunner.Client.Logic.ViewModels;
+using NoOpRunner.Client.Logic.ViewModels;
 using NoOpRunner.Client.Rendering;
 using NoOpRunner.Core;
 using NoOpRunner.Core.Enums;
@@ -36,7 +36,7 @@ namespace NoOpRunner.Client
                 ConfigureKeys();
 
                 timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(1000 / 30);
+                timer.Interval = TimeSpan.FromMilliseconds(70);
                 timer.Tick += async (o, a) =>
                 {
                     await TriggerRender();
@@ -88,6 +88,21 @@ namespace NoOpRunner.Client
                         return;
                     case Key.Down:
                         Game.HandleKeyPress(KeyPress.Down);
+                        return;
+                    default:
+                        return;
+                }
+            };
+
+            this.KeyUp += (s, e) =>
+            {
+                switch (e.Key)
+                {
+                    case Key.Right:
+                        Game.HandleKeyRelease(KeyPress.Right);
+                        return;
+                    case Key.Left:
+                        Game.HandleKeyRelease(KeyPress.Left);
                         return;
                     default:
                         return;

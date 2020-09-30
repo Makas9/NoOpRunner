@@ -1,4 +1,4 @@
-﻿using NoOpRunner.Core.Dtos;
+using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
@@ -144,20 +144,26 @@ namespace NoOpRunner.Core
 
             /*Platform firstPlatform = new Platform(0, 0, 0, 10);
             GameWindow.AddShape(firstPlatform); // Main platform
+            GamePlatforms.AddShape(firstPlatform); // Main platform
 
             Platform secondPlatform = new Platform(0, 10, 10, 20);
-            GameWindow.AddShape(secondPlatform); // Second platform
+            GamePlatforms.AddShape(secondPlatform); // Second platform
 
             var coordinates = firstPlatform.GetCoords();
             int[] xCoords = coordinates.Item1;
             int[] yCoords = coordinates.Item2;
             int randomLocation = RandLocation(xCoords, yCoords);
             PowerUp testPowerUp = new PowerUp(xCoords[randomLocation], yCoords[randomLocation], PowerUps.Double_Jump);
-            GameWindow.AddShape(testPowerUp.SpawnPowerUp());*/
+            GamePlatforms.AddShape(testPowerUp.SpawnPowerUp());*/
 
-            //GameWindow.AddShape(new Square(5, 5));
-            //GameWindow.AddShape(new Square(9, 5));
-            //GameWindow.AddShape(new Square(13, 5));
+            //GamePlatforms.AddShape(new Square(5, 5));
+            //GamePlatforms.AddShape(new Square(9, 5));
+            //GamePlatforms.AddShape(new Square(13, 5));
+        }
+
+        public void HandleKeyRelease(KeyPress key)
+        {
+            Player.HandleKeyRelease(key, (WindowPixel[,])GamePlatforms.GetCurrentMap().Clone());
         }
     }
 }

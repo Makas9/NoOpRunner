@@ -1,6 +1,5 @@
-﻿using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Entities;
-using NoOpRunner.Core.Enums;
+using System;
 
 namespace NoOpRunner.Core.Shapes
 {
@@ -17,12 +16,17 @@ namespace NoOpRunner.Core.Shapes
         public int VerticalSpeed = 0;
         public int HorizontalSpeed = 0;
 
+        public int VerticalSpeedLimit = 1;
+        public int HorizontalSpeedLimit = 1;
+
         public override void OnLoopFired(WindowPixel[,] gameScreen)
         {
             var oldCenterPosX = CenterPosX;
             var oldCenterPosY = CenterPosY;
-            CenterPosX += (int)(HorizontalSpeed + HorizontalSpeed * HorizontalAcceleration);
-            CenterPosY += (int)(VerticalSpeed + VerticalSpeed * VerticalAcceleration);
+            HorizontalSpeed = Math.Min((int)(HorizontalSpeed + HorizontalAcceleration), HorizontalSpeedLimit);
+            VerticalSpeed = Math.Min((int)(VerticalSpeed + VerticalAcceleration), VerticalSpeedLimit);
+            CenterPosX += HorizontalSpeed;
+            CenterPosY += VerticalSpeed;
 
             var shapePixels = this.Render();
             foreach (var pixel in shapePixels)
