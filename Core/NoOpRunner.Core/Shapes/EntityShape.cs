@@ -9,5 +9,15 @@ namespace NoOpRunner.Core.Shapes
         {
 
         }
+
+        public override bool CanOverlap(BaseShape other)
+        {
+            return false; // Not Implemented Yet
+        }
+
+        public override void OnCollision(BaseShape other)
+        {
+            // Not Implemented Yet
+        }
     }
 }

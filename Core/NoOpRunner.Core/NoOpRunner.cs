@@ -40,7 +40,7 @@ namespace NoOpRunner.Core
             GamePlatforms.AddShape(shape3);
 
             /* ABSTRACT SHAPE FACTORY DESIGN PATTERN */
-            AbstractFactory abstractShapeFactory = FactoryProducer.GetFactory(true);
+            AbstractFactory abstractShapeFactory = FactoryProducer.GetFactory(passable: true);
             BaseShape aShape1 = abstractShapeFactory.CreateStaticShape(Shape.Platform, 0, 0, 0, 10);
             BaseShape aShape2 = abstractShapeFactory.CreateEntityShape(Shape.HealthCrystal, 10, 15);
             BaseShape aShape3 = abstractShapeFactory.CreateEntityShape(Shape.DamageCrystal, 15, 15);

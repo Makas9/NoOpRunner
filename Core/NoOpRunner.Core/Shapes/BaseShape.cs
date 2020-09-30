@@ -97,5 +97,8 @@ namespace NoOpRunner.Core.Entities
                 x.Color = Color.Green;
             });
         }
+
+        public abstract bool CanOverlap(BaseShape other);
+        public abstract void OnCollision(BaseShape other);
     }
 }

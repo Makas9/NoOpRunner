@@ -43,5 +43,15 @@ namespace NoOpRunner.Core.Shapes
                 y < 0 ||
                 (gameScreen[x,y] != default && gameScreen[x, y].IsShape);
         }
+
+        public override bool CanOverlap(BaseShape other)
+        {
+            return false; // Not Implemented Yet
+        }
+
+        public override void OnCollision(BaseShape other)
+        {
+            // Not Implemented Yet
+        }
     }
 }

@@ -30,5 +30,15 @@ namespace NoOpRunner.Core.Shapes
                 default: return Color.Black;
             }
         }
+
+        public override bool CanOverlap(BaseShape other)
+        {
+            return false; // Not Implemented Yet
+        }
+
+        public override void OnCollision(BaseShape other)
+        {
+            // Not Implemented Yet
+        }
     }
 }
