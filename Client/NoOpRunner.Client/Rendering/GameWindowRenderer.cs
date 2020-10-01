@@ -20,10 +20,8 @@ namespace NoOpRunner.Client.Rendering
             var rectangleHeight = canvas.ActualHeight / platforms.SizeY;
 
             /* Use this code to paint different shapes in different colors
-            var enumerator = platforms.Shapes.GetEnumerator(); // Shapes
-            while (enumerator.MoveNext())
-            {
-                Type shapeType = enumerator.Current.GetType();
+            foreach (var shape in platforms.Shapes) {
+                var type = shape.GetType();
             }
             */
 

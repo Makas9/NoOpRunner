@@ -66,15 +66,5 @@ namespace NoOpRunner.Core.Shapes
         {
             return RandomNumber.GetInstance().Next(2, maxLength);
         }
-
-        public override bool CanOverlap(BaseShape other)
-        {
-            return false; // Not Implemented Yet
-        }
-
-        public override void OnCollision(BaseShape other)
-        {
-            // Not Implemented Yet
-        }
     }
 }

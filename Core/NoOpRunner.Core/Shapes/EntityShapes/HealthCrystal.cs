@@ -1,5 +1,6 @@
 ﻿using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
+using System;
 
 namespace NoOpRunner.Core.Shapes.EntityShapes
 {
@@ -10,11 +11,16 @@ namespace NoOpRunner.Core.Shapes.EntityShapes
             MapShapeY(1, 1, 2, Color.Green);
         }
 
+        public override bool CanOverlap(BaseShape other)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void OnCollision(BaseShape other)
         {
-            if (other.GetType() == typeof(Player))
+            if (other is Player p)
             {
-                other.DoHeal(1);
+                p.ModifyHealth(heal: true, 1);
             }
         }
     }

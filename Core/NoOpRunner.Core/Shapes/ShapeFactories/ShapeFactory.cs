@@ -15,7 +15,7 @@ namespace NoOpRunner.Core.Shapes.ShapeFactories
                 case Shape.DamageCrystal: return new DamageCrystal(x, y);
                 case Shape.Saw: return new Saw(x, y);
                 case Shape.Rocket: return new Rocket(x, y);
-                default: throw new Exception("Shape is not found");
+                default: throw new ArgumentException("Shape is not found");
             }
         }
 

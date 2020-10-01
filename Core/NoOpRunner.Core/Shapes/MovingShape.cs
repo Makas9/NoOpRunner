@@ -2,7 +2,7 @@
 
 namespace NoOpRunner.Core.Shapes
 {
-    public class MovingShape : BaseShape
+    public abstract class MovingShape : BaseShape
     {
         public MovingShape(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
         {
@@ -42,16 +42,6 @@ namespace NoOpRunner.Core.Shapes
                 x < 0 ||
                 y < 0 ||
                 (gameScreen[x, y] != default && gameScreen[x, y].IsShape);
-        }
-
-        public override bool CanOverlap(BaseShape other)
-        {
-            return false; // Not Implemented Yet
-        }
-
-        public override void OnCollision(BaseShape other)
-        {
-            // Not Implemented Yet
         }
     }
 }

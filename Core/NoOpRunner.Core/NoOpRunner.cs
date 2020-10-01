@@ -48,11 +48,11 @@ namespace NoOpRunner.Core
             GamePlatforms.AddShape(aShape2);
             GamePlatforms.AddShape(aShape3);
 
-            /*AbstractFactory inpassableFactory = FactoryProducer.GetFactory(false);
-            BaseShape firstPlatform = inpassableFactory.CreateStaticShape(Shape.Platform, 0, 0, 0, 10);
+            /*AbstractFactory impassableFactory = FactoryProducer.GetFactory(passable: false);
+            BaseShape firstPlatform = impassableFactory.CreateStaticShape(Shape.Platform, 0, 0, 0, 10);
             GamePlatforms.AddShape(firstPlatform); // Main platform
 
-            AbstractFactory passableFactory = FactoryProducer.GetFactory(true);
+            AbstractFactory passableFactory = FactoryProducer.GetFactory(passable: true);
             BaseShape secondPlatform = passableFactory.CreateStaticShape(Shape.Platform, 0, 10, 10, 20);
             GamePlatforms.AddShape(secondPlatform); // Second platform
 

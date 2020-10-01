@@ -1,4 +1,5 @@
-﻿using NoOpRunner.Core.Enums;
+﻿using NoOpRunner.Core.Entities;
+using NoOpRunner.Core.Enums;
 
 namespace NoOpRunner.Core.Shapes
 {
@@ -10,6 +11,14 @@ namespace NoOpRunner.Core.Shapes
 
         }
 
+        public override bool CanOverlap(BaseShape other)
+        {
+            return false;
+        }
 
+        public override void OnCollision(BaseShape other)
+        {
+
+        }
     }
 }

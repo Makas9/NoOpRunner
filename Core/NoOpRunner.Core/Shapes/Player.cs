@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.PlayerStates;
 
@@ -8,12 +9,12 @@ namespace NoOpRunner.Core.Shapes
     public class Player : MovingShape
     {
         private const int MaxHealth = 3;
-        private int CurrentHealth = 0;
+        private int currentHealth = 0;
 
         public Player(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
         {
             StateMachine = new PlayerOneStateMachine();
-            CurrentHealth = MaxHealth;
+            currentHealth = MaxHealth;
             MapShapeX(0, 0, 1, Color.Blue);
         }
 
@@ -132,25 +133,37 @@ namespace NoOpRunner.Core.Shapes
             }
         }
 
-        public void DoDamage(int damage)
+        public void ModifyHealth(bool heal, int healthPoints)
         {
-            CurrentHealth -= damage;
-
-            if(CurrentHealth < 1)
+            if (heal)
             {
-                CurrentHealth = 0;
-                // Stop the game
+                currentHealth += healthPoints;
+
+                if (currentHealth > MaxHealth)
+                {
+                    currentHealth = MaxHealth;
+                }
+            }
+            else
+            {
+                currentHealth -= healthPoints;
+
+                if (currentHealth < 1)
+                {
+                    currentHealth = 0;
+                    // Stop the game
+                }
             }
         }
 
-        public void DoHeal(int heal)
+        public override bool CanOverlap(BaseShape other)
         {
-            CurrentHealth += heal;
+            throw new NotImplementedException();
+        }
 
-            if (CurrentHealth > MaxHealth)
-            {
-                CurrentHealth = MaxHealth;
-            }
+        public override void OnCollision(BaseShape other)
+        {
+            throw new NotImplementedException();
         }
 
         public bool StateHasChanged => StateMachine.StateHasChanged;

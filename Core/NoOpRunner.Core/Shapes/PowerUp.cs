@@ -1,11 +1,13 @@
 ﻿using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
+using NoOpRunner.Core.Shapes.EntityShapes;
+using System;
 
 namespace NoOpRunner.Core.Shapes
 {
     public class PowerUp : BaseShape
     {
-        protected PowerUps PowerUpType;
+        public readonly PowerUps PowerUpType;
 
         public PowerUp(int centerPosX, int centerPosY, PowerUps powerup) : base(centerPosX, centerPosY)
         {
@@ -33,12 +35,16 @@ namespace NoOpRunner.Core.Shapes
 
         public override bool CanOverlap(BaseShape other)
         {
-            return false; // Not Implemented Yet
+            if (other is Player ||
+                other is Rocket)
+                return true;
+
+            return false;
         }
 
         public override void OnCollision(BaseShape other)
         {
-            // Not Implemented Yet
+            throw new NotImplementedException();
         }
     }
 }
