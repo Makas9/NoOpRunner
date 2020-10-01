@@ -12,8 +12,11 @@ namespace NoOpRunner.Core.Shapes
         public int LastPosX = 0,
                    LastPosY = 0;
 
-        public StaticShape(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
+        public StaticShape(int centerPosX, int centerPosY, int bottomPosY, int topPosY) : base(centerPosX, centerPosY)
         {
+            BottomPosY = bottomPosY;
+            TopPosY = topPosY;
+
             while (LastPosX < 28)
             {
                 int blockLength = RandomLength(4);

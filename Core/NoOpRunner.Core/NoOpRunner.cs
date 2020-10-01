@@ -125,24 +125,24 @@ namespace NoOpRunner.Core
             Player = new Player(1, 2);
 
             /* SHAPE FACTORY DESIGN PATTERN */
-            ShapeFactory shapeFactory = new ShapeFactory();
+            /*ShapeFactory shapeFactory = new ShapeFactory();
             BaseShape shape1 = shapeFactory.GetShape(Shape.HealthCrystal, 1, 15);
             BaseShape shape2 = shapeFactory.GetShape(Shape.DamageCrystal, 5, 15);
             BaseShape shape3 = shapeFactory.GetShape(Shape.Saw, 8, 15);
             GamePlatforms.AddShape(shape1);
             GamePlatforms.AddShape(shape2);
-            GamePlatforms.AddShape(shape3);
+            GamePlatforms.AddShape(shape3);*/
 
             /* ABSTRACT SHAPE FACTORY DESIGN PATTERN */
-            AbstractFactory abstractShapeFactory = FactoryProducer.GetFactory(passable: true);
+            /*AbstractFactory abstractShapeFactory = FactoryProducer.GetFactory(passable: true);
             BaseShape aShape1 = abstractShapeFactory.CreateStaticShape(Shape.Platform, 0, 0, 0, 10);
             BaseShape aShape2 = abstractShapeFactory.CreateEntityShape(Shape.HealthCrystal, 10, 15);
             BaseShape aShape3 = abstractShapeFactory.CreateEntityShape(Shape.DamageCrystal, 15, 15);
             GamePlatforms.AddShape(aShape1);
             GamePlatforms.AddShape(aShape2);
-            GamePlatforms.AddShape(aShape3);
+            GamePlatforms.AddShape(aShape3);*/
 
-            /*AbstractFactory impassableFactory = FactoryProducer.GetFactory(passable: false);
+            AbstractFactory impassableFactory = FactoryProducer.GetFactory(passable: false);
             BaseShape firstPlatform = impassableFactory.CreateStaticShape(Shape.Platform, 0, 0, 0, 10);
             GamePlatforms.AddShape(firstPlatform); // Main platform
 
@@ -155,7 +155,7 @@ namespace NoOpRunner.Core
             int[] yCoords = coordinates.Item2;
             int randomLocation = RandLocation(xCoords, yCoords);
             PowerUp testPowerUp = new PowerUp(xCoords[randomLocation], yCoords[randomLocation], PowerUps.Double_Jump);
-            GamePlatforms.AddShape(testPowerUp.SpawnPowerUp());*/
+            GamePlatforms.AddShape(testPowerUp.SpawnPowerUp());
         }
 
         public void HandleKeyRelease(KeyPress key)
