@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Shapes;
 using System.Collections.Generic;
