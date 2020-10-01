@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
@@ -59,7 +60,9 @@ namespace NoOpRunner.Client.Rendering
             var rectangleWidth = canvas.ActualWidth / platforms.SizeX;
             var rectangleHeight = canvas.ActualHeight / platforms.SizeY;
 
-            var playerPixels = player.Render();
+            //that's dumb
+            //first cell for display, other for hitbox
+            var playerPixels = new List<WindowPixel>(){player.Render().First()};
 
             if (canvas.Children.Count == playerPixels.Count)
             {
@@ -72,20 +75,18 @@ namespace NoOpRunner.Client.Rendering
                     }
 
                     canvas.Children[i].SetValue(Canvas.WidthProperty, rectangleWidth);
-                    canvas.Children[i].SetValue(Canvas.HeightProperty, rectangleHeight);
+                    canvas.Children[i].SetValue(Canvas.HeightProperty, rectangleHeight*2);//yes
 
                     if (player.IsPlayerTurning)
                     {
                         canvas.Children[i].SetValue(UIElement.RenderTransformProperty,
                             player.IsLookingLeft
-                                ? new ScaleTransform() {ScaleX = -1, CenterX = rectangleWidth/2}
-                                : new ScaleTransform() {ScaleX = 1, CenterX = rectangleWidth/2});
+                                ? new ScaleTransform() {ScaleX = -1, CenterX = rectangleWidth / 2}
+                                : new ScaleTransform() {ScaleX = 1, CenterX = rectangleWidth / 2});
                     }
 
                     SetAnimation(canvas.Children[i], rectangleWidth * playerPixels[i].X,
                         rectangleHeight * playerPixels[i].Y);
-                    
-
                 }
             }
             else
@@ -99,9 +100,9 @@ namespace NoOpRunner.Client.Rendering
                         Width = rectangleWidth, Height = rectangleHeight,
                         GifSource = player.GetStateAnimationUri
                     };
-                    
+
                     playerPixel.Stretch = Stretch.Fill;
-                    
+
                     Canvas.SetLeft(playerPixel, rectangleWidth * windowPixel.X);
                     Canvas.SetBottom(playerPixel, rectangleHeight * windowPixel.Y);
 

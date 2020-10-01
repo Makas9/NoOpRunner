@@ -3,60 +3,63 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Resources;
+using System.Windows;
+using System.Windows.Automation;
 
 namespace NoOpRunner.Core
 {
     public static class SpritesUriHandler
     {
-        private static readonly string SpritesDirectory = AppDomain.CurrentDomain.BaseDirectory + @"..\..\Resources";
-        private static readonly string SpritesList = "SpritesList.txt";
-
-        private static Dictionary<string, Uri> sprites;
+        private static readonly ResourceReader resourceReader;
 
         /// <summary>
         /// Static but still bad
         /// </summary>
         static SpritesUriHandler()
         {
-            sprites = new Dictionary<string, Uri>();
-
-            var spritesLines = File.ReadAllLines(SpritesDirectory + "\\" + SpritesList);
-
-            foreach (var spriteLine in spritesLines)
-            {
-                sprites.Add(spriteLine.Split('=')[0],
-                    new Uri(SpritesDirectory + "\\Sprites" + spriteLine.Split('=')[1]));
-            }
+            resourceReader = new System.Resources.ResourceReader(@"..\..\Resources\SpritesList.resources");
         }
 
         public static Uri GetPlatformUri()
         {
-            return sprites["platform"];
+            resourceReader.GetResourceData("platform", out string dataType,  out byte[] data);
+
+            return new Uri(AppDomain.CurrentDomain.BaseDirectory+@"..\.."+System.Text.Encoding.UTF8.GetString(data).Substring(1));
         }
 
         public static Uri GetRunningAnimationUri()
         {
-            return sprites["run"];
+            resourceReader.GetResourceData("run", out string dataType,  out byte[] data);
+
+            return new Uri(AppDomain.CurrentDomain.BaseDirectory+@"..\.."+System.Text.Encoding.UTF8.GetString(data).Substring(1));
         }
 
         public static Uri GetIdleAnimationUri()
         {
-            return sprites["idle"];
+            resourceReader.GetResourceData("idle", out string dataType,  out byte[] data);
+
+            return new Uri(AppDomain.CurrentDomain.BaseDirectory+@"..\.."+System.Text.Encoding.UTF8.GetString(data).Substring(1));
         }
 
         public static Uri GetLandingAnimationUri()
         {
-            return sprites["landing"];
+            resourceReader.GetResourceData("landing", out string dataType,  out byte[] data);
+
+            return new Uri(AppDomain.CurrentDomain.BaseDirectory+@"..\.."+System.Text.Encoding.UTF8.GetString(data).Substring(1));
         }
 
         public static Uri GetJumpingAnimationUri()
         {
-            return sprites["jump"];
+            resourceReader.GetResourceData("jump", out string dataType,  out byte[] data);
+
+            return new Uri(AppDomain.CurrentDomain.BaseDirectory+@"..\.."+System.Text.Encoding.UTF8.GetString(data).Substring(1));
         }
 
         public static Uri GetBackground()
         {
-            return sprites["background"];
+            resourceReader.GetResourceData("background", out string dataType,  out byte[] data);
+
+            return new Uri(AppDomain.CurrentDomain.BaseDirectory+@"..\.."+System.Text.Encoding.UTF8.GetString(data).Substring(1));
         }
     }
 }

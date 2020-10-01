@@ -11,7 +11,7 @@ namespace NoOpRunner.Core.Shapes
         public Player(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
         {
             StateMachine = new PlayerOneStateMachine();
-            MapShapeX(0, 0, 1, Color.Blue);
+            MapShapeY(0, 0, 2, Color.Blue);
         }
 
         private const int MovementIncrement = 1;

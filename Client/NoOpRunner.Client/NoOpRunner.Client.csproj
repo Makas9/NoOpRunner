@@ -113,7 +113,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Sprites\Background\plx-5.png" />
+    <EmbeddedResource Include="Resources\Sprites\Background\plx-5.png" />
     <Content Include="Resources\Sprites\Platforms\jungle tileset.png" />
     <Content Include="Resources\Sprites\Platforms\plx-1.png" />
     <Content Include="Resources\Sprites\Platforms\plx-2.png" />
@@ -129,6 +129,9 @@
     <Content Include="Resources\Sprites\PlayerOne\ledge grab.gif" />
     <Content Include="Resources\Sprites\PlayerOne\mid air.gif" />
     <Resource Include="Resources\Sprites\PlayerOne\run.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

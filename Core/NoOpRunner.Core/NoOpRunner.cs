@@ -121,7 +121,8 @@ namespace NoOpRunner.Core
 
         private void InitializeGameState()
         {
-            GamePlatforms = new GamePlatforms(32, 32);
+            //Common aspect ration
+            GamePlatforms = new GamePlatforms(16*3, 9*3);
             Player = new Player(1, 2);
 
             /* SHAPE FACTORY DESIGN PATTERN */
