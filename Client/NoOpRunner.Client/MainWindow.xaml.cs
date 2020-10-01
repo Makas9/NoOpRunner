@@ -1,15 +1,14 @@
-﻿using NoOpRunner.Client.Logic.ViewModels;
+using NoOpRunner.Client.Logic.ViewModels;
+using NoOpRunner.Client.Rendering;
+using NoOpRunner.Core;
 using NoOpRunner.Core.Enums;
 using System;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using NoOpRunner.Client.Rendering;
-using NoOpRunner.Core;
 
 namespace NoOpRunner.Client
 {
@@ -36,18 +35,23 @@ namespace NoOpRunner.Client
 
                 ConfigureKeys();
 
-                
                 timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(1000 / 30);
-                timer.Tick += (o, a) => TriggerRender();
+                timer.Interval = TimeSpan.FromMilliseconds(70);
+                timer.Tick += async (o, a) =>
+                {
+                    await TriggerRender();
+                };
 
                 timer.Start();
             };
         }
 
-        private void TriggerRender()
+        private async Task TriggerRender()
         {
-            Game.FireLoop();
+            if (Game.IsHost)
+            {
+                await Game.FireHostLoop();
+            }
 
             GameWindowRenderer.RenderPlayer(Game.Player, player_window, Game.GamePlatforms);
 
@@ -84,6 +88,21 @@ namespace NoOpRunner.Client
                         return;
                     case Key.Down:
                         Game.HandleKeyPress(KeyPress.Down);
+                        return;
+                    default:
+                        return;
+                }
+            };
+
+            this.KeyUp += (s, e) =>
+            {
+                switch (e.Key)
+                {
+                    case Key.Right:
+                        Game.HandleKeyRelease(KeyPress.Right);
+                        return;
+                    case Key.Left:
+                        Game.HandleKeyRelease(KeyPress.Left);
                         return;
                     default:
                         return;

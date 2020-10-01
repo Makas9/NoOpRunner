@@ -1,43 +1,44 @@
-﻿using NoOpRunner.Core.Entities;
+﻿using NoOpRunner.Core.Dtos;
+using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
 
 namespace NoOpRunner.Core.Shapes
 {
     public abstract class StaticShape : BaseShape
     {
-        public int bottomPosY { get; set; } // Bottom of x platform
-        public int topPosY { get; set; } // Max height of x platform
+        public int BottomPosY { get; set; } // Bottom of x platform
+        public int TopPosY { get; set; } // Max height of x platform
 
-        public int lastPosX = 0,
-                   lastPosY = 0;
+        public int LastPosX = 0,
+                   LastPosY = 0;
 
         public StaticShape(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
         {
-            while (lastPosX < 28)
+            while (LastPosX < 28)
             {
                 int blockLength = RandomLength(4);
                 int blockHeight = RandomHeight(4); // Lower than jump height
 
-                AddShape(true, lastPosX, lastPosY, blockLength);
-                lastPosX += blockLength;
+                AddShape(true, LastPosX, LastPosY, blockLength);
+                LastPosX += blockLength;
 
                 if (blockHeight < 0)
                 {
-                    AddShape(false, lastPosX, 1, lastPosY);
-                    lastPosY = 0;
+                    AddShape(false, LastPosX, 1, LastPosY);
+                    LastPosY = 0;
                 }
                 else
                 {
-                    if (lastPosY + blockHeight > topPosY)
+                    if (LastPosY + blockHeight > TopPosY)
                     {
-                        int length = (topPosY - lastPosY) < bottomPosY ? bottomPosY : (topPosY - lastPosY);
-                        AddShape(false, lastPosX, lastPosY, length);
-                        lastPosY = topPosY;
+                        int length = (TopPosY - LastPosY) < BottomPosY ? BottomPosY : (TopPosY - LastPosY);
+                        AddShape(false, LastPosX, LastPosY, length);
+                        LastPosY = TopPosY;
                     }
                     else
                     {
-                        AddShape(false, lastPosX, lastPosY, blockHeight);
-                        lastPosY = lastPosY + blockHeight;
+                        AddShape(false, LastPosX, LastPosY, blockHeight);
+                        LastPosY = LastPosY + blockHeight;
                     }
                 }
             }

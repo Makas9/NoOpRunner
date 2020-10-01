@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoOpRunner.Core.Entities;
+using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.PlayerStates;
 
@@ -70,8 +71,6 @@ namespace NoOpRunner.Core.Shapes
                     CanJump = true;
                 }
             }
-
-            HorizontalSpeed = 0;
         }
 
         public override List<WindowPixel> Render()
@@ -88,19 +87,21 @@ namespace NoOpRunner.Core.Shapes
             switch (key)
             {
                 case KeyPress.Right:
-                    if (!IsShapeHit(gameScreen, CenterPosX + MovementIncrement, CenterPosY))
+                    if (!IsShapeHit(gameScreen, CenterPosX + HorizontalSpeed, CenterPosY))
                     {
-                        HorizontalSpeed = MovementIncrement;
-                        StateMachine.TurnRight();
+                        HorizontalSpeed = Math.Min(HorizontalSpeed + 1, HorizontalSpeedLimit);
+                        if (HorizontalSpeed > 0)
+                            StateMachine.TurnRight();
                         StateMachine.Run();
                     }
 
                     return;
                 case KeyPress.Left:
-                    if (!IsShapeHit(gameScreen, CenterPosX - MovementIncrement, CenterPosY))
+                    if (!IsShapeHit(gameScreen, CenterPosX - HorizontalSpeed, CenterPosY))
                     {
-                        HorizontalSpeed = -MovementIncrement;
-                        StateMachine.TurnLeft();
+                        HorizontalSpeed = Math.Max(HorizontalSpeed - 1, -HorizontalSpeedLimit);
+                        if (HorizontalSpeed < 0)
+                            StateMachine.TurnLeft();
                         StateMachine.Run();
                     }
 
@@ -156,6 +157,17 @@ namespace NoOpRunner.Core.Shapes
         public override void OnCollision(BaseShape other)
         {
             throw new NotImplementedException();
+        }
+
+        public void HandleKeyRelease(KeyPress key, WindowPixel[,] gameScreen)
+        {
+            switch (key)
+            {
+                case KeyPress.Right:
+                case KeyPress.Left:
+                    HorizontalSpeed = 0;
+                    return;
+            }
         }
 
         public bool StateHasChanged => StateMachine.StateHasChanged;

@@ -30,7 +30,10 @@ namespace NoOpRunner.Networking
 
             proxy.On<string>("SendMessage", messageJson =>
             {
-                callback(JsonConvert.DeserializeObject<MessageDto>(messageJson));
+                callback(JsonConvert.DeserializeObject<MessageDto>(messageJson, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                }));
             });
 
             await connection.Start();
@@ -47,7 +50,10 @@ namespace NoOpRunner.Networking
         {
             var context = GlobalHost.ConnectionManager.GetHubContext<GameHub>();
 
-            await context.Clients.All.SendMessage(JsonConvert.SerializeObject(message));
+            await context.Clients.All.SendMessage(JsonConvert.SerializeObject(message, new JsonSerializerSettings 
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            }));
         }
     }
 }
