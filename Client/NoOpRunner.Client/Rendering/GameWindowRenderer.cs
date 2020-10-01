@@ -61,7 +61,7 @@ namespace NoOpRunner.Client.Rendering
             var rectangleHeight = canvas.ActualHeight / platforms.SizeY;
 
             //that's dumb
-            //first cell for display, other for hitbox
+            //first cell for display, other for hit box
             var playerPixels = new List<WindowPixel>(){player.Render().First()};
 
             if (canvas.Children.Count == playerPixels.Count)
