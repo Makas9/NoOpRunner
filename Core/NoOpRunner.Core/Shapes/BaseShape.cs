@@ -1,4 +1,5 @@
-﻿using NoOpRunner.Core.Dtos;
+﻿using Newtonsoft.Json;
+using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Shapes;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace NoOpRunner.Core.Entities
         public int CenterPosX { get; set; }
         public int CenterPosY { get; set; }
 
+        [JsonProperty]
         protected List<ShapeBlock> ShapeBlocks = new List<ShapeBlock>();
 
         public BaseShape(int centerPosX, int centerPosY)
