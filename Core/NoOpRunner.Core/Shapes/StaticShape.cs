@@ -4,7 +4,7 @@ using NoOpRunner.Core.Enums;
 
 namespace NoOpRunner.Core.Shapes
 {
-    public class Platform : BaseShape
+    public abstract class StaticShape : BaseShape
     {
         public int BottomPosY { get; set; } // Bottom of x platform
         public int TopPosY { get; set; } // Max height of x platform
@@ -12,8 +12,11 @@ namespace NoOpRunner.Core.Shapes
         public int LastPosX = 0,
                    LastPosY = 0;
 
-        public Platform(int centerPosX, int centerPosY, int bottomPosY, int topPosY) : base(centerPosX, centerPosY)
+        public StaticShape(int centerPosX, int centerPosY, int bottomPosY, int topPosY) : base(centerPosX, centerPosY)
         {
+            BottomPosY = bottomPosY;
+            TopPosY = topPosY;
+
             while (LastPosX < 28)
             {
                 int blockLength = RandomLength(4);
@@ -22,18 +25,20 @@ namespace NoOpRunner.Core.Shapes
                 AddShape(true, LastPosX, LastPosY, blockLength);
                 LastPosX += blockLength;
 
-                if(blockHeight < 0)
+                if (blockHeight < 0)
                 {
                     AddShape(false, LastPosX, 1, LastPosY);
                     LastPosY = 0;
-                } else
+                }
+                else
                 {
-                    if (LastPosY + blockHeight > topPosY)
+                    if (LastPosY + blockHeight > TopPosY)
                     {
-                        int length = (topPosY - LastPosY) < bottomPosY ? bottomPosY : (topPosY - LastPosY);
+                        int length = (TopPosY - LastPosY) < BottomPosY ? BottomPosY : (TopPosY - LastPosY);
                         AddShape(false, LastPosX, LastPosY, length);
-                        LastPosY = topPosY;
-                    } else
+                        LastPosY = TopPosY;
+                    }
+                    else
                     {
                         AddShape(false, LastPosX, LastPosY, blockHeight);
                         LastPosY = LastPosY + blockHeight;
@@ -42,15 +47,15 @@ namespace NoOpRunner.Core.Shapes
             }
         }
 
-        private void AddShape(bool horizontal, int posX, int posY, int blockLength)
+        protected void AddShape(bool horizontal, int posX, int posY, int blockLength)
         {
-            if (horizontal) 
+            if (horizontal)
                 MapShapeX(posX, posY, blockLength, Color.Red);
             else
                 MapShapeY(posX, posY, blockLength, Color.Red);
         }
 
-        private int RandomHeight(int maxLength)
+        protected int RandomHeight(int maxLength)
         {
             int number = RandomNumber.GetInstance().Next(maxLength * -1, maxLength);
             while (number == 0)
@@ -58,10 +63,10 @@ namespace NoOpRunner.Core.Shapes
                 number = RandomNumber.GetInstance().Next(maxLength * -1, maxLength);
             }
 
-            return RandomNumber.GetInstance().Next(maxLength*-1, maxLength);
+            return RandomNumber.GetInstance().Next(maxLength * -1, maxLength);
         }
 
-        private int RandomLength(int maxLength)
+        protected int RandomLength(int maxLength)
         {
             return RandomNumber.GetInstance().Next(2, maxLength);
         }
