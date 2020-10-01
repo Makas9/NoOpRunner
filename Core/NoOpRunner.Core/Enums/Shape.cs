@@ -5,8 +5,10 @@
         Square,
         Circle,
         Rectangle,
-        Stairs,
-        Stone,
-        Fence
+        HealthCrystal,
+        DamageCrystal,
+        Saw,
+        Rocket,
+        Platform
     }
 }

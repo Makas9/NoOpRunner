@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.PlayerStates;
@@ -8,10 +9,16 @@ namespace NoOpRunner.Core.Shapes
 {
     public class Player : MovingShape
     {
+        private const int MaxHealth = 3;
+        private int currentHealth = 0;
+
         public Player(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
         {
             StateMachine = new PlayerOneStateMachine();
+
+            currentHealth = MaxHealth;
             MapShapeY(0, 0, 2, Color.Blue);
+
         }
 
         private const int MovementIncrement = 1;
@@ -127,6 +134,31 @@ namespace NoOpRunner.Core.Shapes
 
                     return;
             }
+        }
+
+        public void ModifyHealth(int healthPoints)
+        {
+            currentHealth += healthPoints;
+
+            if (currentHealth > MaxHealth)
+            {
+                currentHealth = MaxHealth;
+            }
+            else if (currentHealth < 1)
+            {
+                currentHealth = 0;
+                // Stop the game
+            }
+        }
+
+        public override bool CanOverlap(BaseShape other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void OnCollision(BaseShape other)
+        {
+            throw new NotImplementedException();
         }
 
         public void HandleKeyRelease(KeyPress key, WindowPixel[,] gameScreen)

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NoOpRunner.Core;
+using NoOpRunner.Core.Shapes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -8,8 +10,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using NoOpRunner.Core;
-using NoOpRunner.Core.Shapes;
 
 namespace NoOpRunner.Client.Rendering
 {
@@ -20,6 +20,11 @@ namespace NoOpRunner.Client.Rendering
             var rectangleWidth = canvas.ActualWidth / platforms.SizeX;
             var rectangleHeight = canvas.ActualHeight / platforms.SizeY;
 
+            /* Use this code to paint different shapes in different colors
+            foreach (var shape in platforms.Shapes) {
+                var type = shape.GetType();
+            }
+            */
 
             var pixels = platforms.GetCurrentMapEnumerable().ToList();
             if (canvas.Children.Count != pixels.Count)

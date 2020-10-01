@@ -126,28 +126,29 @@ namespace NoOpRunner.Core
             Player = new Player(1, 2);
 
             /* SHAPE FACTORY DESIGN PATTERN */
-            ShapeFactory shapeFactory = new ShapeFactory();
-            BaseShape shape1 = shapeFactory.GetShape(Shape.Square, 5, 5);
-            BaseShape shape2 = shapeFactory.GetShape(Shape.Circle, 10, 5);
-            BaseShape shape3 = shapeFactory.GetShape(Shape.Rectangle, 15, 5);
+            /*ShapeFactory shapeFactory = new ShapeFactory();
+            BaseShape shape1 = shapeFactory.GetShape(Shape.HealthCrystal, 1, 15);
+            BaseShape shape2 = shapeFactory.GetShape(Shape.DamageCrystal, 5, 15);
+            BaseShape shape3 = shapeFactory.GetShape(Shape.Saw, 8, 15);
             GamePlatforms.AddShape(shape1);
             GamePlatforms.AddShape(shape2);
-            GamePlatforms.AddShape(shape3);
+            GamePlatforms.AddShape(shape3);*/
 
             /* ABSTRACT SHAPE FACTORY DESIGN PATTERN */
-            AbstractFactory abstractShapeFactory = FactoryProducer.GetFactory(true);
-            BaseShape aShape1 = abstractShapeFactory.GetShape(Shape.Stairs, 20, 5);
-            BaseShape aShape2 = abstractShapeFactory.GetShape(Shape.Stone, 22, 5);
-            BaseShape aShape3 = abstractShapeFactory.GetShape(Shape.Fence, 24, 5);
+            /*AbstractFactory abstractShapeFactory = FactoryProducer.GetFactory(passable: true);
+            BaseShape aShape1 = abstractShapeFactory.CreateStaticShape(Shape.Platform, 0, 0, 0, 10);
+            BaseShape aShape2 = abstractShapeFactory.CreateEntityShape(Shape.HealthCrystal, 10, 15);
+            BaseShape aShape3 = abstractShapeFactory.CreateEntityShape(Shape.DamageCrystal, 15, 15);
             GamePlatforms.AddShape(aShape1);
             GamePlatforms.AddShape(aShape2);
-            GamePlatforms.AddShape(aShape3);
+            GamePlatforms.AddShape(aShape3);*/
 
-            /*Platform firstPlatform = new Platform(0, 0, 0, 10);
-            GameWindow.AddShape(firstPlatform); // Main platform
+            AbstractFactory impassableFactory = FactoryProducer.GetFactory(passable: false);
+            BaseShape firstPlatform = impassableFactory.CreateStaticShape(Shape.Platform, 0, 0, 0, 10);
             GamePlatforms.AddShape(firstPlatform); // Main platform
 
-            Platform secondPlatform = new Platform(0, 10, 10, 20);
+            AbstractFactory passableFactory = FactoryProducer.GetFactory(passable: true);
+            BaseShape secondPlatform = passableFactory.CreateStaticShape(Shape.Platform, 0, 10, 10, 20);
             GamePlatforms.AddShape(secondPlatform); // Second platform
 
             var coordinates = firstPlatform.GetCoords();
@@ -155,11 +156,7 @@ namespace NoOpRunner.Core
             int[] yCoords = coordinates.Item2;
             int randomLocation = RandLocation(xCoords, yCoords);
             PowerUp testPowerUp = new PowerUp(xCoords[randomLocation], yCoords[randomLocation], PowerUps.Double_Jump);
-            GamePlatforms.AddShape(testPowerUp.SpawnPowerUp());*/
-
-            //GamePlatforms.AddShape(new Square(5, 5));
-            //GamePlatforms.AddShape(new Square(9, 5));
-            //GamePlatforms.AddShape(new Square(13, 5));
+            GamePlatforms.AddShape(testPowerUp.SpawnPowerUp());
         }
 
         public void HandleKeyRelease(KeyPress key)
