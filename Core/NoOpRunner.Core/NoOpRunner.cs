@@ -86,6 +86,8 @@ namespace NoOpRunner.Core
             InitializeGameState();
             connectionManager.Start("http://localhost:8080", HandleMessage);
             IsHost = true;
+
+            Logging.Instance.Write("Started hosting..");
         }
 
         public async Task FireHostLoop()

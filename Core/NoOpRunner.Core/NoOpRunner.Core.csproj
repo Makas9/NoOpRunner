@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Dtos\InitialGameStartDto.cs" />
     <Compile Include="Enums\Entity.cs" />
+    <Compile Include="Logging.cs" />
     <Compile Include="Shapes\EntityShapes\Rocket.cs" />
     <Compile Include="Shapes\EntityShapes\Saw.cs" />
     <Compile Include="Shapes\EntityShapes\DamageCrystal.cs" />
