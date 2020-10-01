@@ -20,7 +20,7 @@ namespace NoOpRunner.Core.Shapes.EntityShapes
         {
             if (other is Player p)
             {
-                p.ModifyHealth(heal: false, 1);
+                p.ModifyHealth(-1);
             }
         }
     }

@@ -17,7 +17,7 @@ namespace NoOpRunner.Core.Shapes
 
         public override void OnCollision(BaseShape other)
         {
-
+            // Do nothing
         }
     }
 }

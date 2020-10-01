@@ -133,26 +133,18 @@ namespace NoOpRunner.Core.Shapes
             }
         }
 
-        public void ModifyHealth(bool heal, int healthPoints)
+        public void ModifyHealth(int healthPoints)
         {
-            if (heal)
-            {
-                currentHealth += healthPoints;
+            currentHealth += healthPoints;
 
-                if (currentHealth > MaxHealth)
-                {
-                    currentHealth = MaxHealth;
-                }
+            if (currentHealth > MaxHealth)
+            {
+                currentHealth = MaxHealth;
             }
-            else
+            else if (currentHealth < 1)
             {
-                currentHealth -= healthPoints;
-
-                if (currentHealth < 1)
-                {
-                    currentHealth = 0;
-                    // Stop the game
-                }
+                currentHealth = 0;
+                // Stop the game
             }
         }
 
