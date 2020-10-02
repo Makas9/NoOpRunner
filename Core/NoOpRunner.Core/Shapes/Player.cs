@@ -11,13 +11,17 @@ namespace NoOpRunner.Core.Shapes
     {
         private const int MaxHealth = 3;
         private int currentHealth = 0;
+        
+        private const int HitBoxWidth = 1;
+        private const int HitBoxHeight = 2;
 
         public Player(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
         {
             StateMachine = new PlayerOneStateMachine();
 
             currentHealth = MaxHealth;
-            MapShapeY(0, 0, 2, Color.Blue);
+            MapShapeY(0, 0, HitBoxHeight, Color.Blue);
+            // Need for width??
 
         }
 
@@ -84,6 +88,18 @@ namespace NoOpRunner.Core.Shapes
             return pixels;
         }
 
+        public WindowPixel GetAnimationPixel(out int hitBoxY, out int hitBoxX)
+        {
+            var animationShapeBlock = ShapeBlocks[0];
+            
+            var absX = CenterPosX + animationShapeBlock.OffsetX;
+            var absY = CenterPosY + animationShapeBlock.OffsetY;
+
+            hitBoxX = HitBoxWidth;
+            hitBoxY = HitBoxHeight;
+            
+            return new WindowPixel(absX, absY, animationShapeBlock.Color, true); 
+        }
         public void HandleKeyPress(KeyPress key, WindowPixel[,] gameScreen)
         {
             switch (key)
