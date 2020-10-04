@@ -96,7 +96,7 @@ namespace NoOpRunner.Client.Rendering
 
                 var playerPixelImage = new GifImage()
                 {
-                    Width = rectangleWidth, Height = rectangleHeight,
+                    Width = rectangleWidth * hitBoxX, Height = rectangleHeight * hitBoxY,
                     GifSource = player.GetStateAnimationUri
                 };
 

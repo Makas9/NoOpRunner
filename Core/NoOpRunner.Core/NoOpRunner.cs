@@ -11,6 +11,11 @@ namespace NoOpRunner.Core
 {
     public class NoOpRunner
     {
+        //That's silly, need static class or singleton for such parameters, using resources would be overkill 
+        private const int AspectRatioWidth = 16;
+        private const int AspectRatioHeight = 9;
+
+        private const int CellsConstant = 3;
         public event EventHandler OnLoopFired;
 
         public event EventHandler<MessageDto> OnMessageReceived;
@@ -124,7 +129,7 @@ namespace NoOpRunner.Core
         private void InitializeGameState()
         {
             //Common aspect ration
-            GamePlatforms = new GamePlatforms(16*3, 9*3);
+            GamePlatforms = new GamePlatforms(AspectRatioWidth*CellsConstant, AspectRatioHeight*CellsConstant);
             Player = new Player(1, 2);
 
             /* SHAPE FACTORY DESIGN PATTERN */

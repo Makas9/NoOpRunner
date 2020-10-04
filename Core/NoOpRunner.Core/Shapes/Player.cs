@@ -21,7 +21,6 @@ namespace NoOpRunner.Core.Shapes
 
             currentHealth = MaxHealth;
             MapShapeY(0, 0, HitBoxHeight, Color.Blue);
-            // Need for width??
 
         }
 
@@ -40,16 +39,7 @@ namespace NoOpRunner.Core.Shapes
         public override void OnLoopFired(WindowPixel[,] gameScreen)
         {
             base.OnLoopFired(gameScreen);
-
-            if (HorizontalSpeed == 0 && CanJump)
-            {
-                StateMachine.Idle();
-            }
-            else if (Math.Abs(HorizontalSpeed) > 0)
-            {
-                StateMachine.Run();
-            }
-
+            
             if (IsJumping)
             {
                 if (VerticalAccelerationPool >= JumpAcceleration)
@@ -75,10 +65,24 @@ namespace NoOpRunner.Core.Shapes
                 else
                 {
                     CanJump = true;
+                    
+                    if (HorizontalSpeed == 0)
+                    {
+                        StateMachine.Idle();
+                    }
                 }
+            }
+            
+            if (Math.Abs(HorizontalSpeed) > 0 && CanJump)
+            {
+                StateMachine.Run();
             }
         }
 
+        /// <summary>
+        /// Unused, will need for collision, rename who needs it 
+        /// </summary>
+        /// <returns></returns>
         public override List<WindowPixel> Render()
         {
             var pixels = base.Render();
@@ -110,7 +114,6 @@ namespace NoOpRunner.Core.Shapes
                         HorizontalSpeed = Math.Min(HorizontalSpeed + 1, HorizontalSpeedLimit);
                         if (HorizontalSpeed > 0)
                             StateMachine.TurnRight();
-                        StateMachine.Run();
                     }
 
                     return;
@@ -120,7 +123,6 @@ namespace NoOpRunner.Core.Shapes
                         HorizontalSpeed = Math.Max(HorizontalSpeed - 1, -HorizontalSpeedLimit);
                         if (HorizontalSpeed < 0)
                             StateMachine.TurnLeft();
-                        StateMachine.Run();
                     }
 
                     return;
