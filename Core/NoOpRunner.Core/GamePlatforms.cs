@@ -53,7 +53,6 @@ namespace NoOpRunner.Core
                         pixel.X >= SizeX ||
                         pixel.Y >= SizeY)
                     {
-                        //so?? just skip
                         throw new Exception("Shape pixel outside the bounds of the game window");
                     }
                     else if (windowPixels[pixel.X, pixel.Y] == default)
@@ -62,7 +61,6 @@ namespace NoOpRunner.Core
                     }
                     else
                     {
-                        //so? now it's just platforms, we don't care
                         throw new Exception("Shape collision occured");
                     }
                 }

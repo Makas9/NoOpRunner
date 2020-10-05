@@ -6,11 +6,6 @@ namespace NoOpRunner.Core.Shapes
 {
     public abstract class StaticShape : BaseShape
     {
-        //same here, that's silly, need static class or singleton for such parameters, using resources would be overkill
-        private const int AspectRatioWidth = 16;
-        private const int AspectRatioHeight = 9;
-
-        private const int CellsSizeMultiplier = 3;
         public int BottomPosY { get; set; } // Bottom of x platform
         public int TopPosY { get; set; } // Max height of x platform
 
@@ -22,7 +17,7 @@ namespace NoOpRunner.Core.Shapes
             BottomPosY = bottomPosY;
             TopPosY = topPosY;
 
-            while (LastPosX < (AspectRatioWidth -2)*CellsSizeMultiplier)
+            while (LastPosX < (GameSettings.AspectRatioWidth -2)*GameSettings.CellsSizeMultiplier)
             {
                 int blockLength = RandomLength(4);
                 int blockHeight = RandomHeight(4); // Lower than jump height
