@@ -17,7 +17,7 @@ namespace NoOpRunner.Core.Shapes
             BottomPosY = bottomPosY;
             TopPosY = topPosY;
 
-            while (LastPosX < 28)
+            while (LastPosX < (GameSettings.AspectRatioWidth -2)*GameSettings.CellsSizeMultiplier)
             {
                 int blockLength = RandomLength(4);
                 int blockHeight = RandomHeight(4); // Lower than jump height

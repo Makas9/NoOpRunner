@@ -11,12 +11,17 @@ namespace NoOpRunner.Core.Shapes
     {
         private const int MaxHealth = 3;
         private int currentHealth = 0;
+        
+        private const int HitBoxWidth = 1;
+        private const int HitBoxHeight = 2;
 
         public Player(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
         {
             StateMachine = new PlayerOneStateMachine();
+
             currentHealth = MaxHealth;
-            MapShapeX(0, 0, 1, Color.Blue);
+            MapShapeY(0, 0, HitBoxHeight, Color.Blue);
+
         }
 
         private const int MovementIncrement = 1;
@@ -34,16 +39,7 @@ namespace NoOpRunner.Core.Shapes
         public override void OnLoopFired(WindowPixel[,] gameScreen)
         {
             base.OnLoopFired(gameScreen);
-
-            if (HorizontalSpeed == 0 && CanJump)
-            {
-                StateMachine.Idle();
-            }
-            else if (Math.Abs(HorizontalSpeed) > 0)
-            {
-                StateMachine.Run();
-            }
-
+            
             if (IsJumping)
             {
                 if (VerticalAccelerationPool >= JumpAcceleration)
@@ -69,10 +65,24 @@ namespace NoOpRunner.Core.Shapes
                 else
                 {
                     CanJump = true;
+                    
+                    if (HorizontalSpeed == 0)
+                    {
+                        StateMachine.Idle();
+                    }
                 }
+            }
+            
+            if (Math.Abs(HorizontalSpeed) > 0 && CanJump)
+            {
+                StateMachine.Run();
             }
         }
 
+        /// <summary>
+        /// Unused, will need for collision, rename who needs it 
+        /// </summary>
+        /// <returns></returns>
         public override List<WindowPixel> Render()
         {
             var pixels = base.Render();
@@ -82,6 +92,18 @@ namespace NoOpRunner.Core.Shapes
             return pixels;
         }
 
+        public WindowPixel GetAnimationPixel(out int hitBoxY, out int hitBoxX)
+        {
+            var animationShapeBlock = ShapeBlocks[0];
+            
+            var absX = CenterPosX + animationShapeBlock.OffsetX;
+            var absY = CenterPosY + animationShapeBlock.OffsetY;
+
+            hitBoxX = HitBoxWidth;
+            hitBoxY = HitBoxHeight;
+            
+            return new WindowPixel(absX, absY, animationShapeBlock.Color, true); 
+        }
         public void HandleKeyPress(KeyPress key, WindowPixel[,] gameScreen)
         {
             switch (key)
@@ -92,7 +114,6 @@ namespace NoOpRunner.Core.Shapes
                         HorizontalSpeed = Math.Min(HorizontalSpeed + 1, HorizontalSpeedLimit);
                         if (HorizontalSpeed > 0)
                             StateMachine.TurnRight();
-                        StateMachine.Run();
                     }
 
                     return;
@@ -102,7 +123,6 @@ namespace NoOpRunner.Core.Shapes
                         HorizontalSpeed = Math.Max(HorizontalSpeed - 1, -HorizontalSpeedLimit);
                         if (HorizontalSpeed < 0)
                             StateMachine.TurnLeft();
-                        StateMachine.Run();
                     }
 
                     return;

@@ -5,6 +5,7 @@ using NoOpRunner.Core.Enums;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -55,17 +56,20 @@ namespace NoOpRunner.Client
 
             GameWindowRenderer.RenderPlayer(Game.Player, player_window, Game.GamePlatforms);
 
-            GameWindowRenderer.RenderMap(Game.GamePlatforms, game_window);
+            GameWindowRenderer.RenderMap(Game.GamePlatforms, game_platforms);
 
             //Use one more canvas for power-ups and one more for traps
         }
 
         /// <summary>
-        /// Set up background, could use more images to make depth feel
+        /// Set up background, more images to make depth feel
         /// </summary>
         private void SetUpBackground()
         {
-            game_window.Background = new ImageBrush(new BitmapImage(SpritesUriHandler.GetBackground()));
+            for (int i = 1; i < 6; i++)
+            {
+                background_panel.Children.Add(new Image(){Source = new BitmapImage(SpritesUriHandler.GetBackground(i)), Stretch = Stretch.Fill});
+            }
         }
 
         private void ConfigureKeys()

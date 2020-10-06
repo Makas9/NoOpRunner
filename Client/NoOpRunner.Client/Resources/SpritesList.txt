@@ -1,6 +1,10 @@
-platform=/Platforms/tile0.png
-run=/PlayerOne/run.gif
-idle=/PlayerOne/idle.gif
-jump=/PlayerOne/jump.gif
-landing=/PlayerOne/landing.gif
-background=/Background/plx-5.png
+platform=/Resources/Sprites/Platforms/tile0.png
+run=/Resources/Sprites/PlayerOne/run.gif
+idle=/Resources/Sprites/PlayerOne/idle.gif
+jump=/Resources/Sprites/PlayerOne/jump.gif
+landing=/Resources/Sprites/PlayerOne/landing.gif
+background1=/Resources/Sprites/Background/plx-1.png
+background2=/Resources/Sprites/Background/plx-2.png
+background3=/Resources/Sprites/Background/plx-3.png
+background4=/Resources/Sprites/Background/plx-4.png
+background5=/Resources/Sprites/Background/plx-5.png

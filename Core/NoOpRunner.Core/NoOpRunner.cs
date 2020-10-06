@@ -123,7 +123,8 @@ namespace NoOpRunner.Core
 
         private void InitializeGameState()
         {
-            GamePlatforms = new GamePlatforms(32, 32);
+            //Common aspect ration
+            GamePlatforms = new GamePlatforms(GameSettings.AspectRatioWidth*GameSettings.CellsSizeMultiplier, GameSettings.AspectRatioHeight*GameSettings.CellsSizeMultiplier);
             Player = new Player(1, 2);
 
             /* SHAPE FACTORY DESIGN PATTERN */

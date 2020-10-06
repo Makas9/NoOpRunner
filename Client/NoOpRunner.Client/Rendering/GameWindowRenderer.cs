@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
@@ -64,52 +65,50 @@ namespace NoOpRunner.Client.Rendering
             var rectangleWidth = canvas.ActualWidth / platforms.SizeX;
             var rectangleHeight = canvas.ActualHeight / platforms.SizeY;
 
-            var playerPixels = player.Render();
+            //first cell for display, other for hit box, need property for player hit box width and height
+            var playerPixel = player.GetAnimationPixel(out int hitBoxY, out int hitBoxX);
 
-            if (canvas.Children.Count == playerPixels.Count)
+            if (canvas.Children.Count != 0)
             {
-                for (int i = 0; i < playerPixels.Count; i++)
+                if (player.StateHasChanged)
                 {
-                    if (player.StateHasChanged)
-                    {
-                        canvas.Children[i].SetValue(GifImage.GifSourceProperty,
-                            player.GetStateAnimationUri);
-
-                        canvas.Children[i].SetValue(Canvas.WidthProperty, rectangleWidth);
-                        canvas.Children[i].SetValue(Canvas.HeightProperty, rectangleHeight);
-                    }
-
-                    if (player.IsPlayerTurning)
-                    {
-                        canvas.Children[i].SetValue(UIElement.RenderTransformProperty,
-                            player.IsLookingLeft
-                                ? new ScaleTransform() {ScaleX = -1}
-                                : new ScaleTransform() {ScaleX = 1});
-                    }
-
-                    SetAnimation(canvas.Children[i], rectangleWidth * playerPixels[i].X,
-                        rectangleHeight * playerPixels[i].Y);
+                    canvas.Children[0].SetValue(GifImage.GifSourceProperty,
+                        player.GetStateAnimationUri);
                 }
+
+                canvas.Children[0].SetValue(Canvas.WidthProperty, rectangleWidth * hitBoxX); // sketch for all hit box
+                canvas.Children[0].SetValue(Canvas.HeightProperty, rectangleHeight * hitBoxY); // sketch for all hit box
+
+                if (player.IsPlayerTurning)
+                {
+                    canvas.Children[0].SetValue(UIElement.RenderTransformProperty,
+                        player.IsLookingLeft
+                            ? new ScaleTransform() {ScaleX = -1, CenterX = rectangleWidth / 2}
+                            : new ScaleTransform() {ScaleX = 1, CenterX = rectangleWidth / 2});
+                }
+
+                SetAnimation(canvas.Children[0], rectangleWidth * playerPixel.X,
+                    rectangleHeight * playerPixel.Y);
             }
             else
             {
                 canvas.Children.Clear();
 
-                foreach (var windowPixel in playerPixels)
+                var playerPixelImage = new GifImage()
                 {
-                    var playerPixel = new GifImage()
-                    {
-                        Width = rectangleWidth, Height = rectangleHeight,
-                        GifSource = player.GetStateAnimationUri
-                    };
+                    Width = rectangleWidth * hitBoxX, Height = rectangleHeight * hitBoxY,
+                    GifSource = player.GetStateAnimationUri
+                };
 
-                    Canvas.SetLeft(playerPixel, rectangleWidth * windowPixel.X);
-                    Canvas.SetBottom(playerPixel, rectangleHeight * windowPixel.Y);
+                playerPixelImage.Stretch = Stretch.Fill;
 
-                    canvas.Children.Add(playerPixel);
+                Canvas.SetLeft(playerPixelImage, rectangleWidth * playerPixel.X * hitBoxX);
+                Canvas.SetBottom(playerPixelImage, rectangleHeight * playerPixel.Y * hitBoxY);
 
-                    playerPixel.StartAnimation();
-                }
+                canvas.Children.Add(playerPixelImage);
+
+                playerPixelImage.StartAnimation();
+                
             }
         }
 
