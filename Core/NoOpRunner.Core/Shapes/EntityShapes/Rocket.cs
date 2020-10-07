@@ -1,20 +1,14 @@
 ﻿using NoOpRunner.Core.Entities;
-using NoOpRunner.Core.Enums;
+using NoOpRunner.Core.Shapes.GenerationStrategies;
 using System;
 
 namespace NoOpRunner.Core.Shapes.EntityShapes
 {
     class Rocket : EntityShape
     {
-        public Rocket(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
-        {
-            MapShapeY(1, 1, 2, Color.Blue);
-        }
+        public Rocket(int x, int y) : base(new FillGenerationStrategy(), x, y, x + 1, y + 1) { }
 
-        public override bool CanOverlap(BaseShape other)
-        {
-            return false;
-        }
+        public override bool CanOverlap(BaseShape other) => false;
 
         public override void OnCollision(BaseShape other)
         {

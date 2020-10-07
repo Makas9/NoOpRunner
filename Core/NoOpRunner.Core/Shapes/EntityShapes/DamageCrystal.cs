@@ -1,15 +1,12 @@
 ﻿using NoOpRunner.Core.Entities;
-using NoOpRunner.Core.Enums;
+using NoOpRunner.Core.Shapes.GenerationStrategies;
 using System;
 
 namespace NoOpRunner.Core.Shapes.EntityShapes
 {
     class DamageCrystal : EntityShape
     {
-        public DamageCrystal(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
-        {
-            MapShapeY(1, 1, 2, Color.Red);
-        }
+        public DamageCrystal(int x, int y) : base(new FillGenerationStrategy(), x, y, x + 1, y + 2) { }
 
         public override bool CanOverlap(BaseShape other)
         {

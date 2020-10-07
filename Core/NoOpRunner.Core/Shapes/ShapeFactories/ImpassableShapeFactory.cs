@@ -16,11 +16,11 @@ namespace NoOpRunner.Core.Shapes.ShapeFactories
             }
         }
 
-        public override StaticShape CreateStaticShape(Shape shape, int x, int y, int bottomPosY = 0, int topPosY = 0)
+        public override StaticShape CreateStaticShape(Shape shape, GenerationStrategy strategy, int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY)
         {
             switch (shape)
             {
-                case Shape.Platform: return new ImpassablePlatform(x, y, bottomPosY, topPosY);
+                case Shape.Platform: return new ImpassablePlatform(strategy, lowerBoundX, lowerBoundY, upperBoundX, upperBoundY);
                 default: throw new ArgumentException("Shape is not found");
             }
         }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoOpRunner.Core.Entities;
-using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.PlayerStates;
 
@@ -12,11 +11,11 @@ namespace NoOpRunner.Core.Shapes
         private const int MaxHealth = 3;
         private int currentHealth = 0;
 
-        public Player(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
+        public Player(int x, int y) : base(x, y)
         {
+            // TODO: After merge with dev, player hitbox will be multi-cell, update ctor accordingly
             StateMachine = new PlayerOneStateMachine();
             currentHealth = MaxHealth;
-            MapShapeX(0, 0, 1, Color.Blue);
         }
 
         private const int MovementIncrement = 1;

@@ -3,6 +3,7 @@ using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
+using NoOpRunner.Core.Shapes.GenerationStrategies;
 using NoOpRunner.Core.Shapes.ShapeFactories;
 using System;
 using System.Threading.Tasks;
@@ -145,19 +146,19 @@ namespace NoOpRunner.Core
             GamePlatforms.AddShape(aShape3);*/
 
             AbstractFactory impassableFactory = FactoryProducer.GetFactory(passable: false);
-            BaseShape firstPlatform = impassableFactory.CreateStaticShape(Shape.Platform, 0, 0, 0, 10);
+            BaseShape firstPlatform = impassableFactory.CreateStaticShape(Shape.Platform, new CombinedGenerationStrategy(), 0, 0, 30, 20);
             GamePlatforms.AddShape(firstPlatform); // Main platform
 
             AbstractFactory passableFactory = FactoryProducer.GetFactory(passable: true);
-            BaseShape secondPlatform = passableFactory.CreateStaticShape(Shape.Platform, 0, 10, 10, 20);
+            BaseShape secondPlatform = passableFactory.CreateStaticShape(Shape.Platform, new CombinedGenerationStrategy(), 0, 22, 30, 30);
             GamePlatforms.AddShape(secondPlatform); // Second platform
 
             var coordinates = firstPlatform.GetCoords();
             int[] xCoords = coordinates.Item1;
             int[] yCoords = coordinates.Item2;
             int randomLocation = RandLocation(xCoords, yCoords);
-            PowerUp testPowerUp = new PowerUp(xCoords[randomLocation], yCoords[randomLocation], PowerUps.Double_Jump);
-            GamePlatforms.AddShape(testPowerUp.SpawnPowerUp());
+            PowerUp testPowerUp = new PowerUp(xCoords[randomLocation], yCoords[randomLocation] + 2, PowerUps.Double_Jump);
+            GamePlatforms.AddShape(testPowerUp);
         }
 
         public void HandleKeyRelease(KeyPress key)
