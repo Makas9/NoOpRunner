@@ -124,7 +124,8 @@ namespace NoOpRunner.Core
 
         private void InitializeGameState()
         {
-            GamePlatforms = new GamePlatforms(32, 32);
+            //Common aspect ration
+            GamePlatforms = new GamePlatforms(GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount);
             Player = new Player(1, 2);
 
             /* SHAPE FACTORY DESIGN PATTERN */
@@ -146,11 +147,11 @@ namespace NoOpRunner.Core
             GamePlatforms.AddShape(aShape3);*/
 
             AbstractFactory impassableFactory = FactoryProducer.GetFactory(passable: false);
-            BaseShape firstPlatform = impassableFactory.CreateStaticShape(Shape.Platform, new CombinedGenerationStrategy(), 0, 0, 30, 20);
+            BaseShape firstPlatform = impassableFactory.CreateStaticShape(Shape.Platform, new CombinedGenerationStrategy(), 0, 0, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount / 2);
             GamePlatforms.AddShape(firstPlatform); // Main platform
 
             AbstractFactory passableFactory = FactoryProducer.GetFactory(passable: true);
-            BaseShape secondPlatform = passableFactory.CreateStaticShape(Shape.Platform, new CombinedGenerationStrategy(), 0, 22, 30, 30);
+            BaseShape secondPlatform = passableFactory.CreateStaticShape(Shape.Platform, new CombinedGenerationStrategy(), 0, GameSettings.VerticalCellCount / 2, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount);
             GamePlatforms.AddShape(secondPlatform); // Second platform
 
             var coordinates = firstPlatform.GetCoords();

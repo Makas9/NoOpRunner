@@ -10,7 +10,7 @@
     <Window.DataContext>
         <ViewModels:MainViewModel/>
     </Window.DataContext>
-    <Grid x:Name="MainGrid">
+    <Grid x:Name="MainGrid" Background="Black">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="40"/>
@@ -30,12 +30,13 @@
             <Button Grid.Column="2" Command="{Binding SendMessageCommand}">Send message</Button>
             <Button Grid.Column="3" x:Name="play_button">Play</Button>
 
-            <TextBlock Grid.Column="4" Text="{Binding StatusMessage}"/>
+            <TextBlock Grid.Column="4" Text="{Binding StatusMessage}" Background="White"/>
         </Grid>
         <Grid Grid.Row="0" Visibility="{Binding IsPlaying, Converter={StaticResource BoolToVisibilityConverter}}">
-            
-            <Canvas x:Name="game_window" Background="Black"/>
+            <Grid x:Name="background_panel"></Grid>
+            <Canvas x:Name="game_platforms"/>
             <Canvas x:Name="player_window"/>
+            <Canvas x:Name="power_ups"/>
         </Grid>
     </Grid>
 </Window>
