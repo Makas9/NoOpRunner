@@ -34,6 +34,13 @@ namespace NoOpRunner.Client
 
                 Game = viewModel.Game;
 
+                if (!Game.IsHost)
+                {
+                    Game.AddObserver(new PlayerStateObserver(), MessageType.PlayerStateUpdate);
+                    Game.AddObserver(new ClientGameInitObserver(), MessageType.InitialGame);
+                    Game.AddObserver(new PlayerPositionObserver(), MessageType.PlayerPositionUpdate);
+                }
+
                 ConfigureKeys();
 
                 timer = new DispatcherTimer();
@@ -44,6 +51,7 @@ namespace NoOpRunner.Client
                 };
 
                 timer.Start();
+                Game.IsGameStarted = true;
             };
         }
 
@@ -54,9 +62,13 @@ namespace NoOpRunner.Client
                 await Game.FireHostLoop();
             }
 
-            GameWindowRenderer.RenderPlayer(Game.Player, player_window, Game.GamePlatforms);
+            if (Game.GamePlatforms != null && Game.Player != null)
+            {
+                GameWindowRenderer.RenderPlayer(Game.Player, player_window, Game.GamePlatforms);
 
-            GameWindowRenderer.RenderMap(Game.GamePlatforms, game_platforms);
+                GameWindowRenderer.RenderMap(Game.GamePlatforms, game_platforms);
+            }
+
 
             //Use one more canvas for power-ups and one more for traps
         }

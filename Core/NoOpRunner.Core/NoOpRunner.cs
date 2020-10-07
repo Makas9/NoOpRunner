@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace NoOpRunner.Core
 {
-    public class NoOpRunner
+    public class NoOpRunner : ClientSubject
     {
+        public bool IsGameStarted { get; set; } = false;
         public event EventHandler OnLoopFired;
 
         public event EventHandler<MessageDto> OnMessageReceived;
@@ -44,6 +45,7 @@ namespace NoOpRunner.Core
                     found = x; // Spawn power up between flat platform
                 }
             }
+
             return x;
         }
 
@@ -51,11 +53,11 @@ namespace NoOpRunner.Core
         {
             if (IsHost)
             {
-                await connectionManager.SendMessageToClient(new MessageDto { Payload = "Testing message to client" });
+                await connectionManager.SendMessageToClient(new MessageDto {Payload = "Testing message to client"});
             }
             else
             {
-                await connectionManager.SendMessageToHost(new MessageDto { Payload = "Testing message to host" });
+                await connectionManager.SendMessageToHost(new MessageDto {Payload = "Testing message to host"});
             }
         }
 
@@ -64,21 +66,62 @@ namespace NoOpRunner.Core
             await connectionManager.Connect("http://localhost:8080", HandleMessage);
         }
 
-        private void HandleMessage(MessageDto message)
+        private async void HandleMessage(MessageDto message)
         {
-            if (message.MessageType == MessageType.InitialConnection)
+            if (!IsGameStarted)
             {
-                IsClientConnected = true;
+                return;
             }
 
-            if (message.MessageType == MessageType.GameStateUpdate)
+            switch (message.MessageType)
             {
-                var payload = message.Payload as GameStateUpdateDto;
+                case MessageType.InitialConnection:
+                    IsClientConnected = true;
 
-                FireClientLoop(payload.Platforms, payload.Player);
+                    break;
+                case MessageType.AskGameState:
+
+                    await connectionManager.SendMessageToClient(new MessageDto
+                    {
+                        MessageType = MessageType.InitialGame,
+                        Payload = new GameStateUpdateDto
+                        {
+                            Player = Player,
+                            Platforms = GamePlatforms
+                        }
+                    });
+
+                    break;
+                case MessageType.PlayerStateUpdate:
+                case MessageType.PlayerPositionUpdate:
+
+                    HandlePlayerUpdate(message);
+
+                    break;
+                case MessageType.InitialGame:
+                    Notify(this, message.MessageType, message.Payload);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
             OnMessageReceived?.Invoke(this, message);
+        }
+
+        private async void HandlePlayerUpdate(MessageDto message)
+        {
+            if (GamePlatforms == null || Player == null)
+            {
+                await connectionManager.SendMessageToHost(new MessageDto()
+                {
+                    MessageType = MessageType.AskGameState,
+                    Payload = null
+                });
+            }
+            else
+            {
+                Notify(this, message.MessageType, message.Payload);
+            }
         }
 
         public void StartHosting()
@@ -99,14 +142,21 @@ namespace NoOpRunner.Core
             Player.OnLoopFired(map);
             GamePlatforms.OnLoopFired(map);
 
+            //Less data to send than sending whole player instance
             await connectionManager.SendMessageToClient(new MessageDto
             {
-                MessageType = MessageType.GameStateUpdate,
-                Payload = new GameStateUpdateDto
+                MessageType = MessageType.PlayerStateUpdate,
+                Payload = new PlayerStateDto()
                 {
-                    Player = Player,
-                    Platforms = GamePlatforms
+                    State = Player.State,
+                    IsLookingLeft = Player.IsLookingLeft
                 }
+            });
+
+            await connectionManager.SendMessageToClient(new MessageDto()
+            {
+                MessageType = MessageType.PlayerPositionUpdate,
+                Payload = (Player.CenterPosX, Player.CenterPosY)
             });
         }
 
@@ -118,13 +168,14 @@ namespace NoOpRunner.Core
 
         public void HandleKeyPress(KeyPress keyPress)
         {
-            Player.HandleKeyPress(keyPress, (WindowPixel[,])GamePlatforms.GetCurrentMap().Clone());
+            Player.HandleKeyPress(keyPress, (WindowPixel[,]) GamePlatforms.GetCurrentMap().Clone());
         }
 
         private void InitializeGameState()
         {
             //Common aspect ration
-            GamePlatforms = new GamePlatforms(GameSettings.AspectRatioWidth*GameSettings.CellsSizeMultiplier, GameSettings.AspectRatioHeight*GameSettings.CellsSizeMultiplier);
+            GamePlatforms = new GamePlatforms(GameSettings.AspectRatioWidth * GameSettings.CellsSizeMultiplier,
+                GameSettings.AspectRatioHeight * GameSettings.CellsSizeMultiplier);
             Player = new Player(1, 2);
 
             /* SHAPE FACTORY DESIGN PATTERN */
@@ -163,7 +214,7 @@ namespace NoOpRunner.Core
 
         public void HandleKeyRelease(KeyPress key)
         {
-            Player.HandleKeyRelease(key, (WindowPixel[,])GamePlatforms.GetCurrentMap().Clone());
+            Player.HandleKeyRelease(key, (WindowPixel[,]) GamePlatforms.GetCurrentMap().Clone());
         }
     }
 }

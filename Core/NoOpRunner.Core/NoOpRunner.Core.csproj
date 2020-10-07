@@ -47,10 +47,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientGameInitObserver.cs" />
+    <Compile Include="ClientSubject.cs" />
     <Compile Include="Dtos\InitialGameStartDto.cs" />
+    <Compile Include="Dtos\PlayerStateDto.cs" />
     <Compile Include="Enums\Entity.cs" />
     <Compile Include="GameSettings.cs" />
+    <Compile Include="Interfaces\IObserver.cs" />
+    <Compile Include="Interfaces\ISubject.cs" />
     <Compile Include="Logging.cs" />
+    <Compile Include="PlayerPositionObserver.cs" />
     <Compile Include="Shapes\EntityShapes\Rocket.cs" />
     <Compile Include="Shapes\EntityShapes\Saw.cs" />
     <Compile Include="Shapes\EntityShapes\DamageCrystal.cs" />
@@ -85,6 +91,7 @@
     <Compile Include="Shapes\ShapeBlock.cs" />
     <Compile Include="SpritesUriHandler.cs" />
     <Compile Include="Shapes\ShapeFactories\ShapeFactory.cs" />
+    <Compile Include="PlayerStateObserver.cs" />
     <Compile Include="WindowPixel.cs" />
   </ItemGroup>
   <ItemGroup>

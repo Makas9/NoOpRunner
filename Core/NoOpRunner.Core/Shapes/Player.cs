@@ -199,6 +199,16 @@ namespace NoOpRunner.Core.Shapes
         public bool IsPlayerTurning => StateMachine.IsTurning;
 
 
-        public bool IsLookingLeft => StateMachine.IsTurnedLeft;
+        public bool IsLookingLeft
+        {
+            get => StateMachine.IsTurnedLeft;
+            set => StateMachine.IsLookingLeft = value;
+        }
+
+        public PlayerOneState State
+        {
+            get => StateMachine.State;
+            set => StateMachine.State = value;
+        }
     }
 }

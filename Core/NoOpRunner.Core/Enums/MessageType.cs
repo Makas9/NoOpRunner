@@ -2,7 +2,10 @@
 {
     public enum MessageType
     {
-        GameStateUpdate,
-        InitialConnection
+        InitialGame,
+        AskGameState,
+        InitialConnection,
+        PlayerStateUpdate,
+        PlayerPositionUpdate
     }
 }
