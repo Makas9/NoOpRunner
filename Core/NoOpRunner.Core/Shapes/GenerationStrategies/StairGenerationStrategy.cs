@@ -4,12 +4,12 @@ namespace NoOpRunner.Core.Shapes.GenerationStrategies
 {
     class StairGenerationStrategy : GenerationStrategy
     {
-        public override List<ShapeBlock> GenerateShapeBlocks(int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY)
+        public override List<ShapeBlock> GenerateShapeBlocks(int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY, int? startY)
         {
             Logging.Instance.Write("Stair generation strategy used.");
 
             var blocks = new List<ShapeBlock>();
-            for (int curX = lowerBoundX, curY = lowerBoundY; curX < upperBoundX && curY < upperBoundY; ++curX, ++curY)
+            for (int curX = lowerBoundX, curY = startY ?? lowerBoundY; curX < upperBoundX && curY < upperBoundY; ++curX, ++curY)
             {
                 if (curX != lowerBoundX)
                     AddShapeBlock(blocks, curX, curY - 1);

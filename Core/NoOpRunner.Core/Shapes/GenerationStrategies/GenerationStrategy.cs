@@ -11,7 +11,7 @@ namespace NoOpRunner.Core.Shapes
         /// </summary>
         /// <returns>A list of ShapeBlocks making up the shape, with coords offset from (0, 0) (This is to allow easily combining
         /// the results of different generation strategies) </returns>
-        public abstract List<ShapeBlock> GenerateShapeBlocks(int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY);
+        public abstract List<ShapeBlock> GenerateShapeBlocks(int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY, int? startY = null);
 
         public static void AddShapeBlock(List<ShapeBlock> blocks, int offsetX, int offsetY)
         {

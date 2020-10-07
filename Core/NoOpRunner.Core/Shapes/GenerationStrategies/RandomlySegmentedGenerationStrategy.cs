@@ -5,14 +5,14 @@ namespace NoOpRunner.Core.Shapes.GenerationStrategies
 {
     class RandomlySegmentedGenerationStrategy : GenerationStrategy
     {
-        public override List<ShapeBlock> GenerateShapeBlocks(int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY)
+        public override List<ShapeBlock> GenerateShapeBlocks(int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY, int? startY)
         {
             Logging.Instance.Write("Randomly segmented generation strategy used.");
 
             var blocks = new List<ShapeBlock>();
             var random = RandomNumber.GetInstance();
 
-            var curY = random.Next(lowerBoundY, upperBoundY);
+            var curY = startY ?? random.Next(lowerBoundY, upperBoundY);
             for (int curX = lowerBoundX; curX < upperBoundX;)
             {
                 var vertical = random.NextDouble() >= 0.5;

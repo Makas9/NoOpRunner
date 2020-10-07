@@ -146,16 +146,18 @@ namespace NoOpRunner.Core
             GamePlatforms.AddShape(aShape3);*/
 
             AbstractFactory impassableFactory = FactoryProducer.GetFactory(passable: false);
-            BaseShape firstPlatform = impassableFactory.CreateStaticShape(Shape.Platform, new CombinedGenerationStrategy(), 0, 0, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount / 2);
-            GamePlatforms.AddShape(firstPlatform); // Main platform
-
-            // Generate the player above the first platform
-            Player = new Player(firstPlatform.CenterPosX, firstPlatform.CenterPosY + 1);
-
+            BaseShape firstPlatform = impassableFactory.CreateStaticShape(Shape.Platform, new CombinedGenerationStrategy(), 0, 0, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount / 3);
+            GamePlatforms.AddShape(firstPlatform);
 
             AbstractFactory passableFactory = FactoryProducer.GetFactory(passable: true);
-            BaseShape secondPlatform = passableFactory.CreateStaticShape(Shape.Platform, new CombinedGenerationStrategy(), 0, GameSettings.VerticalCellCount / 2, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount);
-            GamePlatforms.AddShape(secondPlatform); // Second platform
+            BaseShape secondPlatform = passableFactory.CreateStaticShape(Shape.Platform, new PlatformerGenerationStrategy(), 0, GameSettings.VerticalCellCount / 3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount * 2 / 3);
+            GamePlatforms.AddShape(secondPlatform);
+
+            // Generate the player above the first platform
+            Player = new Player(secondPlatform.CenterPosX, secondPlatform.CenterPosY + 1);
+
+            BaseShape thirdPlatform = passableFactory.CreateStaticShape(Shape.Platform, new RandomlySegmentedGenerationStrategy(), 0, GameSettings.VerticalCellCount * 2/3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount - 3);
+            GamePlatforms.AddShape(thirdPlatform);
 
             var coordinates = firstPlatform.GetCoords();
             int[] xCoords = coordinates.Item1;
