@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoOpRunner.Core.Entities;
-using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.PlayerStates;
+using NoOpRunner.Core.Shapes.GenerationStrategies;
 
 namespace NoOpRunner.Core.Shapes
 {
@@ -15,13 +15,10 @@ namespace NoOpRunner.Core.Shapes
         private const int HitBoxWidth = 1;
         private const int HitBoxHeight = 2;
 
-        public Player(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
+        public Player(int x, int y) : base(new FillGenerationStrategy(), x, y, x + HitBoxWidth, y + HitBoxHeight)
         {
             StateMachine = new PlayerOneStateMachine();
-
             currentHealth = MaxHealth;
-            MapShapeY(0, 0, HitBoxHeight, Color.Blue);
-
         }
 
         private const int MovementIncrement = 1;
@@ -102,7 +99,7 @@ namespace NoOpRunner.Core.Shapes
             hitBoxX = HitBoxWidth;
             hitBoxY = HitBoxHeight;
             
-            return new WindowPixel(absX, absY, animationShapeBlock.Color, true); 
+            return new WindowPixel(absX, absY, isShape: true); 
         }
         public void HandleKeyPress(KeyPress key, WindowPixel[,] gameScreen)
         {

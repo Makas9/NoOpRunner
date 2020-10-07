@@ -4,16 +4,10 @@ namespace NoOpRunner.Core.Shapes
 {
     public class ImpassablePlatform : StaticShape
     {
+        public ImpassablePlatform(GenerationStrategy strategy, int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY) 
+            : base(strategy, lowerBoundX, lowerBoundY, upperBoundX, upperBoundY) { }
 
-        public ImpassablePlatform(int centerPosX, int centerPosY, int bottomPosY, int topPosY) : base(centerPosX, centerPosY, bottomPosY, topPosY)
-        {
-
-        }
-
-        public override bool CanOverlap(BaseShape other)
-        {
-            return false;
-        }
+        public override bool CanOverlap(BaseShape other) => false;
 
         public override void OnCollision(BaseShape other)
         {

@@ -1,37 +1,17 @@
-﻿using NoOpRunner.Core.Dtos;
-using NoOpRunner.Core.Entities;
+﻿using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Shapes.EntityShapes;
 using System;
 
 namespace NoOpRunner.Core.Shapes
 {
-    public class PowerUp : BaseShape
+    public class PowerUp : EntityShape
     {
         public readonly PowerUps PowerUpType;
 
-        public PowerUp(int centerPosX, int centerPosY, PowerUps powerup) : base(centerPosX, centerPosY)
+        public PowerUp(int x, int y, PowerUps powerup) : base(x, y)
         {
             this.PowerUpType = powerup;
-        }
-
-        public BaseShape SpawnPowerUp()
-        {
-            Color spawn = GetPowerUpColor(PowerUpType);
-
-            return MapShapeX(0, 2, 1, spawn);
-        }
-
-        private Color GetPowerUpColor(PowerUps powerup)
-        {
-            switch (powerup)
-            {
-                case PowerUps.Speed_Boost: return Color.Red;
-                case PowerUps.Invisibility: return Color.Blue;
-                case PowerUps.Invulnerability: return Color.Green;
-                case PowerUps.Double_Jump: return Color.Yellow;
-                default: return Color.Black;
-            }
         }
 
         public override bool CanOverlap(BaseShape other)
