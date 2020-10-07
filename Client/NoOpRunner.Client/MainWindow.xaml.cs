@@ -36,9 +36,13 @@ namespace NoOpRunner.Client
 
                 if (!Game.IsHost)
                 {
-                    Game.AddObserver(new PlayerStateObserver(), MessageType.PlayerStateUpdate);
                     Game.AddObserver(new ClientGameInitObserver(), MessageType.InitialGame);
+                    
+                    Game.AddObserver(new PlayerStateObserver(), MessageType.PlayerStateUpdate);
                     Game.AddObserver(new PlayerPositionObserver(), MessageType.PlayerPositionUpdate);
+                    
+                    Game.AddObserver(new PlayerObserver(), MessageType.PlayerStatus);
+                    Game.AddObserver(new PlatformsObserver(), MessageType.PlatformsStatus);
                 }
 
                 ConfigureKeys();

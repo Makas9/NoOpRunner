@@ -5,12 +5,12 @@ namespace NoOpRunner.Core
 {
     public class PlayerPositionObserver : IObserver
     {
-        public void Update(object sender, object args)
+        public void Update(NoOpRunner sender, object args)
         {
             var (item1, item2) = (ValueTuple<int, int>) args;
             
-            ((NoOpRunner) sender).Player.CenterPosX = item1;
-            ((NoOpRunner) sender).Player.CenterPosY = item2;
+            sender.Player.CenterPosX = item1;
+            sender.Player.CenterPosY = item2;
         }
     }
 }

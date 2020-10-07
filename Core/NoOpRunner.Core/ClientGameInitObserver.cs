@@ -1,16 +1,14 @@
-﻿using System;
-using NoOpRunner.Core.Interfaces;
-using NoOpRunner.Core.Shapes;
+﻿using NoOpRunner.Core.Interfaces;
 
 namespace NoOpRunner.Core
 {
     public class ClientGameInitObserver : IObserver
     {
-        public void Update(object sender, object args)
+        public void Update(NoOpRunner sender, object args)
         {
             var gameState = args as Dtos.GameStateUpdateDto;
-            
-            ((NoOpRunner) sender).FireClientLoop(gameState.Platforms, gameState.Player);
+
+            sender.FireClientLoop(gameState.Platforms, gameState.Player);
         }
     }
 }

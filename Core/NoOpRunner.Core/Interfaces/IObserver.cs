@@ -2,6 +2,6 @@
 {
     public interface IObserver
     {
-        void Update(object sender, object args);
+        void Update(NoOpRunner sender, object args);
     }
 }

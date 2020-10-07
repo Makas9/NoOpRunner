@@ -56,6 +56,8 @@
     <Compile Include="Interfaces\IObserver.cs" />
     <Compile Include="Interfaces\ISubject.cs" />
     <Compile Include="Logging.cs" />
+    <Compile Include="PlatformsObserver.cs" />
+    <Compile Include="PlayerObserver.cs" />
     <Compile Include="PlayerPositionObserver.cs" />
     <Compile Include="Shapes\EntityShapes\Rocket.cs" />
     <Compile Include="Shapes\EntityShapes\Saw.cs" />

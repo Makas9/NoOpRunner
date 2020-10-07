@@ -201,7 +201,7 @@ namespace NoOpRunner.Core.Shapes
 
         public bool IsLookingLeft
         {
-            get => StateMachine.IsTurnedLeft;
+            get => StateMachine.IsLookingLeft;
             set => StateMachine.IsLookingLeft = value;
         }
 

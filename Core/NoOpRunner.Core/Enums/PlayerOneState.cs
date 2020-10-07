@@ -1,6 +1,6 @@
 ﻿namespace NoOpRunner.Core.Enums
 {
-    public enum PlayerOneState : long
+    public enum PlayerOneState
     {
         Idle,
         Running,

@@ -23,14 +23,15 @@ namespace NoOpRunner.Core.PlayerStates
 
         public bool StateHasChanged => currentState != LastState;
 
-        public bool IsTurnedLeft { get; private set; }
+        private bool _isLookingLeft;
 
         public bool IsLookingLeft
         {
+            get => _isLookingLeft;
             set
             {
-                isLastDirectionLeft = IsTurnedLeft;
-                IsTurnedLeft = value;
+                isLastDirectionLeft = _isLookingLeft;
+                _isLookingLeft = value;
             }
         }
 
@@ -51,7 +52,7 @@ namespace NoOpRunner.Core.PlayerStates
             }
         }
 
-        public bool IsTurning => isLastDirectionLeft != IsTurnedLeft;
+        public bool IsTurning => isLastDirectionLeft != IsLookingLeft;
 
         public void Jump()
         {
@@ -79,14 +80,12 @@ namespace NoOpRunner.Core.PlayerStates
 
         public void TurnRight()
         {
-            isLastDirectionLeft = IsTurnedLeft;
-            IsTurnedLeft = false;
+            IsLookingLeft = false;
         }
 
         public void TurnLeft()
         {
-            isLastDirectionLeft = IsTurnedLeft;
-            IsTurnedLeft = true;
+            IsLookingLeft = true;
         }
     }
 }

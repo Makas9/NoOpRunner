@@ -16,13 +16,11 @@ namespace NoOpRunner.Core
 
         public event EventHandler<MessageDto> OnMessageReceived;
 
-        public GamePlatforms GamePlatforms { get; private set; }
+        public GamePlatforms GamePlatforms { get; set; }
 
-        public Player Player { get; private set; }
+        public Player Player { get; set; }
 
         public bool IsHost { get; private set; }
-
-        public bool IsClientConnected { get; private set; }
 
         private readonly IConnectionManager connectionManager;
 
@@ -63,10 +61,49 @@ namespace NoOpRunner.Core
 
         public async Task ConnectToHub()
         {
-            await connectionManager.Connect("http://localhost:8080", HandleMessage);
+            await connectionManager.Connect("http://localhost:8080", ClientHandleMessage);
         }
 
-        private async void HandleMessage(MessageDto message)
+        private async void HostHandleMessage(MessageDto message)
+        {
+            MessageDto messageDto = null;
+            switch (message.MessageType)
+            {
+                case MessageType.InitialConnection:
+                    break;
+                case MessageType.PlatformsStatus:
+                    messageDto = new MessageDto()
+                    {
+                        MessageType = message.MessageType,
+                        Payload = GamePlatforms
+                    };
+                    break;
+                case MessageType.PlayerStatus:
+                    messageDto = new MessageDto()
+                    {
+                        MessageType = message.MessageType,
+                        Payload = Player
+                    };
+                    break;
+                case MessageType.InitialGame:
+                    messageDto = new MessageDto()
+                    {
+                        MessageType = message.MessageType,
+                        Payload = new GameStateUpdateDto()
+                        {
+                            Platforms = GamePlatforms,
+                            Player = Player
+                        }
+                    };
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            await connectionManager.SendMessageToClient(messageDto);
+        }
+
+        private void ClientHandleMessage(MessageDto message)
         {
             if (!IsGameStarted)
             {
@@ -75,31 +112,18 @@ namespace NoOpRunner.Core
 
             switch (message.MessageType)
             {
-                case MessageType.InitialConnection:
-                    IsClientConnected = true;
-
-                    break;
-                case MessageType.AskGameState:
-
-                    await connectionManager.SendMessageToClient(new MessageDto
-                    {
-                        MessageType = MessageType.InitialGame,
-                        Payload = new GameStateUpdateDto
-                        {
-                            Player = Player,
-                            Platforms = GamePlatforms
-                        }
-                    });
-
-                    break;
                 case MessageType.PlayerStateUpdate:
                 case MessageType.PlayerPositionUpdate:
-
                     HandlePlayerUpdate(message);
 
                     break;
                 case MessageType.InitialGame:
+                case MessageType.PlatformsStatus:
+                case MessageType.PlayerStatus:
                     Notify(this, message.MessageType, message.Payload);
+                    
+                    break;
+                case MessageType.InitialConnection:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -110,24 +134,43 @@ namespace NoOpRunner.Core
 
         private async void HandlePlayerUpdate(MessageDto message)
         {
-            if (GamePlatforms == null || Player == null)
+            switch (GamePlatforms)
             {
-                await connectionManager.SendMessageToHost(new MessageDto()
+                case null when Player == null:
+                    await connectionManager.SendMessageToHost(new MessageDto()
+                    {
+                        MessageType = MessageType.InitialGame
+                    });
+                    break;
+                case null:
+                    await connectionManager.SendMessageToHost(new MessageDto()
+                    {
+                        MessageType = MessageType.PlatformsStatus
+                    });
+                    break;
+                default:
                 {
-                    MessageType = MessageType.AskGameState,
-                    Payload = null
-                });
-            }
-            else
-            {
-                Notify(this, message.MessageType, message.Payload);
+                    if (Player == null)
+                    {
+                        await connectionManager.SendMessageToHost(new MessageDto()
+                        {
+                            MessageType = MessageType.PlayerStatus
+                        });
+                    }
+                    else
+                    {
+                        Notify(this, message.MessageType, message.Payload);
+                    }
+
+                    break;
+                }
             }
         }
 
         public void StartHosting()
         {
             InitializeGameState();
-            connectionManager.Start("http://localhost:8080", HandleMessage);
+            connectionManager.Start("http://localhost:8080", HostHandleMessage);
             IsHost = true;
 
             Logging.Instance.Write("Started hosting..");

@@ -1,9 +1,11 @@
-﻿namespace NoOpRunner.Core.Interfaces
+﻿using NoOpRunner.Core.Enums;
+
+namespace NoOpRunner.Core.Interfaces
 {
     public interface ISubject
     {
-        void Notify(object sender, object observerType = null, object arg = null);
-        void AddObserver(IObserver observer, object arg = null);
-        void RemoveObserver(IObserver observer, object arg = null);
+        void Notify(NoOpRunner sender, MessageType observerType, object arg = null);
+        void AddObserver(IObserver observer, MessageType observerType);
+        void RemoveObserver(IObserver observer, MessageType observerType);
     }
 }
