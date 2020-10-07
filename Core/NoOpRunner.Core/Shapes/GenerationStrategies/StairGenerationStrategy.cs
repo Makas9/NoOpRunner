@@ -6,6 +6,8 @@ namespace NoOpRunner.Core.Shapes.GenerationStrategies
     {
         public override List<ShapeBlock> GenerateShapeBlocks(int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY)
         {
+            Logging.Instance.Write("Stair generation strategy used.");
+
             var blocks = new List<ShapeBlock>();
             for (int curX = lowerBoundX, curY = lowerBoundY; curX < upperBoundX && curY < upperBoundY; ++curX, ++curY)
             {
