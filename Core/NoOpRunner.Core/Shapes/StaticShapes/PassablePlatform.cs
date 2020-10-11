@@ -1,6 +1,4 @@
-﻿using NoOpRunner.Core.Entities;
-
-namespace NoOpRunner.Core.Shapes
+﻿namespace NoOpRunner.Core.Shapes
 {
     public class PassablePlatform : StaticShape
     {

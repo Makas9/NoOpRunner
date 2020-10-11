@@ -1,5 +1,5 @@
-﻿using NoOpRunner.Core.Dtos;
-using NoOpRunner.Core.Entities;
+﻿using System.Collections.Generic;
+using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 
 namespace NoOpRunner.Core.Shapes
@@ -45,6 +45,20 @@ namespace NoOpRunner.Core.Shapes
                     }
                 }
             }
+        }
+        
+        /// <summary>
+        /// For platforms sliding
+        /// </summary>
+        public void PushAndRemove()
+        {
+            ShapeBlocks.RemoveAll(x => x.OffsetX <= 0);
+            ShapeBlocks.ForEach(x=> x.OffsetX--);
+        }
+
+        public void AppendPlatform(IList<ShapeBlock> shapeBlocks)
+        {
+            ShapeBlocks.AddRange(shapeBlocks);
         }
 
         protected void AddShape(bool horizontal, int posX, int posY, int blockLength)

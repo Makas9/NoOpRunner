@@ -1,10 +1,9 @@
-﻿using Newtonsoft.Json;
-using NoOpRunner.Core.Enums;
-using NoOpRunner.Core.Shapes;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
+using NoOpRunner.Core.Enums;
 
-namespace NoOpRunner.Core.Entities
+namespace NoOpRunner.Core.Shapes
 {
     public abstract class BaseShape
     {
@@ -91,7 +90,6 @@ namespace NoOpRunner.Core.Entities
                 Color = color
             });
         }
-
         public virtual void OnClick()
         {
             ShapeBlocks.ForEach(x =>

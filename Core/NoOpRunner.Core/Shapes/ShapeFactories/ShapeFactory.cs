@@ -1,5 +1,4 @@
 ﻿using NoOpRunner.Core.Dtos;
-using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Shapes.EntityShapes;
 using System;

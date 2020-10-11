@@ -34,17 +34,6 @@ namespace NoOpRunner.Client
 
                 Game = viewModel.Game;
 
-                if (!Game.IsHost)
-                {
-                    Game.AddObserver(new ClientGameInitObserver(), MessageType.InitialGame);
-                    
-                    Game.AddObserver(new PlayerStateObserver(), MessageType.PlayerStateUpdate);
-                    Game.AddObserver(new PlayerPositionObserver(), MessageType.PlayerPositionUpdate);
-                    
-                    Game.AddObserver(new PlayerObserver(), MessageType.PlayerStatus);
-                    Game.AddObserver(new PlatformsObserver(), MessageType.PlatformsStatus);
-                }
-
                 ConfigureKeys();
 
                 timer = new DispatcherTimer();
@@ -66,11 +55,13 @@ namespace NoOpRunner.Client
                 await Game.FireHostLoop();
             }
 
-            if (Game.GamePlatforms != null && Game.Player != null)
+            if (Game.PlatformsContainer != null && Game.Player != null && Game.PowerUpsContainer != null)
             {
-                GameWindowRenderer.RenderPlayer(Game.Player, player_window, Game.GamePlatforms);
+                GameWindowRenderer.RenderPowerUps(Game.PowerUpsContainer, power_ups);//for now
+                
+                GameWindowRenderer.RenderPlayer(Game.Player, player_window, Game.PlatformsContainer);
 
-                GameWindowRenderer.RenderMap(Game.GamePlatforms, game_platforms);
+                GameWindowRenderer.RenderPlatforms(Game.PlatformsContainer, game_platforms);
             }
 
 

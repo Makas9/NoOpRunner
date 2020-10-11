@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
+using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.PlayerStates;
 
 namespace NoOpRunner.Core.Shapes
 {
-    public class Player : MovingShape
+    public class Player : MovingShape, IObserver
     {
         private const int MaxHealth = 3;
         private int currentHealth = 0;
@@ -202,13 +202,29 @@ namespace NoOpRunner.Core.Shapes
         public bool IsLookingLeft
         {
             get => StateMachine.IsLookingLeft;
-            set => StateMachine.IsLookingLeft = value;
+            private set => StateMachine.IsLookingLeft = value;
         }
 
         public PlayerOneState State
         {
             get => StateMachine.State;
-            set => StateMachine.State = value;
+            private set => StateMachine.State = value;
+        }
+
+        public void Update(MessageDto message)
+        {
+            if (message.MessageType == MessageType.PlayerUpdate)
+            {
+                var messageDto = message.Payload as PlayerStateDto;
+
+                State = messageDto.State;
+                IsLookingLeft = messageDto.IsLookingLeft;
+            
+                CenterPosX = messageDto.XPosition;
+                CenterPosY = messageDto.YPosition;
+            }
+
+            
         }
     }
 }

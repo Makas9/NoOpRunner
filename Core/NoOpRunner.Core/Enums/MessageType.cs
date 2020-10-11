@@ -4,9 +4,11 @@
     {
         InitialGame,
         PlatformsStatus,
+        PlatformsUpdate,
         PlayerStatus,
         InitialConnection,
-        PlayerStateUpdate,
-        PlayerPositionUpdate
+        PlayerUpdate,
+        PowerUpsUpdate,
+        PowerUpsStatus
     }
 }

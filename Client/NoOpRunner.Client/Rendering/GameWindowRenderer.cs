@@ -15,7 +15,45 @@ namespace NoOpRunner.Client.Rendering
 {
     public static class GameWindowRenderer
     {
-        public static void RenderMap(GamePlatforms platforms, Canvas canvas)
+        public static void RenderPowerUps(ShapesContainer powerUps, Canvas canvas)
+        {
+            var rectangleWidth = canvas.ActualWidth / powerUps.SizeX;
+            var rectangleHeight = canvas.ActualHeight / powerUps.SizeY;
+
+
+            var pixels = powerUps.GetShapesEnumerable().ToList();
+            if (canvas.Children.Count != pixels.Count)
+            {
+                canvas.Children.Clear();
+
+                foreach (var pixel in pixels)
+                {
+                    var rec = new Rectangle
+                    {
+                        Width = rectangleWidth,
+                        Height = rectangleHeight,
+                        Fill = ColorBrushMap[pixel.Color]
+                    };
+                    Canvas.SetLeft(rec, rectangleWidth * pixel.X);
+                    Canvas.SetBottom(rec, rectangleHeight * pixel.Y);
+
+                    canvas.Children.Add(rec);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < pixels.Count; i++)
+                {
+                    canvas.Children[i].SetValue(Canvas.WidthProperty, rectangleWidth);
+                    canvas.Children[i].SetValue(Canvas.HeightProperty, rectangleHeight);
+
+                    Canvas.SetLeft(canvas.Children[i], rectangleWidth * pixels[i].X);
+                    Canvas.SetBottom(canvas.Children[i], rectangleHeight * pixels[i].Y);
+                }
+            }
+        }
+
+        public static void RenderPlatforms(ShapesContainer platforms, Canvas canvas)
         {
             var rectangleWidth = canvas.ActualWidth / platforms.SizeX;
             var rectangleHeight = canvas.ActualHeight / platforms.SizeY;
@@ -26,7 +64,7 @@ namespace NoOpRunner.Client.Rendering
             }
             */
 
-            var pixels = platforms.GetCurrentMapEnumerable().ToList();
+            var pixels = platforms.GetShapesEnumerable().ToList();
             if (canvas.Children.Count != pixels.Count)
             {
                 canvas.Children.Clear();
@@ -60,7 +98,7 @@ namespace NoOpRunner.Client.Rendering
             }
         }
 
-        public static void RenderPlayer(Player player, Canvas canvas, GamePlatforms platforms)
+        public static void RenderPlayer(Player player, Canvas canvas, ShapesContainer platforms)
         {
             var rectangleWidth = canvas.ActualWidth / platforms.SizeX;
             var rectangleHeight = canvas.ActualHeight / platforms.SizeY;
@@ -108,7 +146,6 @@ namespace NoOpRunner.Client.Rendering
                 canvas.Children.Add(playerPixelImage);
 
                 playerPixelImage.StartAnimation();
-                
             }
         }
 

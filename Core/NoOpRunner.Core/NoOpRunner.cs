@@ -1,24 +1,33 @@
 using NoOpRunner.Core.Dtos;
-using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
 using NoOpRunner.Core.Shapes.ShapeFactories;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace NoOpRunner.Core
 {
-    public class NoOpRunner : ClientSubject
+    /// <summary>
+    /// Divide to diff Game class(one for player one, another for player two), and diff connection classes(Proxy pattern in future)
+    /// connection classes implement ISubject and from Game class notify, that's two patterns
+    /// for now this is stupid but will be fixed with proxy pattern(maybe???)
+    /// </summary>
+    public class NoOpRunner : ISubject
     {
         public bool IsGameStarted { get; set; } = false;
         public event EventHandler OnLoopFired;
 
+        private IList<IObserver> Observers { get; set; }
+
         public event EventHandler<MessageDto> OnMessageReceived;
 
-        public GamePlatforms GamePlatforms { get; set; }
+        public PlatformsContainer PlatformsContainer { get; private set; }
 
-        public Player Player { get; set; }
+        public Player Player { get; private set; }
+
+        public PowerUpsContainer PowerUpsContainer { get; private set; }
 
         public bool IsHost { get; private set; }
 
@@ -27,6 +36,7 @@ namespace NoOpRunner.Core
         public NoOpRunner(IConnectionManager connectionManager)
         {
             this.connectionManager = connectionManager;
+            Observers = new List<IObserver>();
         }
 
         private int RandLocation(int[] platformXCoords, int[] platformYCoords)
@@ -75,7 +85,7 @@ namespace NoOpRunner.Core
                     messageDto = new MessageDto()
                     {
                         MessageType = message.MessageType,
-                        Payload = GamePlatforms
+                        Payload = PlatformsContainer
                     };
                     break;
                 case MessageType.PlayerStatus:
@@ -85,13 +95,20 @@ namespace NoOpRunner.Core
                         Payload = Player
                     };
                     break;
+                case MessageType.PowerUpsStatus:
+                    messageDto = new MessageDto()
+                    {
+                        MessageType = MessageType.PowerUpsStatus,
+                        Payload = PowerUpsContainer
+                    };
+                    break;
                 case MessageType.InitialGame:
                     messageDto = new MessageDto()
                     {
                         MessageType = message.MessageType,
-                        Payload = new GameStateUpdateDto()
+                        Payload = new GameStateDto()
                         {
-                            Platforms = GamePlatforms,
+                            Platforms = PlatformsContainer,
                             Player = Player
                         }
                     };
@@ -103,7 +120,7 @@ namespace NoOpRunner.Core
             await connectionManager.SendMessageToClient(messageDto);
         }
 
-        private void ClientHandleMessage(MessageDto message)
+        private async void ClientHandleMessage(MessageDto message)
         {
             if (!IsGameStarted)
             {
@@ -112,16 +129,49 @@ namespace NoOpRunner.Core
 
             switch (message.MessageType)
             {
-                case MessageType.PlayerStateUpdate:
-                case MessageType.PlayerPositionUpdate:
-                    HandlePlayerUpdate(message);
+                case MessageType.PlatformsUpdate:
+                case MessageType.PowerUpsUpdate:
+                case MessageType.PlayerUpdate:
+
+                    if (!await CheckGameStatus())
+                        return;
+
+                    Notify(message);
 
                     break;
                 case MessageType.InitialGame:
+                    var gameState = message.Payload as GameStateDto;
+
+                    Player = gameState.Player;
+                    PlatformsContainer = gameState.Platforms;
+                    PowerUpsContainer = gameState.PowerUps;
+
+                    AddObserver(gameState.Player);
+                    AddObserver(gameState.Platforms);
+                    AddObserver(gameState.PowerUps);
+
+                    break;
                 case MessageType.PlatformsStatus:
+                    PlatformsContainer = message.Payload as PlatformsContainer;
+
+                    RemoveObserver(PlatformsContainer);
+                    AddObserver(message.Payload as PlatformsContainer);
+
+                    break;
                 case MessageType.PlayerStatus:
-                    Notify(this, message.MessageType, message.Payload);
-                    
+                    Player = message.Payload as Player;
+
+                    RemoveObserver(Player);
+                    AddObserver(message.Payload as Player);
+
+                    break;
+                case MessageType.PowerUpsStatus:
+
+                    PowerUpsContainer = message.Payload as PowerUpsContainer;
+
+                    RemoveObserver(PlatformsContainer);
+                    AddObserver(message.Payload as PowerUpsContainer);
+
                     break;
                 case MessageType.InitialConnection:
                     break;
@@ -132,39 +182,35 @@ namespace NoOpRunner.Core
             OnMessageReceived?.Invoke(this, message);
         }
 
-        private async void HandlePlayerUpdate(MessageDto message)
+        private async Task<bool> CheckGameStatus()
         {
-            switch (GamePlatforms)
+            if (PowerUpsContainer == null)
             {
-                case null when Player == null:
-                    await connectionManager.SendMessageToHost(new MessageDto()
-                    {
-                        MessageType = MessageType.InitialGame
-                    });
-                    break;
-                case null:
-                    await connectionManager.SendMessageToHost(new MessageDto()
-                    {
-                        MessageType = MessageType.PlatformsStatus
-                    });
-                    break;
-                default:
+                await connectionManager.SendMessageToHost(new MessageDto()
                 {
-                    if (Player == null)
-                    {
-                        await connectionManager.SendMessageToHost(new MessageDto()
-                        {
-                            MessageType = MessageType.PlayerStatus
-                        });
-                    }
-                    else
-                    {
-                        Notify(this, message.MessageType, message.Payload);
-                    }
-
-                    break;
-                }
+                    MessageType = MessageType.PowerUpsStatus
+                });
             }
+            else if (PlatformsContainer == null)
+            {
+                await connectionManager.SendMessageToHost(new MessageDto()
+                {
+                    MessageType = MessageType.PlatformsStatus
+                });
+            }
+            else if (Player == null)
+            {
+                await connectionManager.SendMessageToHost(new MessageDto()
+                {
+                    MessageType = MessageType.PlayerStatus
+                });
+            }
+            else
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public void StartHosting()
@@ -178,47 +224,49 @@ namespace NoOpRunner.Core
 
         public async Task FireHostLoop()
         {
-            var map = (WindowPixel[,]) GamePlatforms.GetCurrentMap().Clone();
+            var map = (WindowPixel[,]) PlatformsContainer.GetShapes().Clone();
 
             //this need to be separated, player and map move at diff speed
             //right now map dont move at all
             Player.OnLoopFired(map);
-            GamePlatforms.OnLoopFired(map);
+            PlatformsContainer.OnLoopFired(map);
 
             //Less data to send than sending whole player instance
-            await connectionManager.SendMessageToClient(new MessageDto
+            await connectionManager.SendMessageToClient(new MessageDto()
             {
-                MessageType = MessageType.PlayerStateUpdate,
+                MessageType = MessageType.PlayerUpdate,
                 Payload = new PlayerStateDto()
                 {
                     State = Player.State,
+                    XPosition = Player.CenterPosX,
+                    YPosition = Player.CenterPosY,
                     IsLookingLeft = Player.IsLookingLeft
                 }
             });
-
-            await connectionManager.SendMessageToClient(new MessageDto()
-            {
-                MessageType = MessageType.PlayerPositionUpdate,
-                Payload = (Player.CenterPosX, Player.CenterPosY)
-            });
         }
 
-        public void FireClientLoop(GamePlatforms platforms, Player player)
+        public void FireClientLoop(PlatformsContainer platforms, Player player)
         {
             Player = player;
-            GamePlatforms = platforms;
+            PlatformsContainer = platforms;
         }
 
         public void HandleKeyPress(KeyPress keyPress)
         {
-            Player.HandleKeyPress(keyPress, (WindowPixel[,]) GamePlatforms.GetCurrentMap().Clone());
+            Player.HandleKeyPress(keyPress, (WindowPixel[,]) PlatformsContainer.GetShapes().Clone());
         }
 
         private void InitializeGameState()
         {
             //Common aspect ration
-            GamePlatforms = new GamePlatforms(GameSettings.AspectRatioWidth * GameSettings.CellsSizeMultiplier,
+            PlatformsContainer = new PlatformsContainer(
+                GameSettings.AspectRatioWidth * GameSettings.CellsSizeMultiplier,
                 GameSettings.AspectRatioHeight * GameSettings.CellsSizeMultiplier);
+
+            PowerUpsContainer = new PowerUpsContainer(
+                GameSettings.AspectRatioWidth * GameSettings.CellsSizeMultiplier,
+                GameSettings.AspectRatioHeight * GameSettings.CellsSizeMultiplier);
+
             Player = new Player(1, 2);
 
             /* SHAPE FACTORY DESIGN PATTERN */
@@ -241,23 +289,45 @@ namespace NoOpRunner.Core
 
             AbstractFactory impassableFactory = FactoryProducer.GetFactory(passable: false);
             BaseShape firstPlatform = impassableFactory.CreateStaticShape(Shape.Platform, 0, 0, 0, 10);
-            GamePlatforms.AddShape(firstPlatform); // Main platform
+            PlatformsContainer.AddShape(firstPlatform); // Main platform
 
             AbstractFactory passableFactory = FactoryProducer.GetFactory(passable: true);
             BaseShape secondPlatform = passableFactory.CreateStaticShape(Shape.Platform, 0, 10, 10, 20);
-            GamePlatforms.AddShape(secondPlatform); // Second platform
+            PlatformsContainer.AddShape(secondPlatform); // Second platform
 
             var coordinates = firstPlatform.GetCoords();
             int[] xCoords = coordinates.Item1;
             int[] yCoords = coordinates.Item2;
             int randomLocation = RandLocation(xCoords, yCoords);
             PowerUp testPowerUp = new PowerUp(xCoords[randomLocation], yCoords[randomLocation], PowerUps.Double_Jump);
-            GamePlatforms.AddShape(testPowerUp.SpawnPowerUp());
+            PowerUpsContainer.AddShape(testPowerUp.SpawnPowerUp());
         }
 
         public void HandleKeyRelease(KeyPress key)
         {
-            Player.HandleKeyRelease(key, (WindowPixel[,]) GamePlatforms.GetCurrentMap().Clone());
+            Player.HandleKeyRelease(key, (WindowPixel[,]) PlatformsContainer.GetShapes().Clone());
+        }
+
+        public void Notify(MessageDto message)
+        {
+            foreach (var observer in Observers)
+            {
+                observer.Update(message);
+            }
+        }
+
+        public void AddObserver(IObserver observer)
+        {
+            Observers.Add(observer);
+        }
+
+        public void RemoveObserver(IObserver observer)
+        {
+            if (Observers.Contains(observer))
+            {
+                Observers.Remove(observer);    
+            }
+            
         }
     }
 }

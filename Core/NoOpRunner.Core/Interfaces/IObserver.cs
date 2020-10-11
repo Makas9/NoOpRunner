@@ -1,7 +1,9 @@
-﻿namespace NoOpRunner.Core.Interfaces
+﻿using NoOpRunner.Core.Dtos;
+
+namespace NoOpRunner.Core.Interfaces
 {
     public interface IObserver
     {
-        void Update(NoOpRunner sender, object args);
+        void Update(MessageDto message);
     }
 }
