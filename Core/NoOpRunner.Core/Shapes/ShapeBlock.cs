@@ -1,6 +1,6 @@
 ﻿using NoOpRunner.Core.Enums;
 
-namespace NoOpRunner.Core.Shapes
+namespace NoOpRunner.Core.Entities
 {
     public class ShapeBlock
     {

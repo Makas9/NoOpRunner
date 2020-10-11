@@ -2,7 +2,7 @@
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 
-namespace NoOpRunner.Core.Shapes
+namespace NoOpRunner.Core.Entities
 {
     public abstract class StaticShape : BaseShape
     {

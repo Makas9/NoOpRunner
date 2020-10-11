@@ -1,8 +1,8 @@
 ﻿using NoOpRunner.Core.Enums;
-using NoOpRunner.Core.Shapes.EntityShapes;
 using System;
+using NoOpRunner.Core.Entities.EntityShapes;
 
-namespace NoOpRunner.Core.Shapes.ShapeFactories
+namespace NoOpRunner.Core.Entities.ShapeFactories
 {
     class ImpassableShapeFactory : AbstractFactory
     {

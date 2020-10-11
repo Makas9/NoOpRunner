@@ -1,5 +1,5 @@
 ﻿using NoOpRunner.Core;
-using NoOpRunner.Core.Shapes;
+using NoOpRunner.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

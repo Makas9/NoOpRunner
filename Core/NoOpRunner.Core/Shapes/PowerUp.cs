@@ -1,9 +1,9 @@
 ﻿using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
-using NoOpRunner.Core.Shapes.EntityShapes;
 using System;
+using NoOpRunner.Core.Entities.EntityShapes;
 
-namespace NoOpRunner.Core.Shapes
+namespace NoOpRunner.Core.Entities
 {
     public class PowerUp : BaseShape
     {

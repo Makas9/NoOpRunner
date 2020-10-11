@@ -1,8 +1,8 @@
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
-using NoOpRunner.Core.Shapes;
-using NoOpRunner.Core.Shapes.ShapeFactories;
+using NoOpRunner.Core.Entities;
+using NoOpRunner.Core.Entities.ShapeFactories;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

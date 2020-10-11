@@ -5,7 +5,7 @@ using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.PlayerStates;
 
-namespace NoOpRunner.Core.Shapes
+namespace NoOpRunner.Core.Entities
 {
     public class Player : MovingShape, IObserver
     {

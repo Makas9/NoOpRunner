@@ -1,4 +1,4 @@
-﻿using NoOpRunner.Core.Shapes;
+﻿using NoOpRunner.Core.Entities;
 
 namespace NoOpRunner.Core.Dtos
 {

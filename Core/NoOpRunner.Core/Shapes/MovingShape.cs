@@ -1,6 +1,6 @@
 using System;
 
-namespace NoOpRunner.Core.Shapes
+namespace NoOpRunner.Core.Entities
 {
     public abstract class MovingShape : BaseShape
     {

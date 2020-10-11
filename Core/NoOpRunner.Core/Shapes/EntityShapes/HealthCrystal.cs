@@ -1,7 +1,7 @@
 ﻿using NoOpRunner.Core.Enums;
 using System;
 
-namespace NoOpRunner.Core.Shapes.EntityShapes
+namespace NoOpRunner.Core.Entities.EntityShapes
 {
     class HealthCrystal : EntityShape
     {
