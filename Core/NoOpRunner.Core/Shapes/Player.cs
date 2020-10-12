@@ -4,24 +4,22 @@ using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.PlayerStates;
+using NoOpRunner.Core.Shapes.GenerationStrategies;
 
-namespace NoOpRunner.Core.Entities
+namespace NoOpRunner.Core.Shapes
 {
     public class Player : MovingShape, IObserver
     {
         private const int MaxHealth = 3;
         private int currentHealth = 0;
-        
+
         private const int HitBoxWidth = 1;
         private const int HitBoxHeight = 2;
 
-        public Player(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
+        public Player(int x, int y) : base(new FillGenerationStrategy(), x, y, x + HitBoxWidth, y + HitBoxHeight)
         {
             StateMachine = new PlayerOneStateMachine();
-
             currentHealth = MaxHealth;
-            MapShapeY(0, 0, HitBoxHeight, Color.Blue);
-
         }
 
         private const int MovementIncrement = 1;
@@ -39,7 +37,7 @@ namespace NoOpRunner.Core.Entities
         public override void OnLoopFired(WindowPixel[,] gameScreen)
         {
             base.OnLoopFired(gameScreen);
-            
+
             if (IsJumping)
             {
                 if (VerticalAccelerationPool >= JumpAcceleration)
@@ -65,14 +63,14 @@ namespace NoOpRunner.Core.Entities
                 else
                 {
                     CanJump = true;
-                    
+
                     if (HorizontalSpeed == 0)
                     {
                         StateMachine.Idle();
                     }
                 }
             }
-            
+
             if (Math.Abs(HorizontalSpeed) > 0 && CanJump)
             {
                 StateMachine.Run();
@@ -80,7 +78,7 @@ namespace NoOpRunner.Core.Entities
         }
 
         /// <summary>
-        /// Unused, will need for collision, rename who needs it 
+        /// Unused, will need for collision, rename who needs it
         /// </summary>
         /// <returns></returns>
         public override List<WindowPixel> Render()
@@ -95,14 +93,14 @@ namespace NoOpRunner.Core.Entities
         public WindowPixel GetAnimationPixel(out int hitBoxY, out int hitBoxX)
         {
             var animationShapeBlock = ShapeBlocks[0];
-            
+
             var absX = CenterPosX + animationShapeBlock.OffsetX;
             var absY = CenterPosY + animationShapeBlock.OffsetY;
 
             hitBoxX = HitBoxWidth;
             hitBoxY = HitBoxHeight;
-            
-            return new WindowPixel(absX, absY, animationShapeBlock.Color, true); 
+
+            return new WindowPixel(absX, absY, isShape: true);
         }
         public void HandleKeyPress(KeyPress key, WindowPixel[,] gameScreen)
         {
@@ -219,12 +217,12 @@ namespace NoOpRunner.Core.Entities
 
                 State = messageDto.State;
                 IsLookingLeft = messageDto.IsLookingLeft;
-            
+
                 CenterPosX = messageDto.XPosition;
                 CenterPosY = messageDto.YPosition;
             }
 
-            
+
         }
     }
 }

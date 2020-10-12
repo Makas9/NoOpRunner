@@ -1,17 +1,14 @@
-﻿namespace NoOpRunner.Core.Entities
+﻿using NoOpRunner.Core.Shapes.GenerationStrategies;
+
+namespace NoOpRunner.Core.Shapes.StaticShapes
 {
     public class ImpassablePlatform : StaticShape
     {
+        protected ImpassablePlatform() { } // Needed for JSON deserialization
+        public ImpassablePlatform(GenerationStrategy strategy, int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY) 
+            : base(strategy, lowerBoundX, lowerBoundY, upperBoundX, upperBoundY) { }
 
-        public ImpassablePlatform(int centerPosX, int centerPosY, int bottomPosY, int topPosY) : base(centerPosX, centerPosY, bottomPosY, topPosY)
-        {
-
-        }
-
-        public override bool CanOverlap(BaseShape other)
-        {
-            return false;
-        }
+        public override bool CanOverlap(BaseShape other) => false;
 
         public override void OnCollision(BaseShape other)
         {

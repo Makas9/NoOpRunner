@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using NoOpRunner.Core.Entities;
+using NoOpRunner.Core.Shapes;
 
 namespace NoOpRunner.Core
 {

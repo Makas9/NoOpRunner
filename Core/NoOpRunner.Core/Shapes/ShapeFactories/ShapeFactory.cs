@@ -1,9 +1,8 @@
-﻿using NoOpRunner.Core.Dtos;
+﻿using System;
 using NoOpRunner.Core.Enums;
-using System;
-using NoOpRunner.Core.Entities.EntityShapes;
+using NoOpRunner.Core.Shapes.EntityShapes;
 
-namespace NoOpRunner.Core.Entities.ShapeFactories
+namespace NoOpRunner.Core.Shapes.ShapeFactories
 {
     class ShapeFactory : Factory
     {

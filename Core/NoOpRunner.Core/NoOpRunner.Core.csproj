@@ -60,6 +60,13 @@
     <Compile Include="Shapes\EntityShapes\Saw.cs" />
     <Compile Include="Shapes\EntityShapes\DamageCrystal.cs" />
     <Compile Include="Shapes\EntityShape.cs" />
+    <Compile Include="Shapes\GenerationStrategies\CombinedGenerationStrategy.cs" />
+    <Compile Include="Shapes\GenerationStrategies\FillGenerationStrategy.cs" />
+    <Compile Include="Shapes\GenerationStrategies\GenerationStrategy.cs" />
+    <Compile Include="Shapes\GenerationStrategies\LineGenerationStrategy.cs" />
+    <Compile Include="Shapes\GenerationStrategies\PlatformerGenerationStrategy.cs" />
+    <Compile Include="Shapes\GenerationStrategies\RandomlySegmentedGenerationStrategy.cs" />
+    <Compile Include="Shapes\GenerationStrategies\StairGenerationStrategy.cs" />
     <Compile Include="Shapes\ShapeFactories\ImpassableShapeFactory.cs" />
     <Compile Include="Shapes\StaticShape.cs" />
     <Compile Include="Shapes\ShapeFactories\PassableShapeFactory.cs" />

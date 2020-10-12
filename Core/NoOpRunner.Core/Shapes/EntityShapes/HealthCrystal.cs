@@ -1,14 +1,11 @@
-﻿using NoOpRunner.Core.Enums;
-using System;
+﻿using System;
+using NoOpRunner.Core.Shapes.GenerationStrategies;
 
-namespace NoOpRunner.Core.Entities.EntityShapes
+namespace NoOpRunner.Core.Shapes.EntityShapes
 {
     class HealthCrystal : EntityShape
     {
-        public HealthCrystal(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
-        {
-            MapShapeY(1, 1, 2, Color.Green);
-        }
+        public HealthCrystal(int x, int y) : base(new FillGenerationStrategy(), x, y, x + 1, y + 2) { }
 
         public override bool CanOverlap(BaseShape other)
         {

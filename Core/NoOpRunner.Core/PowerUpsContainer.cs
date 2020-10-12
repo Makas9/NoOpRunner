@@ -3,7 +3,7 @@ using System.Linq;
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
-using NoOpRunner.Core.Entities;
+using NoOpRunner.Core.Shapes;
 
 namespace NoOpRunner.Core
 {

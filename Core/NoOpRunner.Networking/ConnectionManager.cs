@@ -32,7 +32,8 @@ namespace NoOpRunner.Networking
             {
                 callback(JsonConvert.DeserializeObject<MessageDto>(messageJson, new JsonSerializerSettings
                 {
-                    TypeNameHandling = TypeNameHandling.Auto
+                    TypeNameHandling = TypeNameHandling.Auto,
+                    ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
                 }));
             });
 

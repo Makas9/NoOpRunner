@@ -1,11 +1,12 @@
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
-using NoOpRunner.Core.Entities;
-using NoOpRunner.Core.Entities.ShapeFactories;
+using NoOpRunner.Core.Shapes.GenerationStrategies;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using NoOpRunner.Core.Shapes;
+using NoOpRunner.Core.Shapes.ShapeFactories;
 
 namespace NoOpRunner.Core
 {
@@ -259,15 +260,9 @@ namespace NoOpRunner.Core
         private void InitializeGameState()
         {
             //Common aspect ration
-            PlatformsContainer = new PlatformsContainer(
-                GameSettings.AspectRatioWidth * GameSettings.CellsSizeMultiplier,
-                GameSettings.AspectRatioHeight * GameSettings.CellsSizeMultiplier);
-
-            PowerUpsContainer = new PowerUpsContainer(
-                GameSettings.AspectRatioWidth * GameSettings.CellsSizeMultiplier,
-                GameSettings.AspectRatioHeight * GameSettings.CellsSizeMultiplier);
-
-            Player = new Player(1, 2);
+            PlatformsContainer = new PlatformsContainer(GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount);
+            
+            PowerUpsContainer = new PowerUpsContainer(GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount);
 
             /* SHAPE FACTORY DESIGN PATTERN */
             /*ShapeFactory shapeFactory = new ShapeFactory();
@@ -288,19 +283,25 @@ namespace NoOpRunner.Core
             GamePlatforms.AddShape(aShape3);*/
 
             AbstractFactory impassableFactory = FactoryProducer.GetFactory(passable: false);
-            BaseShape firstPlatform = impassableFactory.CreateStaticShape(Shape.Platform, 0, 0, 0, 10);
-            PlatformsContainer.AddShape(firstPlatform); // Main platform
+            BaseShape firstPlatform = impassableFactory.CreateStaticShape(Shape.Platform, new CombinedGenerationStrategy(), 0, 0, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount / 3);
+            PlatformsContainer.AddShape(firstPlatform);
 
             AbstractFactory passableFactory = FactoryProducer.GetFactory(passable: true);
-            BaseShape secondPlatform = passableFactory.CreateStaticShape(Shape.Platform, 0, 10, 10, 20);
-            PlatformsContainer.AddShape(secondPlatform); // Second platform
+            BaseShape secondPlatform = passableFactory.CreateStaticShape(Shape.Platform, new PlatformerGenerationStrategy(), 0, GameSettings.VerticalCellCount / 3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount * 2 / 3);
+            PlatformsContainer.AddShape(secondPlatform);
+
+            // Generate the player above the first platform
+            Player = new Player(secondPlatform.CenterPosX, secondPlatform.CenterPosY + 1);
+
+            BaseShape thirdPlatform = passableFactory.CreateStaticShape(Shape.Platform, new RandomlySegmentedGenerationStrategy(), 0, GameSettings.VerticalCellCount * 2/3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount - 3);
+            PlatformsContainer.AddShape(thirdPlatform);
 
             var coordinates = firstPlatform.GetCoords();
             int[] xCoords = coordinates.Item1;
             int[] yCoords = coordinates.Item2;
             int randomLocation = RandLocation(xCoords, yCoords);
-            PowerUp testPowerUp = new PowerUp(xCoords[randomLocation], yCoords[randomLocation], PowerUps.Double_Jump);
-            PowerUpsContainer.AddShape(testPowerUp.SpawnPowerUp());
+            PowerUp testPowerUp = new PowerUp(xCoords[randomLocation], yCoords[randomLocation] + 2, PowerUps.Double_Jump);
+            PowerUpsContainer.AddShape(testPowerUp);
         }
 
         public void HandleKeyRelease(KeyPress key)
@@ -325,9 +326,9 @@ namespace NoOpRunner.Core
         {
             if (Observers.Contains(observer))
             {
-                Observers.Remove(observer);    
+                Observers.Remove(observer);
             }
-            
+
         }
     }
 }

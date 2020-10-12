@@ -1,13 +1,14 @@
 using System;
+using NoOpRunner.Core.Shapes.GenerationStrategies;
 
-namespace NoOpRunner.Core.Entities
+namespace NoOpRunner.Core.Shapes
 {
     public abstract class MovingShape : BaseShape
     {
-        public MovingShape(int centerPosX, int centerPosY) : base(centerPosX, centerPosY)
-        {
+        public MovingShape(int x, int y) : base(new FillGenerationStrategy(), x, y, x + 1, y + 1) { }
 
-        }
+        public MovingShape(GenerationStrategy strategy, int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY)
+            : base(strategy, lowerBoundX, lowerBoundY, upperBoundX, upperBoundY) { }
 
         public decimal VerticalAcceleration = 0m;
         public decimal HorizontalAcceleration = 0m;

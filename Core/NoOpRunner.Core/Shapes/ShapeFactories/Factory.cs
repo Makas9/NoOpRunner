@@ -1,6 +1,6 @@
 ﻿using NoOpRunner.Core.Enums;
 
-namespace NoOpRunner.Core.Entities.ShapeFactories
+namespace NoOpRunner.Core.Shapes.ShapeFactories
 {
     public abstract class Factory
     {

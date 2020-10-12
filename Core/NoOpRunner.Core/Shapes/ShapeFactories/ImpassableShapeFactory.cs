@@ -1,8 +1,10 @@
-﻿using NoOpRunner.Core.Enums;
-using System;
-using NoOpRunner.Core.Entities.EntityShapes;
+﻿using System;
+using NoOpRunner.Core.Enums;
+using NoOpRunner.Core.Shapes.EntityShapes;
+using NoOpRunner.Core.Shapes.GenerationStrategies;
+using NoOpRunner.Core.Shapes.StaticShapes;
 
-namespace NoOpRunner.Core.Entities.ShapeFactories
+namespace NoOpRunner.Core.Shapes.ShapeFactories
 {
     class ImpassableShapeFactory : AbstractFactory
     {
@@ -16,11 +18,11 @@ namespace NoOpRunner.Core.Entities.ShapeFactories
             }
         }
 
-        public override StaticShape CreateStaticShape(Shape shape, int x, int y, int bottomPosY = 0, int topPosY = 0)
+        public override StaticShape CreateStaticShape(Shape shape, GenerationStrategy strategy, int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY)
         {
             switch (shape)
             {
-                case Shape.Platform: return new ImpassablePlatform(x, y, bottomPosY, topPosY);
+                case Shape.Platform: return new ImpassablePlatform(strategy, lowerBoundX, lowerBoundY, upperBoundX, upperBoundY);
                 default: throw new ArgumentException("Shape is not found");
             }
         }

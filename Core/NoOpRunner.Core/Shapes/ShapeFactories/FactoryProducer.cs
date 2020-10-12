@@ -1,4 +1,4 @@
-﻿namespace NoOpRunner.Core.Entities.ShapeFactories
+﻿namespace NoOpRunner.Core.Shapes.ShapeFactories
 {
     public class FactoryProducer
     {

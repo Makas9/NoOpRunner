@@ -1,5 +1,4 @@
 ﻿using NoOpRunner.Core;
-using NoOpRunner.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +9,8 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using NoOpRunner.Core.Shapes;
+using Color = NoOpRunner.Core.Enums.Color;
 
 namespace NoOpRunner.Client.Rendering
 {
@@ -32,7 +33,7 @@ namespace NoOpRunner.Client.Rendering
                     {
                         Width = rectangleWidth,
                         Height = rectangleHeight,
-                        Fill = ColorBrushMap[pixel.Color]
+                        Fill = ColorBrushMap[Color.Yellow]
                     };
                     Canvas.SetLeft(rec, rectangleWidth * pixel.X);
                     Canvas.SetBottom(rec, rectangleHeight * pixel.Y);
