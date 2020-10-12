@@ -13,6 +13,8 @@ namespace NoOpRunner.Core.Entities
         [JsonProperty]
         protected List<ShapeBlock> ShapeBlocks = new List<ShapeBlock>();
 
+        protected BaseShape() { } // Needed for JSON deserialization
+
         /// <summary>
         /// Generate a shape somewhere in the given region using the provided strategy.
         /// CenterPos will be set to the position of the first generated ShapeBlock
