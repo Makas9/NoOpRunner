@@ -83,18 +83,6 @@ namespace NoOpRunner.Core
             };
             switch (message.MessageType)
             {
-                case MessageType.PlatformsStatus:
-                    messageDto.Payload = PlatformsContainer;
-
-                    break;
-                case MessageType.PlayerStatus:
-                    messageDto.Payload = Player;
-
-                    break;
-                case MessageType.PowerUpsStatus:
-                    messageDto.Payload = PowerUpsContainer;
-                    
-                    break;
                 case MessageType.InitialConnection:
                 case MessageType.InitialGame:
                     messageDto.Payload = new GameStateDto()
@@ -125,10 +113,18 @@ namespace NoOpRunner.Core
                 case MessageType.PowerUpsUpdate:
                 case MessageType.PlayerUpdate:
 
-                    if (!await CheckGameStatus())
-                        return;
-
-                    Notify(message);
+                    if (PowerUpsContainer == null && PlatformsContainer == null && Player == null)
+                    {
+                        //Sometimes messages lost, so to ensure host send GameStatus
+                        await connectionManager.SendMessageToHost(new MessageDto()
+                        {
+                            MessageType = MessageType.InitialGame
+                        });
+                    }
+                    else
+                    {
+                        Notify(message);
+                    }
 
                     break;
                 case MessageType.InitialGame:
@@ -143,30 +139,6 @@ namespace NoOpRunner.Core
                     AddObserver(gameState.PowerUps);
 
                     break;
-                case MessageType.PlatformsStatus:
-                    RemoveObserver(PlatformsContainer);
-                    
-                    PlatformsContainer = message.Payload as PlatformsContainer;
-
-                    AddObserver(PlatformsContainer);
-
-                    break;
-                case MessageType.PlayerStatus:
-                    RemoveObserver(Player);
-                    
-                    Player = message.Payload as Player;
-
-                    AddObserver(Player);
-
-                    break;
-                case MessageType.PowerUpsStatus:
-                    RemoveObserver(PowerUpsContainer);
-                    
-                    PowerUpsContainer = message.Payload as PowerUpsContainer;
-
-                    AddObserver(PowerUpsContainer);
-
-                    break;
                 case MessageType.InitialConnection:
                     break;
                 default:
@@ -174,44 +146,6 @@ namespace NoOpRunner.Core
             }
 
             OnMessageReceived?.Invoke(this, message);
-        }
-
-        private async Task<bool> CheckGameStatus()
-        {
-            if (PowerUpsContainer == null && PlatformsContainer == null && Player == null)
-            {
-                //Sometimes messages lost, so to ensure host send GameStatus
-                await connectionManager.SendMessageToHost(new MessageDto()
-                {
-                    MessageType = MessageType.InitialGame
-                });
-            }else if (PowerUpsContainer == null)
-            {
-                await connectionManager.SendMessageToHost(new MessageDto()
-                {
-                    MessageType = MessageType.PowerUpsStatus
-                });
-            }
-            else if (PlatformsContainer == null)
-            {
-                await connectionManager.SendMessageToHost(new MessageDto()
-                {
-                    MessageType = MessageType.PlatformsStatus
-                });
-            }
-            else if (Player == null)
-            {
-                await connectionManager.SendMessageToHost(new MessageDto()
-                {
-                    MessageType = MessageType.PlayerStatus
-                });
-            }
-            else
-            {
-                return true;
-            }
-
-            return false;
         }
 
         public void StartHosting()

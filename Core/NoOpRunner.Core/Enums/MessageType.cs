@@ -3,12 +3,9 @@
     public enum MessageType
     {
         InitialGame,
-        PlatformsStatus,
         PlatformsUpdate,
-        PlayerStatus,
         InitialConnection,
         PlayerUpdate,
-        PowerUpsUpdate,
-        PowerUpsStatus
+        PowerUpsUpdate
     }
 }
