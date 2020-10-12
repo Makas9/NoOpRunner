@@ -11,7 +11,7 @@ namespace NoOpRunner.Core
         public PlatformsContainer(int sizeX, int sizeY) : base(sizeX, sizeY)
         {
         }
-
+        
         /// <summary>
         /// For platforms update, append generated cells
         /// </summary>

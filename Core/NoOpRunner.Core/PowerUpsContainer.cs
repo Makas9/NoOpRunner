@@ -27,17 +27,17 @@ namespace NoOpRunner.Core
         /// <param name="message"></param>
         public void Update(MessageDto message)
         {
-            if (message.MessageType == MessageType.PowerUpsUpdate)
-            {
-                shapes.ForEach(x => x.CenterPosX--); //Push cells
+            if (message.MessageType != MessageType.PowerUpsUpdate) 
+                return;
+            
+            shapes.ForEach(x => x.CenterPosX--); //Push cells
 
-                //Will need in the future, update player two instance
-                var pickedUpPowerUps = shapes.Where(x => x.CenterPosX < 0);
+            //Will need in the future, update player two instance
+            var pickedUpPowerUps = shapes.Where(x => x.CenterPosX < 0);
                 
-                shapes.RemoveAll(x => x.CenterPosX < 0); //Remove out of bounds
+            shapes.RemoveAll(x => x.CenterPosX < 0); //Remove out of bounds
 
-                shapes.AddRange(message.Payload as List<BaseShape>); //Append generated power ups
-            }
+            shapes.AddRange(message.Payload as List<BaseShape>); //Append generated power ups
         }
     }
 }

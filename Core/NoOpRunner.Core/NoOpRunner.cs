@@ -77,42 +77,33 @@ namespace NoOpRunner.Core
 
         private async void HostHandleMessage(MessageDto message)
         {
-            MessageDto messageDto = null;
+            MessageDto messageDto = new MessageDto()
+            {
+                MessageType = message.MessageType
+            };
             switch (message.MessageType)
             {
-                case MessageType.InitialConnection:
-                    break;
                 case MessageType.PlatformsStatus:
-                    messageDto = new MessageDto()
-                    {
-                        MessageType = message.MessageType,
-                        Payload = PlatformsContainer
-                    };
+                    messageDto.Payload = PlatformsContainer;
+
                     break;
                 case MessageType.PlayerStatus:
-                    messageDto = new MessageDto()
-                    {
-                        MessageType = message.MessageType,
-                        Payload = Player
-                    };
+                    messageDto.Payload = Player;
+
                     break;
                 case MessageType.PowerUpsStatus:
-                    messageDto = new MessageDto()
-                    {
-                        MessageType = MessageType.PowerUpsStatus,
-                        Payload = PowerUpsContainer
-                    };
+                    messageDto.Payload = PowerUpsContainer;
+                    
                     break;
+                case MessageType.InitialConnection:
                 case MessageType.InitialGame:
-                    messageDto = new MessageDto()
-                    {
-                        MessageType = message.MessageType,
-                        Payload = new GameStateDto()
+                    messageDto.Payload = new GameStateDto()
                         {
                             Platforms = PlatformsContainer,
-                            Player = Player
-                        }
-                    };
+                            Player = Player,
+                            PowerUps = PowerUpsContainer
+                        };
+                    
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -153,25 +144,27 @@ namespace NoOpRunner.Core
 
                     break;
                 case MessageType.PlatformsStatus:
+                    RemoveObserver(PlatformsContainer);
+                    
                     PlatformsContainer = message.Payload as PlatformsContainer;
 
-                    RemoveObserver(PlatformsContainer);
-                    AddObserver(message.Payload as PlatformsContainer);
+                    AddObserver(PlatformsContainer);
 
                     break;
                 case MessageType.PlayerStatus:
+                    RemoveObserver(Player);
+                    
                     Player = message.Payload as Player;
 
-                    RemoveObserver(Player);
-                    AddObserver(message.Payload as Player);
+                    AddObserver(Player);
 
                     break;
                 case MessageType.PowerUpsStatus:
-
+                    RemoveObserver(PowerUpsContainer);
+                    
                     PowerUpsContainer = message.Payload as PowerUpsContainer;
 
-                    RemoveObserver(PlatformsContainer);
-                    AddObserver(message.Payload as PowerUpsContainer);
+                    AddObserver(PowerUpsContainer);
 
                     break;
                 case MessageType.InitialConnection:
@@ -185,7 +178,14 @@ namespace NoOpRunner.Core
 
         private async Task<bool> CheckGameStatus()
         {
-            if (PowerUpsContainer == null)
+            if (PowerUpsContainer == null && PlatformsContainer == null && Player == null)
+            {
+                //Sometimes messages lost, so to ensure host send GameStatus
+                await connectionManager.SendMessageToHost(new MessageDto()
+                {
+                    MessageType = MessageType.InitialGame
+                });
+            }else if (PowerUpsContainer == null)
             {
                 await connectionManager.SendMessageToHost(new MessageDto()
                 {
@@ -239,8 +239,8 @@ namespace NoOpRunner.Core
                 Payload = new PlayerStateDto()
                 {
                     State = Player.State,
-                    XPosition = Player.CenterPosX,
-                    YPosition = Player.CenterPosY,
+                    CenterPosX = Player.CenterPosX,
+                    CenterPosY = Player.CenterPosY,
                     IsLookingLeft = Player.IsLookingLeft
                 }
             });
@@ -260,8 +260,9 @@ namespace NoOpRunner.Core
         private void InitializeGameState()
         {
             //Common aspect ration
-            PlatformsContainer = new PlatformsContainer(GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount);
-            
+            PlatformsContainer =
+                new PlatformsContainer(GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount);
+
             PowerUpsContainer = new PowerUpsContainer(GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount);
 
             /* SHAPE FACTORY DESIGN PATTERN */
@@ -283,24 +284,31 @@ namespace NoOpRunner.Core
             GamePlatforms.AddShape(aShape3);*/
 
             AbstractFactory impassableFactory = FactoryProducer.GetFactory(passable: false);
-            BaseShape firstPlatform = impassableFactory.CreateStaticShape(Shape.Platform, new CombinedGenerationStrategy(), 0, 0, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount / 3);
+            BaseShape firstPlatform = impassableFactory.CreateStaticShape(Shape.Platform,
+                new CombinedGenerationStrategy(), 0, 0, GameSettings.HorizontalCellCount,
+                GameSettings.VerticalCellCount / 3);
             PlatformsContainer.AddShape(firstPlatform);
 
             AbstractFactory passableFactory = FactoryProducer.GetFactory(passable: true);
-            BaseShape secondPlatform = passableFactory.CreateStaticShape(Shape.Platform, new PlatformerGenerationStrategy(), 0, GameSettings.VerticalCellCount / 3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount * 2 / 3);
+            BaseShape secondPlatform = passableFactory.CreateStaticShape(Shape.Platform,
+                new PlatformerGenerationStrategy(), 0, GameSettings.VerticalCellCount / 3 + 1,
+                GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount * 2 / 3);
             PlatformsContainer.AddShape(secondPlatform);
 
             // Generate the player above the first platform
             Player = new Player(secondPlatform.CenterPosX, secondPlatform.CenterPosY + 1);
 
-            BaseShape thirdPlatform = passableFactory.CreateStaticShape(Shape.Platform, new RandomlySegmentedGenerationStrategy(), 0, GameSettings.VerticalCellCount * 2/3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount - 3);
+            BaseShape thirdPlatform = passableFactory.CreateStaticShape(Shape.Platform,
+                new RandomlySegmentedGenerationStrategy(), 0, GameSettings.VerticalCellCount * 2 / 3 + 1,
+                GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount - 3);
             PlatformsContainer.AddShape(thirdPlatform);
 
             var coordinates = firstPlatform.GetCoords();
             int[] xCoords = coordinates.Item1;
             int[] yCoords = coordinates.Item2;
             int randomLocation = RandLocation(xCoords, yCoords);
-            PowerUp testPowerUp = new PowerUp(xCoords[randomLocation], yCoords[randomLocation] + 2, PowerUps.Double_Jump);
+            PowerUp testPowerUp =
+                new PowerUp(xCoords[randomLocation], yCoords[randomLocation] + 2, PowerUps.Double_Jump);
             PowerUpsContainer.AddShape(testPowerUp);
         }
 
@@ -324,11 +332,11 @@ namespace NoOpRunner.Core
 
         public void RemoveObserver(IObserver observer)
         {
+            //Removes if contains
             if (Observers.Contains(observer))
             {
                 Observers.Remove(observer);
             }
-
         }
     }
 }

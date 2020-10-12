@@ -11,11 +11,12 @@ namespace NoOpRunner.Core.Shapes
         
         /// <summary>
         /// For platforms sliding
+        /// platforms CenterPosX is all ways 0
         /// </summary>
         public void PushAndRemove()
         {
-            ShapeBlocks.RemoveAll(x => x.OffsetX <= 0);
             ShapeBlocks.ForEach(x=> x.OffsetX--);
+            ShapeBlocks.RemoveAll(x => x.OffsetX < 0);
         }
 
         public void AppendPlatform(IList<ShapeBlock> shapeBlocks)

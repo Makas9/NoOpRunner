@@ -211,16 +211,16 @@ namespace NoOpRunner.Core.Shapes
 
         public void Update(MessageDto message)
         {
-            if (message.MessageType == MessageType.PlayerUpdate)
-            {
-                var messageDto = message.Payload as PlayerStateDto;
+            if (message.MessageType != MessageType.PlayerUpdate) 
+                return;
+            
+            var messageDto = message.Payload as PlayerStateDto;
 
-                State = messageDto.State;
-                IsLookingLeft = messageDto.IsLookingLeft;
+            State = messageDto.State;
+            IsLookingLeft = messageDto.IsLookingLeft;
 
-                CenterPosX = messageDto.XPosition;
-                CenterPosY = messageDto.YPosition;
-            }
+            CenterPosX = messageDto.CenterPosX;
+            CenterPosY = messageDto.CenterPosY;
 
 
         }
