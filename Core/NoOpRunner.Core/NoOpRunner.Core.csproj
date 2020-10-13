@@ -47,9 +47,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\GameStateBuilder.cs" />
+    <Compile Include="Builders\ShapeBuilder.cs" />
+    <Compile Include="Configurators\GameStateConfigurator.cs" />
+    <Compile Include="Configurators\PassablePlatformConfigurator.cs" />
+    <Compile Include="Configurators\ShapeConfigurator.cs" />
     <Compile Include="Dtos\InitialGameStartDto.cs" />
     <Compile Include="Enums\Entity.cs" />
     <Compile Include="GameSettings.cs" />
+    <Compile Include="GameState.cs" />
+    <Compile Include="Interfaces\IGameStateConfigurator.cs" />
+    <Compile Include="Interfaces\IShapeConfigurator.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="Shapes\EntityShapes\Rocket.cs" />
     <Compile Include="Shapes\EntityShapes\Saw.cs" />
@@ -79,7 +87,7 @@
     <Compile Include="RandomNumber.cs" />
     <Compile Include="Shapes\ShapeFactories\AbstractFactory.cs" />
     <Compile Include="Shapes\BaseShape.cs" />
-    <Compile Include="GamePlatforms.cs" />
+    <Compile Include="GameMap.cs" />
     <Compile Include="NoOpRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shapes\ShapeFactories\FactoryProducer.cs" />

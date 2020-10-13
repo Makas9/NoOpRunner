@@ -6,6 +6,6 @@ namespace NoOpRunner.Core.Dtos
     {
         public Player Player { get; set; }
 
-        public GamePlatforms Platforms { get; set; }
+        public GameMap Platforms { get; set; }
     }
 }

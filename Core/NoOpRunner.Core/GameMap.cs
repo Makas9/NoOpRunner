@@ -6,16 +6,16 @@ using System.Linq;
 
 namespace NoOpRunner.Core
 {
-    public class GamePlatforms
+    public class GameMap
     {
         [JsonProperty]
         private List<BaseShape> shapes { get; set; }
 
-        public readonly int SizeX;
+        public int SizeX { get; set; }
 
-        public readonly int SizeY;
+        public int SizeY { get; set; }
 
-        public GamePlatforms(int sizeX, int sizeY)
+        public GameMap(int sizeX, int sizeY)
         {
             SizeX = sizeX;
             SizeY = sizeY;

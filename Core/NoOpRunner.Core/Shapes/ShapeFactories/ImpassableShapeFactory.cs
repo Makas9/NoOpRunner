@@ -1,10 +1,11 @@
-﻿using NoOpRunner.Core.Enums;
+﻿using NoOpRunner.Core.Entities;
+using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Shapes.EntityShapes;
 using System;
 
 namespace NoOpRunner.Core.Shapes.ShapeFactories
 {
-    class ImpassableShapeFactory : AbstractFactory
+    public class ImpassableShapeFactory : AbstractFactory
     {
         public override EntityShape CreateEntityShape(Shape shape, int x, int y)
         {
@@ -16,7 +17,7 @@ namespace NoOpRunner.Core.Shapes.ShapeFactories
             }
         }
 
-        public override StaticShape CreateStaticShape(Shape shape, GenerationStrategy strategy, int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY)
+        public override BaseShape CreateStaticShape(Shape shape, GenerationStrategy strategy, int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY)
         {
             switch (shape)
             {

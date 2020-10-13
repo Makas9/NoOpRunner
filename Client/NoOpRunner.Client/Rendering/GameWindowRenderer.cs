@@ -15,7 +15,7 @@ namespace NoOpRunner.Client.Rendering
 {
     public static class GameWindowRenderer
     {
-        public static void RenderMap(GamePlatforms platforms, Canvas canvas)
+        public static void RenderMap(GameMap platforms, Canvas canvas)
         {
             var rectangleWidth = canvas.ActualWidth / platforms.SizeX;
             var rectangleHeight = canvas.ActualHeight / platforms.SizeY;
@@ -60,7 +60,7 @@ namespace NoOpRunner.Client.Rendering
             }
         }
 
-        public static void RenderPlayer(Player player, Canvas canvas, GamePlatforms platforms)
+        public static void RenderPlayer(Player player, Canvas canvas, GameMap platforms)
         {
             var rectangleWidth = canvas.ActualWidth / platforms.SizeX;
             var rectangleHeight = canvas.ActualHeight / platforms.SizeY;
