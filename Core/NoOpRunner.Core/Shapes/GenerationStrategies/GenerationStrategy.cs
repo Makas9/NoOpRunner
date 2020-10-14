@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace NoOpRunner.Core.Shapes
+namespace NoOpRunner.Core.Shapes.GenerationStrategies
 {
     public abstract class GenerationStrategy
     {

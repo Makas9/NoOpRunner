@@ -1,6 +1,8 @@
-﻿using NoOpRunner.Core.Enums;
+﻿using System;
+using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Shapes.EntityShapes;
-using System;
+using NoOpRunner.Core.Shapes.GenerationStrategies;
+using NoOpRunner.Core.Shapes.StaticShapes;
 
 namespace NoOpRunner.Core.Shapes.ShapeFactories
 {

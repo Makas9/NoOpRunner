@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
-using NoOpRunner.Core.Shapes;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
+using NoOpRunner.Core.Shapes.GenerationStrategies;
 
-namespace NoOpRunner.Core.Entities
+namespace NoOpRunner.Core.Shapes
 {
     public abstract class BaseShape
     {

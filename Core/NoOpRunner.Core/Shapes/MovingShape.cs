@@ -1,6 +1,5 @@
-using NoOpRunner.Core.Entities;
-using NoOpRunner.Core.Shapes.GenerationStrategies;
 using System;
+using NoOpRunner.Core.Shapes.GenerationStrategies;
 
 namespace NoOpRunner.Core.Shapes
 {

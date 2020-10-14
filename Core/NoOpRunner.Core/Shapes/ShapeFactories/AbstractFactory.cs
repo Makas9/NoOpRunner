@@ -1,4 +1,5 @@
 ﻿using NoOpRunner.Core.Enums;
+using NoOpRunner.Core.Shapes.GenerationStrategies;
 
 namespace NoOpRunner.Core.Shapes.ShapeFactories
 {

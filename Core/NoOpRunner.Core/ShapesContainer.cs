@@ -1,21 +1,19 @@
 ﻿using Newtonsoft.Json;
-using NoOpRunner.Core.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using NoOpRunner.Core.Shapes;
 
 namespace NoOpRunner.Core
 {
-    public class GamePlatforms
+    public class ShapesContainer
     {
-        [JsonProperty]
-        private List<BaseShape> shapes { get; set; }
+        [JsonProperty] protected List<BaseShape> shapes { get; set; }
 
-        public readonly int SizeX;
+        public readonly int SizeX;//Just take from GameSettings class
 
         public readonly int SizeY;
 
-        public GamePlatforms(int sizeX, int sizeY)
+        public ShapesContainer(int sizeX, int sizeY)
         {
             SizeX = sizeX;
             SizeY = sizeY;
@@ -33,12 +31,7 @@ namespace NoOpRunner.Core
             shapes.ForEach(x => x.OnLoopFired(gameMap));
         }
 
-        public void ClickShape(int x, int y)
-        {
-            shapes.FirstOrDefault(s => s.IsHit(x, y))?.OnClick();
-        }
-
-        public WindowPixel[,] GetCurrentMap()
+        public WindowPixel[,] GetShapes()
         {
             var windowPixels = new WindowPixel[SizeX, SizeY];
 
@@ -61,6 +54,7 @@ namespace NoOpRunner.Core
                     }
                     else
                     {
+                        // TODO: YES, YES, YES, YES
                         throw new Exception("Shape collision occured");
                     }
                 }
@@ -69,7 +63,7 @@ namespace NoOpRunner.Core
             return windowPixels;
         }
 
-        public IEnumerable<WindowPixel> GetCurrentMapEnumerable()
+        public IEnumerable<WindowPixel> GetShapesEnumerable()
         {
             foreach (var shape in shapes)
             {

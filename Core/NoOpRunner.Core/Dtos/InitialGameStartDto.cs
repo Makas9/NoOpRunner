@@ -2,10 +2,12 @@
 
 namespace NoOpRunner.Core.Dtos
 {
-    public class GameStateUpdateDto
+    public class GameStateDto
     {
         public Player Player { get; set; }
 
-        public GamePlatforms Platforms { get; set; }
+        public PlatformsContainer Platforms { get; set; }
+        
+        public PowerUpsContainer PowerUps { get; set; }
     }
 }
