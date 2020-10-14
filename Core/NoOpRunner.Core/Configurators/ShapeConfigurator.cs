@@ -1,6 +1,6 @@
-﻿using NoOpRunner.Core.Entities;
-using NoOpRunner.Core.Interfaces;
+﻿using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
+using NoOpRunner.Core.Shapes.GenerationStrategies;
 
 namespace NoOpRunner.Core.Configurators
 {

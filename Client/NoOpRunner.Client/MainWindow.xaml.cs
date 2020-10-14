@@ -44,6 +44,7 @@ namespace NoOpRunner.Client
                 };
 
                 timer.Start();
+                Game.IsGameStarted = true;
             };
         }
 
@@ -54,9 +55,15 @@ namespace NoOpRunner.Client
                 await Game.FireHostLoop();
             }
 
-            GameWindowRenderer.RenderPlayer(Game.Player, player_window, Game.GamePlatforms);
+            if (Game.PlatformsContainer != null && Game.Player != null && Game.PowerUpsContainer != null)
+            {
+                GameWindowRenderer.RenderPowerUps(Game.PowerUpsContainer, power_ups);//for now
+                
+                GameWindowRenderer.RenderPlayer(Game.Player, player_window, Game.PlatformsContainer);
 
-            GameWindowRenderer.RenderMap(Game.GamePlatforms, game_platforms);
+                GameWindowRenderer.RenderPlatforms(Game.PlatformsContainer, game_platforms);
+            }
+
 
             //Use one more canvas for power-ups and one more for traps
         }

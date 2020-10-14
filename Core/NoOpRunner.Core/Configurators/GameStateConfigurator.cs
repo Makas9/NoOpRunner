@@ -1,8 +1,8 @@
-﻿using NoOpRunner.Core.Entities;
-using NoOpRunner.Core.Enums;
+﻿using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
 using NoOpRunner.Core.Shapes.ShapeFactories;
+using NoOpRunner.Core.Shapes.StaticShapes;
 using System;
 using System.Collections.Generic;
 
@@ -16,6 +16,8 @@ namespace NoOpRunner.Core.Configurators
 
         private bool MapInitialized;
 
+        private bool PowerUpsInitialized;
+
         public GameStateConfigurator()
         {
             gameState = new GameState();
@@ -23,9 +25,18 @@ namespace NoOpRunner.Core.Configurators
 
         public IGameStateConfigurator InitializeMap(int horizontalCount, int verticalCount)
         {
-            gameState.Map = new GameMap(horizontalCount, verticalCount);
+            gameState.Platforms = new PlatformsContainer(horizontalCount, verticalCount);
 
             MapInitialized = true;
+
+            return this;
+        }
+
+        public IGameStateConfigurator InitializePowerUps(int horizontalCount, int verticalCount)
+        {
+            gameState.PowerUpsContainer = new PowerUpsContainer(horizontalCount, verticalCount);
+
+            PowerUpsInitialized = true;
 
             return this;
         }
@@ -38,7 +49,7 @@ namespace NoOpRunner.Core.Configurators
 
             var shape = action(shapeFactory);
 
-            gameState.Map.AddShape(shape);
+            gameState.Platforms.AddShape(shape);
 
             return this;
         }
@@ -47,7 +58,7 @@ namespace NoOpRunner.Core.Configurators
         {
             if (!MapInitialized) throw new Exception("Map uninitialized");
 
-            gameState.Map.AddShape(shape);
+            gameState.Platforms.AddShape(shape);
 
             return this;
         }
@@ -72,7 +83,7 @@ namespace NoOpRunner.Core.Configurators
                 Platforms.Add(shape);
             }
 
-            gameState.Map.AddShape(shape);
+            gameState.Platforms.AddShape(shape);
 
             return this;
         }
@@ -90,18 +101,18 @@ namespace NoOpRunner.Core.Configurators
                 Platforms.Add(shape);
             }
 
-            gameState.Map.AddShape(shape);
+            gameState.Platforms.AddShape(shape);
 
             return this;
         }
 
         public IGameStateConfigurator AddPowerUp(PowerUps type, Func<IReadOnlyList<BaseShape>, BaseShape> action)
         {
-            if (!MapInitialized) throw new Exception("Map uninitialized");
+            if (!PowerUpsInitialized) throw new Exception("PowerUps uninitialized");
 
             var shape = action(Platforms.AsReadOnly());
 
-            gameState.Map.AddShape(new PowerUp(shape.CenterPosX, shape.CenterPosY + 1, type));
+            gameState.PowerUpsContainer.AddShape(new PowerUp(shape.CenterPosX, shape.CenterPosY + 1, type));
 
             return this;
         }

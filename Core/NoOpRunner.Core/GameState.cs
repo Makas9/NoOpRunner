@@ -4,8 +4,10 @@ namespace NoOpRunner.Core
 {
     public class GameState
     {
-        public GameMap Map { get; set; }
+        public PlatformsContainer Platforms { get; set; }
 
         public Player Player { get; set; }
+
+        public PowerUpsContainer PowerUpsContainer { get; set; }
     }
 }

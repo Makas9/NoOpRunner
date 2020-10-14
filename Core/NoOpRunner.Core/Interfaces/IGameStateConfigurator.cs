@@ -1,5 +1,5 @@
-﻿using NoOpRunner.Core.Entities;
-using NoOpRunner.Core.Enums;
+﻿using NoOpRunner.Core.Enums;
+using NoOpRunner.Core.Shapes;
 using NoOpRunner.Core.Shapes.ShapeFactories;
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,8 @@ namespace NoOpRunner.Core.Interfaces
     public interface IGameStateConfigurator
     {
         IGameStateConfigurator InitializeMap(int horizontalCount, int verticalCount);
+
+        IGameStateConfigurator InitializePowerUps(int horizontalCount, int verticalCount);
 
         IGameStateConfigurator AddShape(Func<ShapeFactory, BaseShape> action);
 

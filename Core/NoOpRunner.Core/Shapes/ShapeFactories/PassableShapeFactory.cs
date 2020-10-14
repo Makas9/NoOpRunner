@@ -1,8 +1,8 @@
-﻿using NoOpRunner.Core.Builders;
+using NoOpRunner.Core.Builders;
 using NoOpRunner.Core.Configurators;
-using NoOpRunner.Core.Entities;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Shapes.EntityShapes;
+using NoOpRunner.Core.Shapes.GenerationStrategies;
 using System;
 
 namespace NoOpRunner.Core.Shapes.ShapeFactories

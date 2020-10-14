@@ -1,7 +1,6 @@
-﻿using NoOpRunner.Core.Entities;
+﻿using System;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Shapes.EntityShapes;
-using System;
 
 namespace NoOpRunner.Core.Shapes
 {

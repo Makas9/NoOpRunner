@@ -1,5 +1,5 @@
-﻿using NoOpRunner.Core.Entities;
-using NoOpRunner.Core.Shapes;
+﻿using NoOpRunner.Core.Shapes;
+using NoOpRunner.Core.Shapes.StaticShapes;
 
 namespace NoOpRunner.Core.Configurators
 {

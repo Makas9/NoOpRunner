@@ -2,10 +2,10 @@
 {
     public  static class GameSettings
     {
-        public const int AspectRatioWidth = 16;
-        public const int AspectRatioHeight = 9;
+        private const int AspectRatioWidth = 16;
+        private const int AspectRatioHeight = 9;
 
-        public const int CellsSizeMultiplier = 4;
+        private const int CellsSizeMultiplier = 4;
 
         public static int HorizontalCellCount => AspectRatioWidth * CellsSizeMultiplier;
         public static int VerticalCellCount => AspectRatioHeight * CellsSizeMultiplier;
