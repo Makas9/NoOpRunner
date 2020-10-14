@@ -47,10 +47,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dtos\InitialGameStartDto.cs" />
+    <Compile Include="Builders\GameStateBuilder.cs" />
+    <Compile Include="Builders\ShapeBuilder.cs" />
+    <Compile Include="Configurators\GameStateConfigurator.cs" />
+    <Compile Include="Configurators\ImpassablePlatformConfigurator.cs" />
+    <Compile Include="Configurators\PassablePlatformConfigurator.cs" />
+    <Compile Include="Configurators\ShapeConfigurator.cs" />
+    <Compile Include="Dtos\GameStateDto.cs" />
     <Compile Include="Dtos\PlayerStateDto.cs" />
     <Compile Include="Enums\Entity.cs" />
     <Compile Include="GameSettings.cs" />
+    <Compile Include="GameState.cs" />
+    <Compile Include="Interfaces\IGameStateConfigurator.cs" />
+    <Compile Include="Interfaces\IShapeConfigurator.cs" />
     <Compile Include="Interfaces\IObserver.cs" />
     <Compile Include="Interfaces\ISubject.cs" />
     <Compile Include="Logging.cs" />

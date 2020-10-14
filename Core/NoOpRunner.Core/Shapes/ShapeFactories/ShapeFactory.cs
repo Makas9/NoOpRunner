@@ -4,7 +4,7 @@ using NoOpRunner.Core.Shapes.EntityShapes;
 
 namespace NoOpRunner.Core.Shapes.ShapeFactories
 {
-    class ShapeFactory : Factory
+    public class ShapeFactory : Factory
     {
         public override BaseShape GetShape(Shape shape, int x, int y)
         {

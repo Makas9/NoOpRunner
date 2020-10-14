@@ -1,12 +1,14 @@
+using NoOpRunner.Core.Builders;
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
+using NoOpRunner.Core.Shapes;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
+using NoOpRunner.Core.Shapes.StaticShapes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using NoOpRunner.Core.Shapes;
-using NoOpRunner.Core.Shapes.ShapeFactories;
 
 namespace NoOpRunner.Core
 {
@@ -18,17 +20,31 @@ namespace NoOpRunner.Core
     public class NoOpRunner : ISubject
     {
         public bool IsGameStarted { get; set; } = false;
+
         public event EventHandler OnLoopFired;
 
         private IList<IObserver> Observers { get; set; }
 
         public event EventHandler<MessageDto> OnMessageReceived;
 
-        public PlatformsContainer PlatformsContainer { get; private set; }
+        public PlatformsContainer PlatformsContainer 
+        {
+            get => GameState?.Platforms; 
+            set => GameState.Platforms = value; 
+        }
 
-        public Player Player { get; private set; }
+        public Player Player
+        {
+            get => GameState?.Player;
+            set => GameState.Player = value;
+        }
+        public PowerUpsContainer PowerUpsContainer
+        {
+            get => GameState.PowerUpsContainer;
+            set => GameState.PowerUpsContainer = value;
+        }
 
-        public PowerUpsContainer PowerUpsContainer { get; private set; }
+        public GameState GameState { get; private set; }
 
         public bool IsHost { get; private set; }
 
@@ -102,7 +118,7 @@ namespace NoOpRunner.Core
 
         private async void ClientHandleMessage(MessageDto message)
         {
-            if (!IsGameStarted)
+            if (!IsGameStarted && message.MessageType != MessageType.InitialConnection)
             {
                 return;
             }
@@ -127,19 +143,21 @@ namespace NoOpRunner.Core
                     }
 
                     break;
+                case MessageType.InitialConnection:
                 case MessageType.InitialGame:
                     var gameState = message.Payload as GameStateDto;
 
-                    Player = gameState.Player;
-                    PlatformsContainer = gameState.Platforms;
-                    PowerUpsContainer = gameState.PowerUps;
+                    GameState = new GameState()
+                    {
+                        Platforms = gameState.Platforms,
+                        Player = gameState.Player,
+                        PowerUpsContainer = gameState.PowerUps
+                    };
 
                     AddObserver(gameState.Player);
                     AddObserver(gameState.Platforms);
                     AddObserver(gameState.PowerUps);
 
-                    break;
-                case MessageType.InitialConnection:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -193,57 +211,18 @@ namespace NoOpRunner.Core
 
         private void InitializeGameState()
         {
-            //Common aspect ration
-            PlatformsContainer =
-                new PlatformsContainer(GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount);
+            var gameeStateBuilder = new GameStateBuilder();
+            var initialGameState = gameeStateBuilder.Configure()
+                .InitializeMap(GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount)
+                .InitializePowerUps(GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount)
+                .AddImpassableShape(f => f.CreateStaticShape(Shape.Platform, new CombinedGenerationStrategy(), 0, 0, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount / 3))
+                .AddPassableShape(f => f.CreateStaticShape(Shape.Platform, new PlatformerGenerationStrategy(), 0, GameSettings.VerticalCellCount / 3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount * 2 / 3))
+                .AddPassableShape(f => f.CreateStaticShape(Shape.Platform, new RandomlySegmentedGenerationStrategy(), 0, GameSettings.VerticalCellCount * 2 / 3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount - 3))
+                .AddPlayer(platforms => platforms.Skip(1).First(p => p.GetType() == typeof(PassablePlatform)))
+                .AddPowerUp(PowerUps.Double_Jump, platforms => platforms.First(p => p.GetType() == typeof(ImpassablePlatform)))
+                .Build();
 
-            PowerUpsContainer = new PowerUpsContainer(GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount);
-
-            /* SHAPE FACTORY DESIGN PATTERN */
-            /*ShapeFactory shapeFactory = new ShapeFactory();
-            BaseShape shape1 = shapeFactory.GetShape(Shape.HealthCrystal, 1, 15);
-            BaseShape shape2 = shapeFactory.GetShape(Shape.DamageCrystal, 5, 15);
-            BaseShape shape3 = shapeFactory.GetShape(Shape.Saw, 8, 15);
-            GamePlatforms.AddShape(shape1);
-            GamePlatforms.AddShape(shape2);
-            GamePlatforms.AddShape(shape3);*/
-
-            /* ABSTRACT SHAPE FACTORY DESIGN PATTERN */
-            /*AbstractFactory abstractShapeFactory = FactoryProducer.GetFactory(passable: true);
-            BaseShape aShape1 = abstractShapeFactory.CreateStaticShape(Shape.Platform, 0, 0, 0, 10);
-            BaseShape aShape2 = abstractShapeFactory.CreateEntityShape(Shape.HealthCrystal, 10, 15);
-            BaseShape aShape3 = abstractShapeFactory.CreateEntityShape(Shape.DamageCrystal, 15, 15);
-            GamePlatforms.AddShape(aShape1);
-            GamePlatforms.AddShape(aShape2);
-            GamePlatforms.AddShape(aShape3);*/
-
-            AbstractFactory impassableFactory = FactoryProducer.GetFactory(passable: false);
-            BaseShape firstPlatform = impassableFactory.CreateStaticShape(Shape.Platform,
-                new CombinedGenerationStrategy(), 0, 0, GameSettings.HorizontalCellCount,
-                GameSettings.VerticalCellCount / 3);
-            PlatformsContainer.AddShape(firstPlatform);
-
-            AbstractFactory passableFactory = FactoryProducer.GetFactory(passable: true);
-            BaseShape secondPlatform = passableFactory.CreateStaticShape(Shape.Platform,
-                new PlatformerGenerationStrategy(), 0, GameSettings.VerticalCellCount / 3 + 1,
-                GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount * 2 / 3);
-            PlatformsContainer.AddShape(secondPlatform);
-
-            // Generate the player above the first platform
-            Player = new Player(secondPlatform.CenterPosX, secondPlatform.CenterPosY + 1);
-
-            BaseShape thirdPlatform = passableFactory.CreateStaticShape(Shape.Platform,
-                new RandomlySegmentedGenerationStrategy(), 0, GameSettings.VerticalCellCount * 2 / 3 + 1,
-                GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount - 3);
-            PlatformsContainer.AddShape(thirdPlatform);
-
-            var coordinates = firstPlatform.GetCoords();
-            int[] xCoords = coordinates.Item1;
-            int[] yCoords = coordinates.Item2;
-            int randomLocation = RandLocation(xCoords, yCoords);
-            PowerUp testPowerUp =
-                new PowerUp(xCoords[randomLocation], yCoords[randomLocation] + 2, PowerUps.Double_Jump);
-            PowerUpsContainer.AddShape(testPowerUp);
+            GameState = initialGameState;
         }
 
         public void HandleKeyRelease(KeyPress key)
