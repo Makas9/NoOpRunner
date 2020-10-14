@@ -20,6 +20,7 @@ namespace NoOpRunner.Core
     public class NoOpRunner : ISubject
     {
         public bool IsGameStarted { get; set; } = false;
+
         public event EventHandler OnLoopFired;
 
         private IList<IObserver> Observers { get; set; }
@@ -28,13 +29,13 @@ namespace NoOpRunner.Core
 
         public PlatformsContainer PlatformsContainer 
         {
-            get => GameState.Platforms; 
+            get => GameState?.Platforms; 
             set => GameState.Platforms = value; 
         }
 
         public Player Player
         {
-            get => GameState.Player;
+            get => GameState?.Player;
             set => GameState.Player = value;
         }
         public PowerUpsContainer PowerUpsContainer
@@ -117,7 +118,7 @@ namespace NoOpRunner.Core
 
         private async void ClientHandleMessage(MessageDto message)
         {
-            if (!IsGameStarted)
+            if (!IsGameStarted && message.MessageType != MessageType.InitialConnection)
             {
                 return;
             }
@@ -142,19 +143,21 @@ namespace NoOpRunner.Core
                     }
 
                     break;
+                case MessageType.InitialConnection:
                 case MessageType.InitialGame:
                     var gameState = message.Payload as GameStateDto;
 
-                    Player = gameState.Player;
-                    PlatformsContainer = gameState.Platforms;
-                    PowerUpsContainer = gameState.PowerUps;
+                    GameState = new GameState()
+                    {
+                        Platforms = gameState.Platforms,
+                        Player = gameState.Player,
+                        PowerUpsContainer = gameState.PowerUps
+                    };
 
                     AddObserver(gameState.Player);
                     AddObserver(gameState.Platforms);
                     AddObserver(gameState.PowerUps);
 
-                    break;
-                case MessageType.InitialConnection:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -215,40 +218,11 @@ namespace NoOpRunner.Core
                 .AddImpassableShape(f => f.CreateStaticShape(Shape.Platform, new CombinedGenerationStrategy(), 0, 0, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount / 3))
                 .AddPassableShape(f => f.CreateStaticShape(Shape.Platform, new PlatformerGenerationStrategy(), 0, GameSettings.VerticalCellCount / 3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount * 2 / 3))
                 .AddPassableShape(f => f.CreateStaticShape(Shape.Platform, new RandomlySegmentedGenerationStrategy(), 0, GameSettings.VerticalCellCount * 2 / 3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount - 3))
-                .AddPlayer(platforms => platforms.First(p => p.GetType() == typeof(ImpassablePlatform)))
+                .AddPlayer(platforms => platforms.Skip(1).First(p => p.GetType() == typeof(PassablePlatform)))
                 .AddPowerUp(PowerUps.Double_Jump, platforms => platforms.First(p => p.GetType() == typeof(ImpassablePlatform)))
                 .Build();
 
             GameState = initialGameState;
-
-
-//            AbstractFactory impassableFactory = FactoryProducer.GetFactory(passable: false);
-//            BaseShape firstPlatform = impassableFactory.CreateStaticShape(Shape.Platform,
-//                new CombinedGenerationStrategy(), 0, 0, GameSettings.HorizontalCellCount,
-//                GameSettings.VerticalCellCount / 3);
-//            PlatformsContainer.AddShape(firstPlatform);
-
-//            AbstractFactory passableFactory = FactoryProducer.GetFactory(passable: true);
-//            BaseShape secondPlatform = passableFactory.CreateStaticShape(Shape.Platform,
-//                new PlatformerGenerationStrategy(), 0, GameSettings.VerticalCellCount / 3 + 1,
-//                GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount * 2 / 3);
-//            PlatformsContainer.AddShape(secondPlatform);
-
-//            // Generate the player above the first platform
-//            Player = new Player(secondPlatform.CenterPosX, secondPlatform.CenterPosY + 1);
-
-//            BaseShape thirdPlatform = passableFactory.CreateStaticShape(Shape.Platform,
-//                new RandomlySegmentedGenerationStrategy(), 0, GameSettings.VerticalCellCount * 2 / 3 + 1,
-//                GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount - 3);
-//            PlatformsContainer.AddShape(thirdPlatform);
-
-//            var coordinates = firstPlatform.GetCoords();
-//            int[] xCoords = coordinates.Item1;
-//            int[] yCoords = coordinates.Item2;
-//            int randomLocation = RandLocation(xCoords, yCoords);
-//            PowerUp testPowerUp =
-//                new PowerUp(xCoords[randomLocation], yCoords[randomLocation] + 2, PowerUps.Double_Jump);
-//            PowerUpsContainer.AddShape(testPowerUp);
         }
 
         public void HandleKeyRelease(KeyPress key)

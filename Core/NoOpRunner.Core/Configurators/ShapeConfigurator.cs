@@ -20,12 +20,16 @@ namespace NoOpRunner.Core.Configurators
             UpperBoundX = upperBoundX;
             UpperBoundY = upperBoundY;
 
+            Logging.Instance.Write("Configured Bounds");
+
             return this;
         }
 
         public IShapeConfigurator ConfigureGenerationStrategy(GenerationStrategy strategy)
         {
             GenerationStrategy = strategy;
+
+            Logging.Instance.Write("Configured Generation Strategy");
 
             return this;
         }

@@ -14,9 +14,9 @@ namespace NoOpRunner.Core.Configurators
 
         private List<BaseShape> Platforms { get; } = new List<BaseShape>();
 
-        private bool MapInitialized;
+        private bool mapInitialized;
 
-        private bool PowerUpsInitialized;
+        private bool powerUpsInitialized;
 
         public GameStateConfigurator()
         {
@@ -27,7 +27,9 @@ namespace NoOpRunner.Core.Configurators
         {
             gameState.Platforms = new PlatformsContainer(horizontalCount, verticalCount);
 
-            MapInitialized = true;
+            mapInitialized = true;
+
+            Logging.Instance.Write("Map initialized");
 
             return this;
         }
@@ -36,14 +38,16 @@ namespace NoOpRunner.Core.Configurators
         {
             gameState.PowerUpsContainer = new PowerUpsContainer(horizontalCount, verticalCount);
 
-            PowerUpsInitialized = true;
+            powerUpsInitialized = true;
+
+            Logging.Instance.Write("Power ups initialized");
 
             return this;
         }
 
         public IGameStateConfigurator AddShape(Func<ShapeFactory, BaseShape> action)
         {
-            if (!MapInitialized) throw new Exception("Map uninitialized");
+            if (!mapInitialized) throw new Exception("Map uninitialized");
 
             var shapeFactory = new ShapeFactory();
 
@@ -51,28 +55,32 @@ namespace NoOpRunner.Core.Configurators
 
             gameState.Platforms.AddShape(shape);
 
+            Logging.Instance.Write("Added shape");
+
             return this;
         }
 
         public IGameStateConfigurator AddShape(BaseShape shape)
         {
-            if (!MapInitialized) throw new Exception("Map uninitialized");
+            if (!mapInitialized) throw new Exception("Map uninitialized");
 
             gameState.Platforms.AddShape(shape);
+
+            Logging.Instance.Write("Added shape");
 
             return this;
         }
 
         public GameState Build()
         {
-            if (!MapInitialized) throw new Exception("Map uninitialized");
+            if (!mapInitialized) throw new Exception("Map uninitialized");
 
             return gameState;
         }
 
         public IGameStateConfigurator AddImpassableShape(Func<AbstractFactory, BaseShape> action)
         {
-            if (!MapInitialized) throw new Exception("Map uninitialized");
+            if (!mapInitialized) throw new Exception("Map uninitialized");
 
             var shapeFactory = FactoryProducer.GetFactory(passable: false);
 
@@ -85,12 +93,14 @@ namespace NoOpRunner.Core.Configurators
 
             gameState.Platforms.AddShape(shape);
 
+            Logging.Instance.Write("Add impassable shape");
+
             return this;
         }
 
         public IGameStateConfigurator AddPassableShape(Func<AbstractFactory, BaseShape> action)
         {
-            if (!MapInitialized) throw new Exception("Map uninitialized");
+            if (!mapInitialized) throw new Exception("Map uninitialized");
 
             var shapeFactory = FactoryProducer.GetFactory(passable: true);
 
@@ -103,27 +113,33 @@ namespace NoOpRunner.Core.Configurators
 
             gameState.Platforms.AddShape(shape);
 
+            Logging.Instance.Write("Added passable shape");
+
             return this;
         }
 
         public IGameStateConfigurator AddPowerUp(PowerUps type, Func<IReadOnlyList<BaseShape>, BaseShape> action)
         {
-            if (!PowerUpsInitialized) throw new Exception("PowerUps uninitialized");
+            if (!powerUpsInitialized) throw new Exception("PowerUps uninitialized");
 
             var shape = action(Platforms.AsReadOnly());
 
             gameState.PowerUpsContainer.AddShape(new PowerUp(shape.CenterPosX, shape.CenterPosY + 1, type));
+
+            Logging.Instance.Write("Added power up");
 
             return this;
         }
 
         public IGameStateConfigurator AddPlayer(Func<IReadOnlyList<BaseShape>, BaseShape> action)
         {
-            if (!MapInitialized) throw new Exception("Map uninitialized");
+            if (!mapInitialized) throw new Exception("Map uninitialized");
 
             var shape = action(Platforms.AsReadOnly());
 
             gameState.Player = new Player(shape.CenterPosX, shape.CenterPosY + 1);
+
+            Logging.Instance.Write("Added player");
 
             return this;
         }
