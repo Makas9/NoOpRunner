@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="NoOpRunner.Client.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NoOpRunner.Client.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Background="White">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0">Volume level</TextBlock>
+            <Button x:Name="lowerVolumeButton" Grid.Column="1">Lower</Button>
+            <TextBlock Grid.Column="2" Text="{Binding VolumeLevel}"/>
+            <Button x:Name="raiseVolumeButton" Grid.Column="3">Higher</Button>
+        </Grid>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <Button x:Name="undoButton">Undo</Button>
+            <Button x:Name="resetButton">Reset</Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -10,33 +10,41 @@
     <Window.DataContext>
         <ViewModels:MainViewModel/>
     </Window.DataContext>
-    <Grid x:Name="MainGrid" Background="Black">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="40"/>
-        </Grid.RowDefinitions>
-        
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+    <Grid>
+        <Grid x:Name="GameGrid" Background="Black" Visibility="{Binding IsGameViewOpen, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
 
-            <Button Grid.Column="0" Command="{Binding StartHostCommand}" IsEnabled="{Binding HostConnectButtonsEnabled}">Host</Button>
-            <Button Grid.Column="1" Command="{Binding ConnectToHostCommand}" IsEnabled="{Binding HostConnectButtonsEnabled}">Connect</Button>
-            <Button Grid.Column="2" Command="{Binding SendMessageCommand}">Send message</Button>
-            <Button Grid.Column="3" x:Name="play_button">Play</Button>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="4" Text="{Binding StatusMessage}" Background="White"/>
+                <Button Grid.Column="0" Command="{Binding StartHostCommand}" IsEnabled="{Binding HostConnectButtonsEnabled}">Host</Button>
+                <Button Grid.Column="1" Command="{Binding ConnectToHostCommand}" IsEnabled="{Binding HostConnectButtonsEnabled}">Connect</Button>
+                <Button Grid.Column="2" Command="{Binding SendMessageCommand}">Send message</Button>
+                <Button Grid.Column="3" Command="{Binding OpenSettingsViewCommand}">Settings</Button>
+                <Button Grid.Column="4" x:Name="play_button">Play</Button>
+
+                <TextBlock Grid.Column="5" Text="{Binding StatusMessage}" Background="White"/>
+            </Grid>
+            <Grid Grid.Row="0" Visibility="{Binding IsPlaying, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Grid x:Name="background_panel"></Grid>
+                <Canvas x:Name="game_platforms"/>
+                <Canvas x:Name="player_window"/>
+                <Canvas x:Name="power_ups"/>
+            </Grid>
         </Grid>
-        <Grid Grid.Row="0" Visibility="{Binding IsPlaying, Converter={StaticResource BoolToVisibilityConverter}}">
-            <Grid x:Name="background_panel"></Grid>
-            <Canvas x:Name="game_platforms"/>
-            <Canvas x:Name="player_window"/>
-            <Canvas x:Name="power_ups"/>
+        <Grid Background="Yellow" Visibility="{Binding IsSettingsViewOpen, Converter={StaticResource BoolToVisibilityConverter}}">
+            <ContentControl Content="{Binding SettingsViewModel}"/>
         </Grid>
     </Grid>
+    
 </Window>

@@ -9,11 +9,14 @@ namespace NoOpRunner.Client.Logic.ViewModels
     {
         public Core.NoOpRunner Game { get; set; }
 
+        public SettingsViewModel SettingsViewModel { get; set; }
+
         public MainViewModel()
         {
             var connectionManager = new ConnectionManager();
 
             Game = new Core.NoOpRunner(connectionManager);
+            SettingsViewModel = new SettingsViewModel();
 
             Game.OnMessageReceived += HandleMessageReceived;
         }
@@ -49,7 +52,7 @@ namespace NoOpRunner.Client.Logic.ViewModels
 
         private bool IsClientConnected { get; set; }
 
-        private bool _IsHosting  = true;
+        private bool _IsHosting = true;
         public bool IsHosting
         {
             get => _IsHosting;
@@ -63,10 +66,22 @@ namespace NoOpRunner.Client.Logic.ViewModels
             set => SetField(ref _IsPlaying, value);
         }
 
+        private bool _IsSettingsViewOpen = false;
+        public bool IsSettingsViewOpen
+        {
+            get => _IsSettingsViewOpen;
+            set
+            {
+                SetField(ref _IsSettingsViewOpen, value);
+                RaisePropertyChanged(nameof(IsGameViewOpen));
+            }
+        }
+
+        public bool IsGameViewOpen => !IsSettingsViewOpen;
+
         public bool IsWaitingForClientConnection => IsHosting && !IsClientConnected;
 
         private ICommand _StartHostCommand;
-
         public ICommand StartHostCommand =>
             _StartHostCommand ?? (_StartHostCommand = new RelayCommand(() =>
                                                              {
@@ -78,7 +93,6 @@ namespace NoOpRunner.Client.Logic.ViewModels
                                                              }));
 
         private ICommand _ConnectToHostCommand;
-
         public ICommand ConnectToHostCommand =>
             _ConnectToHostCommand ?? (_ConnectToHostCommand = new RelayCommand(async () =>
             {
@@ -89,7 +103,6 @@ namespace NoOpRunner.Client.Logic.ViewModels
             }));
 
         private ICommand _SendMessageCommand;
-
         public ICommand SendMessageCommand =>
             _SendMessageCommand ?? (_SendMessageCommand = new RelayCommand(async () =>
             {
@@ -99,11 +112,17 @@ namespace NoOpRunner.Client.Logic.ViewModels
             }));
 
         private ICommand _StartPlayingCommand;
-
         public ICommand StartPlayingCommand =>
             _StartPlayingCommand ?? (_StartPlayingCommand = new RelayCommand(() =>
             {
                 IsPlaying = true;
+            }));
+
+        private ICommand _OpenSettingsViewCommand;
+        public ICommand OpenSettingsViewCommand =>
+            _OpenSettingsViewCommand ?? (_OpenSettingsViewCommand = new RelayCommand(() =>
+            {
+                IsSettingsViewOpen = true;
             }));
     }
 }
