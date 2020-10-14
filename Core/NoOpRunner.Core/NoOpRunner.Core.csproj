@@ -50,6 +50,7 @@
     <Compile Include="Builders\GameStateBuilder.cs" />
     <Compile Include="Builders\ShapeBuilder.cs" />
     <Compile Include="Configurators\GameStateConfigurator.cs" />
+    <Compile Include="Configurators\ImpassablePlatformConfigurator.cs" />
     <Compile Include="Configurators\PassablePlatformConfigurator.cs" />
     <Compile Include="Configurators\ShapeConfigurator.cs" />
     <Compile Include="Dtos\GameStateDto.cs" />

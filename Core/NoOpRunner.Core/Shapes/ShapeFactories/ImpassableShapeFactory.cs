@@ -1,13 +1,21 @@
+using NoOpRunner.Core.Builders;
+using NoOpRunner.Core.Configurators;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Shapes.EntityShapes;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
-using NoOpRunner.Core.Shapes.StaticShapes;
 using System;
 
 namespace NoOpRunner.Core.Shapes.ShapeFactories
 {
     public class ImpassableShapeFactory : AbstractFactory
     {
+        private readonly ShapeBuilder<ImpassablePlatformConfigurator> impassablePlatformBuilder;
+
+        public ImpassableShapeFactory()
+        {
+            impassablePlatformBuilder = new ShapeBuilder<ImpassablePlatformConfigurator>();
+        }
+
         public override EntityShape CreateEntityShape(Shape shape, int x, int y)
         {
             switch (shape)
@@ -22,7 +30,12 @@ namespace NoOpRunner.Core.Shapes.ShapeFactories
         {
             switch (shape)
             {
-                case Shape.Platform: return new ImpassablePlatform(strategy, lowerBoundX, lowerBoundY, upperBoundX, upperBoundY);
+                case Shape.Platform:
+                    return impassablePlatformBuilder
+                      .Configure()
+                      .ConfigureBounds(lowerBoundX, lowerBoundY, upperBoundX, upperBoundY)
+                      .ConfigureGenerationStrategy(strategy)
+                      .Build();
                 default: throw new ArgumentException("Shape is not found");
             }
         }
