@@ -74,5 +74,36 @@ namespace NoOpRunner.Core.Shapes
 
         public abstract bool CanOverlap(BaseShape other);
         public abstract void OnCollision(BaseShape other);
+
+        public BaseShape ShallowCopy()
+        {
+            return (BaseShape)this.MemberwiseClone();
+        }
+        public BaseShape DeepCopy()
+        {
+            BaseShape clone = (BaseShape)this.MemberwiseClone();
+            clone.ShapeBlocks = new List<ShapeBlock>(ShapeBlocks);
+            return clone;
+        }
+
+        public void AddBlock(int x, int y)
+        {
+            ShapeBlock block = new ShapeBlock();
+            block.OffsetX = x;
+            block.OffsetY = y;
+            ShapeBlocks.Add(block);
+        }
+
+        public string ShapesToString()
+        {
+            string str = "";
+
+            ShapeBlocks.ForEach(s =>
+            {
+                str += s.OffsetX + ", " + s.OffsetY + ", ";
+            });
+
+            return str.Remove(str.Length - 2);
+        }
     }
 }

@@ -4,6 +4,7 @@ using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
+using NoOpRunner.Core.Shapes.ShapeFactories;
 using NoOpRunner.Core.Shapes.StaticShapes;
 using System;
 using System.Collections.Generic;
@@ -223,6 +224,8 @@ namespace NoOpRunner.Core
                 .Build();
 
             GameState = initialGameState;
+            
+            //LabTest.TestPrototype(); // DEMO: Prototype Pattern
         }
 
         public void HandleKeyRelease(KeyPress key)
