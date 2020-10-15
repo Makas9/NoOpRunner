@@ -18,6 +18,8 @@ namespace NoOpRunner.Core.Shapes.ShapeFactories
 
         public override EntityShape CreateEntityShape(Shape shape, int x, int y)
         {
+            Logging.Instance.Write("Abstract Factory -> ImpassableShapeFactory used (" + shape + ")");
+
             switch (shape)
             {
                 case Shape.Saw: return new Saw(x, y);
@@ -28,6 +30,8 @@ namespace NoOpRunner.Core.Shapes.ShapeFactories
 
         public override BaseShape CreateStaticShape(Shape shape, GenerationStrategy strategy, int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY)
         {
+            Logging.Instance.Write("Abstract Factory -> ImpassableShapeFactory used (" + shape + ")");
+
             switch (shape)
             {
                 case Shape.Platform:
