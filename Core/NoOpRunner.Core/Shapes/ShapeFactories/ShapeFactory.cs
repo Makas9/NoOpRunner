@@ -4,10 +4,12 @@ using NoOpRunner.Core.Shapes.EntityShapes;
 
 namespace NoOpRunner.Core.Shapes.ShapeFactories
 {
-    class ShapeFactory : Factory
+    public class ShapeFactory : Factory
     {
         public override BaseShape GetShape(Shape shape, int x, int y)
         {
+            Logging.Instance.Write("Factory used (" + shape + ")");
+
             switch (shape)
             {
                 case Shape.HealthCrystal: return new HealthCrystal(x, y);

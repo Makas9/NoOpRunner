@@ -1,17 +1,18 @@
 ﻿using Newtonsoft.Json;
+using NoOpRunner.Core.Shapes;
 using System;
 using System.Collections.Generic;
-using NoOpRunner.Core.Shapes;
 
 namespace NoOpRunner.Core
 {
     public class ShapesContainer
     {
-        [JsonProperty] protected List<BaseShape> shapes { get; set; }
+        [JsonProperty] 
+        protected List<BaseShape> shapes { get; set; }
 
-        public readonly int SizeX;//Just take from GameSettings class
+        public int SizeX { get; set; }
 
-        public readonly int SizeY;
+        public int SizeY { get; set; }
 
         public ShapesContainer(int sizeX, int sizeY)
         {
