@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.PlayerStates;
+using NoOpRunner.Core.Rendering;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
 
 namespace NoOpRunner.Core.Shapes
 {
-    public class Player : MovingShape, IObserver
+    public class Player : MovingShape, IObserver, IVisualElement
     {
         private const int MaxHealth = 3;
         private int currentHealth = 0;
@@ -20,6 +25,22 @@ namespace NoOpRunner.Core.Shapes
         {
             StateMachine = new PlayerOneStateMachine();
             currentHealth = MaxHealth;
+            
+            TakenPowerUps = new List<PowerUps>();
+        }
+
+        private PowerUps? usedPowerUp;
+        public PowerUps? UsedPowerUp
+        {
+            get
+            {
+                var temp = usedPowerUp;
+
+                usedPowerUp = null;
+
+                return temp;
+            }
+            private set => usedPowerUp = value;
         }
 
         private const int MovementIncrement = 1;
@@ -31,6 +52,8 @@ namespace NoOpRunner.Core.Shapes
 
         private bool IsJumping = false;
         private bool CanJump = true;
+        
+        private IList<PowerUps> TakenPowerUps { get; set; }
 
         private decimal VerticalAccelerationPool;
 
@@ -90,7 +113,7 @@ namespace NoOpRunner.Core.Shapes
             return pixels;
         }
 
-        public WindowPixel GetAnimationPixel(out int hitBoxY, out int hitBoxX)
+        private WindowPixel GetAnimationPixel(out int hitBoxY, out int hitBoxX)
         {
             var animationShapeBlock = ShapeBlocks[0];
 
@@ -134,6 +157,19 @@ namespace NoOpRunner.Core.Shapes
                         VerticalAcceleration = JumpAcceleration;
                         VerticalAccelerationPool = JumpAccelerationPool;
                         VerticalSpeed = JumpVerticalSpeed;
+                    }else if (TakenPowerUps.Contains(PowerUps.Double_Jump) && !IsShapeHit(gameScreen, CenterPosX, CenterPosY + MovementIncrement))
+                    {
+                        StateMachine.Jump();
+                        IsJumping = true;
+                        CanJump = false;
+
+                        VerticalAcceleration = JumpAcceleration;
+                        VerticalAccelerationPool = JumpAccelerationPool;
+                        VerticalSpeed = JumpVerticalSpeed;
+
+                        UsedPowerUp = PowerUps.Double_Jump;
+
+                        TakenPowerUps.Remove(PowerUps.Double_Jump);
                     }
 
                     return;
@@ -187,16 +223,7 @@ namespace NoOpRunner.Core.Shapes
                     return;
             }
         }
-
-        public bool StateHasChanged => StateMachine.StateHasChanged;
-
-
-        public Uri GetStateAnimationUri => StateMachine.GetStatusUri();
-
-
-        public bool IsPlayerTurning => StateMachine.IsTurning;
-
-
+        
         public bool IsLookingLeft
         {
             get => StateMachine.IsLookingLeft;
@@ -214,6 +241,8 @@ namespace NoOpRunner.Core.Shapes
             if (message.MessageType != MessageType.PlayerUpdate) 
                 return;
             
+            Console.WriteLine("Observer: Player, say Hello World");
+            
             var messageDto = message.Payload as PlayerStateDto;
 
             State = messageDto.State;
@@ -221,8 +250,71 @@ namespace NoOpRunner.Core.Shapes
 
             CenterPosX = messageDto.CenterPosX;
             CenterPosY = messageDto.CenterPosY;
+            
+        }
 
+        public void TakePowerUp(PowerUps powerUp)
+        {
+            if (!TakenPowerUps.Contains(powerUp))
+            {
+                TakenPowerUps.Add(powerUp);
+            }
+        }
+        public void Display(Canvas canvas)
+        {
+            var animationPixel = GetAnimationPixel(out int hitBoxY, out int hitBoxX);
+            
+            var gifWidth = canvas.ActualWidth / GameSettings.HorizontalCellCount;
+            var gifHeight = canvas.ActualHeight / GameSettings.VerticalCellCount;
+            
+            var playerAnimation = canvas.Children.OfType<GifImage>().FirstOrDefault(x=> x.VisualType == VisualElementType.Player);
 
+            if (playerAnimation == null)
+            {
+                playerAnimation = new GifImage()
+                {
+                    Width = gifWidth,
+                    Height = gifHeight,
+                    VisualType = VisualElementType.Player,
+                    GifSource = StateMachine.GetStatusUri(),
+                    Stretch = Stretch.Fill
+                };
+                
+                Canvas.SetLeft(playerAnimation, gifWidth * animationPixel.X * hitBoxX);
+                Canvas.SetBottom(playerAnimation, gifHeight * animationPixel.Y * hitBoxY);
+
+                canvas.Children.Add(playerAnimation);
+                
+                playerAnimation.StartAnimation();
+            }
+            else
+            {
+                if (StateMachine.StateHasChanged)
+                {
+                    playerAnimation.SetValue(GifImage.GifSourceProperty,
+                        StateMachine.GetStatusUri());
+                }
+            }
+
+            foreach (UIElement canvasChild in canvas.Children)
+            {
+                //Move
+                RenderingHelper.AnimateUiElementMove(canvasChild, gifWidth * animationPixel.X,
+                    gifHeight * animationPixel.Y);
+                
+                //Resize
+                canvasChild.SetValue(FrameworkElement.WidthProperty, gifWidth * hitBoxX); // sketch for all hit box
+                canvasChild.SetValue(FrameworkElement.HeightProperty, gifHeight * hitBoxY); // sketch for all hit box
+                
+                //Mirror
+                if (StateMachine.IsTurning)
+                {
+                    canvasChild.SetValue(UIElement.RenderTransformProperty,
+                        IsLookingLeft
+                            ? new ScaleTransform() {ScaleX = -1, CenterX = gifWidth / 2}
+                            : new ScaleTransform() {ScaleX = 1, CenterX = gifWidth / 2});
+                }
+            }
         }
     }
 }

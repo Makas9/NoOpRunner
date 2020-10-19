@@ -8,3 +8,9 @@ background2=/Resources/Sprites/Background/plx-2.png
 background3=/Resources/Sprites/Background/plx-3.png
 background4=/Resources/Sprites/Background/plx-4.png
 background5=/Resources/Sprites/Background/plx-5.png
+
+PlayerInvulnerabilityVisual=/Resources/Sprites/PlayerOne/PowerUps/InvincibilityEyes.gif
+Invulnerability=/Resources/Sprites/PowerUps/PlayerOne/Invincibility.png
+
+PlayerDoubleJumpVisual=/Resources/Sprites/PlayerOne/PowerUps/DoubleJump.gif
+DoubleJump=/Resources/Sprites/PowerUps/PlayerOne/DoubleJump.png

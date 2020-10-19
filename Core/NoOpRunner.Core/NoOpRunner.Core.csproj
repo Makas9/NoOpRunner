@@ -45,6 +45,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\GameStateBuilder.cs" />
@@ -53,18 +54,26 @@
     <Compile Include="Configurators\ImpassablePlatformConfigurator.cs" />
     <Compile Include="Configurators\PassablePlatformConfigurator.cs" />
     <Compile Include="Configurators\ShapeConfigurator.cs" />
-    <Compile Include="Dtos\GameStateDto.cs" />
+    <Compile Include="Decorators\PlayerDecorator.cs" />
+    <Compile Include="GameStepCycleFacade.cs" />
+    <Compile Include="PlayerDoubleJumpDecorator.cs" />
+    <Compile Include="PlayerInvulnerabilityDecorator.cs" />
+    <Compile Include="PlayerSpeedBoostDecorator.cs" />
+    <Compile Include="Rendering\GifImage.cs" />
     <Compile Include="Dtos\PlayerStateDto.cs" />
     <Compile Include="Enums\Entity.cs" />
+    <Compile Include="Enums\VisualElementType.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="Interfaces\IGameStateConfigurator.cs" />
     <Compile Include="Interfaces\IShapeConfigurator.cs" />
     <Compile Include="Interfaces\IObserver.cs" />
     <Compile Include="Interfaces\ISubject.cs" />
+    <Compile Include="Interfaces\IVisualElement.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="PlatformsContainer.cs" />
     <Compile Include="PowerUpsContainer.cs" />
+    <Compile Include="Rendering\RenderingHelper.cs" />
     <Compile Include="Shapes\EntityShapes\Rocket.cs" />
     <Compile Include="Shapes\EntityShapes\Saw.cs" />
     <Compile Include="Shapes\EntityShapes\DamageCrystal.cs" />

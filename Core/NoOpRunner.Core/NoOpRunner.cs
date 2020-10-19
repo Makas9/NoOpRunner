@@ -101,12 +101,7 @@ namespace NoOpRunner.Core
             {
                 case MessageType.InitialConnection:
                 case MessageType.InitialGame:
-                    messageDto.Payload = new GameStateDto()
-                        {
-                            Platforms = PlatformsContainer,
-                            Player = Player,
-                            PowerUps = PowerUpsContainer
-                        };
+                    messageDto.Payload = GameState;
                     
                     break;
                 default:
@@ -145,18 +140,12 @@ namespace NoOpRunner.Core
                     break;
                 case MessageType.InitialConnection:
                 case MessageType.InitialGame:
-                    var gameState = message.Payload as GameStateDto;
+                    
+                    GameState = message.Payload as GameState;
 
-                    GameState = new GameState()
-                    {
-                        Platforms = gameState.Platforms,
-                        Player = gameState.Player,
-                        PowerUpsContainer = gameState.PowerUps
-                    };
-
-                    AddObserver(gameState.Player);
-                    AddObserver(gameState.Platforms);
-                    AddObserver(gameState.PowerUps);
+                    AddObserver(GameState.Player);
+                    AddObserver(GameState.Platforms);
+                    AddObserver(GameState.PowerUpsContainer);
 
                     break;
                 default:
@@ -175,16 +164,8 @@ namespace NoOpRunner.Core
             Logging.Instance.Write("Started hosting..");
         }
 
-        public async Task FireHostLoop()
+        public async Task UpdateClientsGame()
         {
-            var map = (WindowPixel[,]) PlatformsContainer.GetShapes().Clone();
-
-            //this need to be separated, player and map move at diff speed
-            //right now map dont move at all
-            Player.OnLoopFired(map);
-            PlatformsContainer.OnLoopFired(map);
-
-            //Less data to send than sending whole player instance
             await connectionManager.SendMessageToClient(new MessageDto()
             {
                 MessageType = MessageType.PlayerUpdate,
@@ -196,12 +177,6 @@ namespace NoOpRunner.Core
                     IsLookingLeft = Player.IsLookingLeft
                 }
             });
-        }
-
-        public void FireClientLoop(PlatformsContainer platforms, Player player)
-        {
-            Player = player;
-            PlatformsContainer = platforms;
         }
 
         public void HandleKeyPress(KeyPress keyPress)

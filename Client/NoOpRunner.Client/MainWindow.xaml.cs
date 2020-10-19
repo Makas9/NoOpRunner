@@ -22,6 +22,8 @@ namespace NoOpRunner.Client
 
         private Core.NoOpRunner Game;
 
+        private Core.GameStepCycleFacade Facade;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -33,6 +35,8 @@ namespace NoOpRunner.Client
                 var viewModel = (MainViewModel) DataContext;
 
                 Game = viewModel.Game;
+                
+                Facade = new GameStepCycleFacade();
 
                 ConfigureKeys();
 
@@ -52,14 +56,15 @@ namespace NoOpRunner.Client
         {
             if (Game.IsHost)
             {
-                await Game.FireHostLoop();
+                await Facade.HostGameCycle(Game, player_window, power_ups, game_platforms);
+                // await Game.UpdateClientsGame();
             }
 
             if (Game.PlatformsContainer != null && Game.Player != null && Game.PowerUpsContainer != null)
             {
                 GameWindowRenderer.RenderPowerUps(Game.PowerUpsContainer, power_ups);//for now
                 
-                GameWindowRenderer.RenderPlayer(Game.Player, player_window, Game.PlatformsContainer);
+                GameWindowRenderer.RenderPlayer(Game.Player, player_window);
 
                 GameWindowRenderer.RenderPlatforms(Game.PlatformsContainer, game_platforms);
             }
