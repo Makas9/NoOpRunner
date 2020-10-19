@@ -21,9 +21,21 @@ namespace NoOpRunner.Core
             BaseShape shallow = shape.Clone(); // Shallow Copy
             BaseShape deep = shape.DeepCopy(); // Deep Copy
 
-            Logging.Instance.Write("Base: " + shape.GetShapes().GetHashCode().ToString());
-            Logging.Instance.Write("Shallow: " + shallow.GetShapes().GetHashCode().ToString());
-            Logging.Instance.Write("Deep: " + deep.GetShapes().GetHashCode().ToString());
+            ShapeBlock ba = shape.GetShapes().First();
+            ShapeBlock sh = shallow.GetShapes().First();
+            ShapeBlock de = deep.GetShapes().First();
+
+            Logging.Instance.Write("Before");
+            Logging.Instance.Write("Base: " + shape.GetShapes().GetHashCode().ToString() + "(OffsetX: " + ba.OffsetX + ")");
+            Logging.Instance.Write("Shallow: " + shallow.GetShapes().GetHashCode().ToString() + " (OffsetX: " + sh.OffsetX + ")");
+            Logging.Instance.Write("Deep: " + deep.GetShapes().GetHashCode().ToString() + " (OffsetX: " + de.OffsetX + ")");
+
+            ba.OffsetX = 10;
+
+            Logging.Instance.Write("After");
+            Logging.Instance.Write("Base: " + shape.GetShapes().GetHashCode().ToString() + " (OffsetX: " + ba.OffsetX + ")");
+            Logging.Instance.Write("Shallow: " + shallow.GetShapes().GetHashCode().ToString() + " (OffsetX: " + sh.OffsetX + ")");
+            Logging.Instance.Write("Deep: " + deep.GetShapes().GetHashCode().ToString() + " (OffsetX: " + de.OffsetX + ")");
         }
 
         public static void TestFactory()
