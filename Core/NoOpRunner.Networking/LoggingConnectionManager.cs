@@ -26,7 +26,7 @@ namespace NoOpRunner.Networking
 
         public IDisposable StartConnectionManager(string url, Action<MessageDto> callback)
         {
-            logger.Write("ConnectionManager: Start triggered");
+            logger.Write("ConnectionManager: Start triggered", LoggingLevel.Trace);
             HostBridge.Bridge.RegisterHostMessageHandler(callback);
 
             return WebApp.Start<Startup>(url);
@@ -34,7 +34,7 @@ namespace NoOpRunner.Networking
 
         public async Task CreateConnection(string url, Action<MessageDto> callback)
         {
-            logger.Write("ConnectionManager: Create Connection triggered.");
+            logger.Write("ConnectionManager: Create Connection triggered.", LoggingLevel.Trace);
             connection = connection ?? new HubConnection(url);
 
             proxy = proxy ?? connection.CreateHubProxy(nameof(GameHub));
@@ -55,13 +55,13 @@ namespace NoOpRunner.Networking
 
         public async Task SendMessageToHost(MessageDto message)
         {
-            logger.Write("ConnectionManager: Message sent to Host");
+            logger.Write("ConnectionManager: Message sent to Host", LoggingLevel.Trace);
             await proxy.Invoke("SendToHost", message);
         }
 
         public async Task SendMessageToClient(MessageDto message)
         {
-            logger.Write("ConnectionManager: Message sent to Client");
+            logger.Write("ConnectionManager: Message sent to Client", LoggingLevel.Trace);
             var context = GlobalHost.ConnectionManager.GetHubContext<GameHub>();
 
             await context.Clients.All.SendMessage(JsonConvert.SerializeObject(message, new JsonSerializerSettings
