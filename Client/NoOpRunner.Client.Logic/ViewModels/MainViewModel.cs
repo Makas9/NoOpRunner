@@ -1,4 +1,5 @@
 ﻿using NoOpRunner.Client.Logic.Base;
+using NoOpRunner.Core;
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Networking;
 using System.Windows.Input;
@@ -11,7 +12,8 @@ namespace NoOpRunner.Client.Logic.ViewModels
 
         public MainViewModel()
         {
-            var connectionManager = new ConnectionManager();
+            //var connectionManager = new ConnectionManager();
+            var connectionManager = new LoggingConnectionManagerAdapter(new LoggingConnectionManager(Logging.Instance));
 
             Game = new Core.NoOpRunner(connectionManager);
 

@@ -58,6 +58,7 @@
     <Compile Include="Enums\Entity.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="GameState.cs" />
+    <Compile Include="ILogger.cs" />
     <Compile Include="Interfaces\IGameStateConfigurator.cs" />
     <Compile Include="Interfaces\IShapeConfigurator.cs" />
     <Compile Include="Interfaces\IObserver.cs" />

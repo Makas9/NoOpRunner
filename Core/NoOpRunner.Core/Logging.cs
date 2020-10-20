@@ -2,7 +2,7 @@
 
 namespace NoOpRunner.Core
 {
-    public sealed class Logging
+    public sealed class Logging : ILogger
     {
         private Logging() { }
 
