@@ -82,14 +82,7 @@ namespace NoOpRunner.Core.Shapes
         public BaseShape DeepCopy()
         {
             BaseShape clone = (BaseShape)this.MemberwiseClone();
-            clone.ShapeBlocks = new List<ShapeBlock>();
-            foreach (ShapeBlock shape in ShapeBlocks)
-            {
-                ShapeBlock block = new ShapeBlock();
-                block.OffsetX = shape.OffsetX;
-                block.OffsetY = shape.OffsetY;
-                clone.ShapeBlocks.Add(block);
-            }
+            clone.ShapeBlocks = ShapeBlocks.Select(x => new ShapeBlock() { OffsetX = x.OffsetX, OffsetY = x.OffsetY }).ToList();
 
             return clone;
         }
