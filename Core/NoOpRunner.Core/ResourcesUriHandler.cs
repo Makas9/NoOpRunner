@@ -4,18 +4,53 @@ using NoOpRunner.Core.Enums;
 
 namespace NoOpRunner.Core
 {
-    public static class SpritesUriHandler
+    public static class ResourcesUriHandler
     {
-        private static readonly ResourceReader resourceReader;
+        private static readonly ResourceReader spritesReader;
 
-        static SpritesUriHandler()
+        private static readonly ResourceReader soundsReader;
+
+
+        static ResourcesUriHandler()
         {
-            resourceReader = new ResourceReader(@"..\..\Resources\SpritesList.resources");
+            spritesReader = new ResourceReader(@"..\..\Resources\SpritesList.resources");
+
+            soundsReader = new ResourceReader(@"..\..\Resources\SoundsList.resources");
+        }
+
+        public static Uri GetPowerUpSound(PowerUps powerUpType)
+        {
+            switch (powerUpType)
+            {
+                case PowerUps.Speed_Boost:
+                    soundsReader.GetResourceData("SpeedBoost", out _, out byte[] speedBoostData);
+
+                    return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
+                                   System.Text.Encoding.UTF8.GetString(speedBoostData).Substring(1));
+                case PowerUps.Invisibility:
+                    break;
+                case PowerUps.Invulnerability:
+                    break;
+                case PowerUps.Double_Jump:
+                    break;
+                case PowerUps.Rocket:
+                    break;
+                case PowerUps.Proximity_Mine:
+                    break;
+                case PowerUps.Saw:
+                    break;
+                case PowerUps.Knockback_Bomb:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(powerUpType), powerUpType, null);
+            }
+
+            return null;
         }
 
         public static Uri GetPlatformUri()
         {
-            resourceReader.GetResourceData("platform", out _, out byte[] data);
+            spritesReader.GetResourceData("platform", out _, out byte[] data);
 
             return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
                            System.Text.Encoding.UTF8.GetString(data).Substring(1));
@@ -23,7 +58,7 @@ namespace NoOpRunner.Core
 
         public static Uri GetRunningAnimationUri()
         {
-            resourceReader.GetResourceData("run", out _, out byte[] data);
+            spritesReader.GetResourceData("run", out _, out byte[] data);
 
             return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
                            System.Text.Encoding.UTF8.GetString(data).Substring(1));
@@ -31,7 +66,7 @@ namespace NoOpRunner.Core
 
         public static Uri GetIdleAnimationUri()
         {
-            resourceReader.GetResourceData("idle", out _, out byte[] data);
+            spritesReader.GetResourceData("idle", out _, out byte[] data);
 
             return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
                            System.Text.Encoding.UTF8.GetString(data).Substring(1));
@@ -39,7 +74,7 @@ namespace NoOpRunner.Core
 
         public static Uri GetLandingAnimationUri()
         {
-            resourceReader.GetResourceData("landing", out _, out byte[] data);
+            spritesReader.GetResourceData("landing", out _, out byte[] data);
 
             return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
                            System.Text.Encoding.UTF8.GetString(data).Substring(1));
@@ -47,7 +82,7 @@ namespace NoOpRunner.Core
 
         public static Uri GetJumpingAnimationUri()
         {
-            resourceReader.GetResourceData("jump", out _, out byte[] data);
+            spritesReader.GetResourceData("jump", out _, out byte[] data);
 
             return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
                            System.Text.Encoding.UTF8.GetString(data).Substring(1));
@@ -63,8 +98,8 @@ namespace NoOpRunner.Core
             }
 
             backgroundType += backgroundNumber;
-            
-            resourceReader.GetResourceData(backgroundType, out _, out byte[] data);
+
+            spritesReader.GetResourceData(backgroundType, out _, out byte[] data);
 
             return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
                            System.Text.Encoding.UTF8.GetString(data).Substring(1));
@@ -76,18 +111,18 @@ namespace NoOpRunner.Core
             switch (visual)
             {
                 case VisualElementType.DoubleJump:
-                    resourceReader.GetResourceData("PlayerDoubleJumpVisual", out _, out data);
+                    spritesReader.GetResourceData("PlayerDoubleJumpVisual", out _, out data);
 
                     return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
                                    System.Text.Encoding.UTF8.GetString(data).Substring(1));
-                    
+
                 case VisualElementType.Invulnerability:
-                    resourceReader.GetResourceData("PlayerInvulnerabilityVisual", out _, out data);
+                    spritesReader.GetResourceData("PlayerInvulnerabilityVisual", out _, out data);
 
                     return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
                                    System.Text.Encoding.UTF8.GetString(data).Substring(1));
-                case VisualElementType.Socks:
-                    resourceReader.GetResourceData("PlayerSocksVisual", out _, out data);
+                case VisualElementType.SpeedBoost:
+                    spritesReader.GetResourceData("PlayerSpeedBoostVisual", out _, out data);
 
                     return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
                                    System.Text.Encoding.UTF8.GetString(data).Substring(1));
@@ -102,43 +137,43 @@ namespace NoOpRunner.Core
             switch (powerUp)
             {
                 case PowerUps.Speed_Boost:
-                    resourceReader.GetResourceData("SpeedBoost", out _, out data);
+                    spritesReader.GetResourceData("SpeedBoost", out _, out data);
 
                     return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
                                    System.Text.Encoding.UTF8.GetString(data).Substring(1));
                 case PowerUps.Invisibility:
-                    resourceReader.GetResourceData("Invisibility", out _, out  data);
+                    spritesReader.GetResourceData("Invisibility", out _, out data);
 
                     return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
                                    System.Text.Encoding.UTF8.GetString(data).Substring(1));
                 case PowerUps.Invulnerability:
-                    resourceReader.GetResourceData("Invulnerability", out _, out  data);
+                    spritesReader.GetResourceData("Invulnerability", out _, out data);
 
                     return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
                                    System.Text.Encoding.UTF8.GetString(data).Substring(1));
-                    
+
                 case PowerUps.Double_Jump:
-                    resourceReader.GetResourceData("DoubleJump", out _, out  data);
+                    spritesReader.GetResourceData("DoubleJump", out _, out data);
 
                     return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
                                    System.Text.Encoding.UTF8.GetString(data).Substring(1));
                 case PowerUps.Rocket:
-                    resourceReader.GetResourceData("Rocket", out _, out  data);
+                    spritesReader.GetResourceData("Rocket", out _, out data);
 
                     return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
                                    System.Text.Encoding.UTF8.GetString(data).Substring(1));
                 case PowerUps.Proximity_Mine:
-                    resourceReader.GetResourceData("ProximityMine", out _, out  data);
+                    spritesReader.GetResourceData("ProximityMine", out _, out data);
 
                     return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
                                    System.Text.Encoding.UTF8.GetString(data).Substring(1));
                 case PowerUps.Saw:
-                    resourceReader.GetResourceData("Saw", out _, out  data);
+                    spritesReader.GetResourceData("Saw", out _, out data);
 
                     return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
                                    System.Text.Encoding.UTF8.GetString(data).Substring(1));
                 case PowerUps.Knockback_Bomb:
-                    resourceReader.GetResourceData("KnockBackBomb", out _, out  data);
+                    spritesReader.GetResourceData("KnockBackBomb", out _, out data);
 
                     return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
                                    System.Text.Encoding.UTF8.GetString(data).Substring(1));

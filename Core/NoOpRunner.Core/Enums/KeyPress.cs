@@ -6,6 +6,8 @@
         Right,
         Left,
         Space,
-        Down
+        Down,
+        NumpadOne,
+        NumpadTwo
     }
 }

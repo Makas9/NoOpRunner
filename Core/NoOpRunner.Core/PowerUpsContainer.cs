@@ -74,7 +74,7 @@ namespace NoOpRunner.Core
                     {
                         Width = rectangleWidth,
                         Height = rectangleHeight,
-                        Fill = new ImageBrush(new BitmapImage(SpritesUriHandler.GetPowerUp(powerUp.PowerUpType))),
+                        Fill = new ImageBrush(new BitmapImage(ResourcesUriHandler.GetPowerUp(powerUp.PowerUpType))),
                         Stretch = Stretch.Fill
                     };
                     Canvas.SetLeft(rec, rectangleWidth * powerUp.CenterPosX);

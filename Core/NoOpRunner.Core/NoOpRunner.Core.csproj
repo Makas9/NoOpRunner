@@ -58,6 +58,7 @@
     <Compile Include="GameFrameCycleFacade.cs" />
     <Compile Include="PlayerDoubleJumpDecorator.cs" />
     <Compile Include="PlayerInvulnerabilityDecorator.cs" />
+    <Compile Include="PlayerOnePowerUps.cs" />
     <Compile Include="PlayerSpeedBoostDecorator.cs" />
     <Compile Include="Rendering\GifImage.cs" />
     <Compile Include="Dtos\PlayerStateDto.cs" />
@@ -113,7 +114,7 @@
     <Compile Include="Shapes\StaticShapes\PassablePlatform.cs" />
     <Compile Include="Shapes\Player.cs" />
     <Compile Include="Shapes\ShapeBlock.cs" />
-    <Compile Include="SpritesUriHandler.cs" />
+    <Compile Include="ResourcesUriHandler.cs" />
     <Compile Include="Shapes\ShapeFactories\ShapeFactory.cs" />
     <Compile Include="WindowPixel.cs" />
   </ItemGroup>

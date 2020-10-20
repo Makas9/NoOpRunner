@@ -73,7 +73,7 @@ namespace NoOpRunner.Client
         {
             for (int i = 1; i < 6; i++)
             {
-                background_panel.Children.Add(new Image(){Source = new BitmapImage(SpritesUriHandler.GetBackground(i)), Stretch = Stretch.Fill});
+                background_panel.Children.Add(new Image(){Source = new BitmapImage(ResourcesUriHandler.GetBackground(i)), Stretch = Stretch.Fill});
             }
         }
 
@@ -97,6 +97,12 @@ namespace NoOpRunner.Client
                         return;
                     case Key.Down:
                         Game.HandleKeyPress(KeyPress.Down);
+                        return;
+                    case Key.NumPad1:
+                        Game.HandleKeyPress(KeyPress.NumpadOne);//speed
+                        return;
+                    case Key.NumPad2:
+                        Game.HandleKeyPress(KeyPress.NumpadTwo);//speed
                         return;
                     default:
                         return;

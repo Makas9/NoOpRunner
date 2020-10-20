@@ -5,7 +5,6 @@
         Player,
         DoubleJump,
         Invulnerability,
-        Socks,
         SpeedBoost
     }
 }

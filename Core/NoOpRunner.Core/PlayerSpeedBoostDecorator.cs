@@ -11,8 +11,24 @@ namespace NoOpRunner.Core
 {
     public class PlayerSpeedBoostDecorator : PlayerDecorator
     {
-        protected PlayerSpeedBoostDecorator(IVisualElement player) : base(player)
+        private MediaPlayer MediaPlayer { get; set; }
+
+        private static readonly int CyclesExists = GameSettings.Fps.Milliseconds/GameSettings.Fps.Milliseconds*1000*2;
+
+        public PlayerSpeedBoostDecorator(IVisualElement player) : base(player)
         {
+            MediaPlayer = new MediaPlayer();
+
+            MediaPlayer.Open(ResourcesUriHandler.GetPowerUpSound(PowerUps.Speed_Boost));
+
+            MediaPlayer.MediaEnded += (o,a) =>
+            {
+                MediaPlayer.Position = TimeSpan.Zero;
+                MediaPlayer.Play();
+            };
+
+            MediaPlayer.Volume = 0.1;
+            MediaPlayer.Play();
         }
 
         public override void Display(Canvas canvas)
@@ -25,8 +41,8 @@ namespace NoOpRunner.Core
             {
                 speedBoostAnimation = new GifImage
                 {
-                    VisualType = VisualElementType.DoubleJump,
-                    GifSource = SpritesUriHandler.GetPlayerPowerUp(VisualElementType.SpeedBoost),
+                    VisualType = VisualElementType.SpeedBoost,
+                    GifSource = ResourcesUriHandler.GetPlayerPowerUp(VisualElementType.SpeedBoost),
                     Stretch = Stretch.Fill
                 };
 
@@ -40,6 +56,11 @@ namespace NoOpRunner.Core
         {
             if (visualElementType == VisualElementType.SpeedBoost)
             {
+                MediaPlayer.Pause();
+                MediaPlayer.Close();
+                
+                
+                
                 return Player;
             }
 

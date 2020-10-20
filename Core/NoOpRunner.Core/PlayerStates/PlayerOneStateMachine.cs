@@ -40,13 +40,13 @@ namespace NoOpRunner.Core.PlayerStates
             switch (currentState)
             {
                 case PlayerOneState.Idle:
-                    return SpritesUriHandler.GetIdleAnimationUri();
+                    return ResourcesUriHandler.GetIdleAnimationUri();
                 case PlayerOneState.Jumping:
-                    return SpritesUriHandler.GetJumpingAnimationUri();
+                    return ResourcesUriHandler.GetJumpingAnimationUri();
                 case PlayerOneState.Landing:
-                    return SpritesUriHandler.GetLandingAnimationUri();
+                    return ResourcesUriHandler.GetLandingAnimationUri();
                 case PlayerOneState.Running:
-                    return SpritesUriHandler.GetRunningAnimationUri();
+                    return ResourcesUriHandler.GetRunningAnimationUri();
                 default:
                     return null;
             }

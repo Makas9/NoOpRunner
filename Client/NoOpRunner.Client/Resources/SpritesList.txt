@@ -14,3 +14,6 @@ Invulnerability=/Resources/Sprites/PowerUps/PlayerOne/Invincibility.png
 
 PlayerDoubleJumpVisual=/Resources/Sprites/PlayerOne/PowerUps/DoubleJump.gif
 DoubleJump=/Resources/Sprites/PowerUps/PlayerOne/DoubleJump.png
+
+PlayerSpeedBoostVisual=/Resources/Sprites/PlayerOne/PowerUps/SpeedBoost.gif
+SpeedBoost=/Resources/Sprites/PowerUps/PlayerOne/SpeedBoost.png

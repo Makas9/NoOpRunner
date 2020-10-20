@@ -24,27 +24,15 @@ namespace NoOpRunner.Core.Shapes
         public Player(int x, int y) : base(new FillGenerationStrategy(), x, y, x + HitBoxWidth, y + HitBoxHeight)
         {
             StateMachine = new PlayerOneStateMachine();
-            currentHealth = MaxHealth;
+            PlayerOnePowerUps = new PlayerOnePowerUps();
             
-            TakenPowerUps = new List<PowerUps>();
-        }
-
-        private PowerUps? usedPowerUp;
-        public PowerUps? UsedPowerUp
-        {
-            get
-            {
-                var temp = usedPowerUp;
-
-                usedPowerUp = null;
-
-                return temp;
-            }
-            private set => usedPowerUp = value;
+            currentHealth = MaxHealth;
         }
 
         private const int MovementIncrement = 1;
         private PlayerOneStateMachine StateMachine { get; set; } //dumb implementation of State machine pattern
+        
+        private PlayerOnePowerUps PlayerOnePowerUps { get; set; }
 
         private const decimal JumpAcceleration = 0.1m;
         private const decimal JumpAccelerationPool = 0.5m;
@@ -52,8 +40,6 @@ namespace NoOpRunner.Core.Shapes
 
         private bool IsJumping = false;
         private bool CanJump = true;
-        
-        private IList<PowerUps> TakenPowerUps { get; set; }
 
         private decimal VerticalAccelerationPool;
 
@@ -157,7 +143,7 @@ namespace NoOpRunner.Core.Shapes
                         VerticalAcceleration = JumpAcceleration;
                         VerticalAccelerationPool = JumpAccelerationPool;
                         VerticalSpeed = JumpVerticalSpeed;
-                    }else if (TakenPowerUps.Contains(PowerUps.Double_Jump) && !IsShapeHit(gameScreen, CenterPosX, CenterPosY + MovementIncrement))
+                    }else if (PlayerOnePowerUps.UsePowerUp(PowerUps.Double_Jump) && !IsShapeHit(gameScreen, CenterPosX, CenterPosY + MovementIncrement))
                     {
                         StateMachine.Jump();
                         IsJumping = true;
@@ -166,10 +152,6 @@ namespace NoOpRunner.Core.Shapes
                         VerticalAcceleration = JumpAcceleration;
                         VerticalAccelerationPool = JumpAccelerationPool;
                         VerticalSpeed = JumpVerticalSpeed;
-
-                        UsedPowerUp = PowerUps.Double_Jump;
-
-                        TakenPowerUps.Remove(PowerUps.Double_Jump);
                     }
 
                     return;
@@ -185,8 +167,24 @@ namespace NoOpRunner.Core.Shapes
                     // Use power-up
 
                     return;
+                case KeyPress.NumpadOne:
+                    PlayerOnePowerUps.UsePowerUp(PowerUps.Speed_Boost);
+                    break;
+                case KeyPress.NumpadTwo:
+                    PlayerOnePowerUps.UsePowerUp(PowerUps.Invulnerability);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(key), key, null);
             }
         }
+
+        public void LoopPowerUps()
+        {
+            this.PlayerOnePowerUps.OnLoopFired();  
+        } 
+
+        public IList<PowerUps> UsingPowerUps => PlayerOnePowerUps.UsingPowerUps;
+        public PowerUps? UsedPowerUp => PlayerOnePowerUps.UsedPowerUp;
 
         public void ModifyHealth(int healthPoints)
         {
@@ -255,10 +253,7 @@ namespace NoOpRunner.Core.Shapes
 
         public void TakePowerUp(PowerUps powerUp)
         {
-            if (!TakenPowerUps.Contains(powerUp))
-            {
-                TakenPowerUps.Add(powerUp);
-            }
+            PlayerOnePowerUps.TakePowerUp(powerUp);
         }
         public void Display(Canvas canvas)
         {

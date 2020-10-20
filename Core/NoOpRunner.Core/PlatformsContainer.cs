@@ -53,7 +53,7 @@ namespace NoOpRunner.Core
             {
                 canvas.Children.Clear();
 
-                var imageBrush = new ImageBrush(new BitmapImage(SpritesUriHandler.GetPlatformUri()));
+                var imageBrush = new ImageBrush(new BitmapImage(ResourcesUriHandler.GetPlatformUri()));
 
                 foreach (var pixel in pixels)
                 {

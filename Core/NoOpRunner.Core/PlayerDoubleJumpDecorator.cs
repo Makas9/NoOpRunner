@@ -26,7 +26,7 @@ namespace NoOpRunner.Core
                 doubleJumpAnimation = new GifImage
                 {
                     VisualType = VisualElementType.DoubleJump,
-                    GifSource = SpritesUriHandler.GetPlayerPowerUp(VisualElementType.DoubleJump),
+                    GifSource = ResourcesUriHandler.GetPlayerPowerUp(VisualElementType.DoubleJump),
                     Stretch = Stretch.Fill
                 };
 
