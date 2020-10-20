@@ -9,7 +9,9 @@ namespace NoOpRunner.Core
 
         private const int CellsSizeMultiplier = 4;
 
-        public static readonly TimeSpan MoveAnimationDuration = TimeSpan.FromMilliseconds(1000 / 20); 
+        public static readonly TimeSpan MoveAnimationDuration = TimeSpan.FromMilliseconds(1000 / 20);
+        
+        public static readonly TimeSpan Fps = TimeSpan.FromMilliseconds(70);
 
         public static int HorizontalCellCount => AspectRatioWidth * CellsSizeMultiplier;
         public static int VerticalCellCount => AspectRatioHeight * CellsSizeMultiplier;

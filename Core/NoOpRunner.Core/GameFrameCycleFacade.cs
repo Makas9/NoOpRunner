@@ -9,20 +9,34 @@ using NoOpRunner.Core.Rendering;
 
 namespace NoOpRunner.Core
 {
-    public class GameStepCycleFacade
+    public class GameFrameCycleFacade
     {
         private IVisualElement Player { get; set; }
 
         public async Task HostGameCycle(NoOpRunner game, Canvas playerCanvas, Canvas powerUpsCanvas,
             Canvas platformsCanvas)
         {
+
+            game.Player.OnLoopFired((WindowPixel[,]) game.PlatformsContainer.GetShapes().Clone());
+
+            BaseCycle(game, playerCanvas, platformsCanvas, powerUpsCanvas);
+
+            await game.UpdateClientsGame();
+        }
+
+        public void ClientGameCycle(NoOpRunner game, Canvas playerCanvas, Canvas platformsCanvas, Canvas powerUpsCanvas)
+        {
+            //More incoming
+            BaseCycle(game, playerCanvas, platformsCanvas, powerUpsCanvas);
+        }
+
+        private void BaseCycle(NoOpRunner game, Canvas playerCanvas, Canvas platformsCanvas, Canvas powerUpsCanvas)
+        {
             if (Player == null)
             {
                 Player = game.Player;
             }
-
-            game.Player.OnLoopFired((WindowPixel[,]) game.PlatformsContainer.GetShapes().Clone());
-
+            
             var powerUp = game.PowerUpsContainer.GetPowerUpAt(game.Player.CenterPosX, game.Player.CenterPosY);
 
             if (powerUp != null)
@@ -65,8 +79,6 @@ namespace NoOpRunner.Core
             game.PowerUpsContainer.Display(powerUpsCanvas);
 
             Player.Display(playerCanvas);
-
-            await game.UpdateClientsGame();
         }
 
         private void AddDecoratorLayer(PowerUps elementType)

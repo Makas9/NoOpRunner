@@ -55,7 +55,7 @@
     <Compile Include="Configurators\PassablePlatformConfigurator.cs" />
     <Compile Include="Configurators\ShapeConfigurator.cs" />
     <Compile Include="Decorators\PlayerDecorator.cs" />
-    <Compile Include="GameStepCycleFacade.cs" />
+    <Compile Include="GameFrameCycleFacade.cs" />
     <Compile Include="PlayerDoubleJumpDecorator.cs" />
     <Compile Include="PlayerInvulnerabilityDecorator.cs" />
     <Compile Include="PlayerSpeedBoostDecorator.cs" />

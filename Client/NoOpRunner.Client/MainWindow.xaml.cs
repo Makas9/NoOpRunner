@@ -1,5 +1,4 @@
 using NoOpRunner.Client.Logic.ViewModels;
-using NoOpRunner.Client.Rendering;
 using NoOpRunner.Core;
 using NoOpRunner.Core.Enums;
 using System;
@@ -22,7 +21,7 @@ namespace NoOpRunner.Client
 
         private Core.NoOpRunner Game;
 
-        private Core.GameStepCycleFacade Facade;
+        private GameFrameCycleFacade facade;
 
         public MainWindow()
         {
@@ -36,12 +35,12 @@ namespace NoOpRunner.Client
 
                 Game = viewModel.Game;
                 
-                Facade = new GameStepCycleFacade();
+                facade = new GameFrameCycleFacade();
 
                 ConfigureKeys();
 
                 timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(70);
+                timer.Interval = GameSettings.Fps;
                 timer.Tick += async (o, a) =>
                 {
                     await TriggerRender();
@@ -56,21 +55,15 @@ namespace NoOpRunner.Client
         {
             if (Game.IsHost)
             {
-                await Facade.HostGameCycle(Game, player_window, power_ups, game_platforms);
-                // await Game.UpdateClientsGame();
+                await facade.HostGameCycle(Game, player_window, power_ups, game_platforms);
             }
-
-            if (Game.PlatformsContainer != null && Game.Player != null && Game.PowerUpsContainer != null)
+            else//for client
             {
-                GameWindowRenderer.RenderPowerUps(Game.PowerUpsContainer, power_ups);//for now
-                
-                GameWindowRenderer.RenderPlayer(Game.Player, player_window);
-
-                GameWindowRenderer.RenderPlatforms(Game.PlatformsContainer, game_platforms);
+                if (Game.PlatformsContainer != null && Game.Player != null && Game.PowerUpsContainer != null)
+                {
+                    facade.ClientGameCycle(Game, player_window, game_platforms, power_ups);
+                }
             }
-
-
-            //Use one more canvas for power-ups and one more for traps
         }
 
         /// <summary>
