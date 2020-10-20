@@ -13,8 +13,6 @@ namespace NoOpRunner.Core
     {
         private MediaPlayer MediaPlayer { get; set; }
 
-        private static readonly int CyclesExists = GameSettings.Fps.Milliseconds/GameSettings.Fps.Milliseconds*1000*2;
-
         public PlayerSpeedBoostDecorator(IVisualElement player) : base(player)
         {
             MediaPlayer = new MediaPlayer();
