@@ -40,7 +40,7 @@ namespace NoOpRunner.Client
                 ConfigureKeys();
 
                 timer = new DispatcherTimer();
-                timer.Interval = GameSettings.Fps;
+                timer.Interval = GameSettings.TimeBetweenFrames;
                 timer.Tick += async (o, a) =>
                 {
                     await TriggerRender();
@@ -98,11 +98,11 @@ namespace NoOpRunner.Client
                     case Key.Down:
                         Game.HandleKeyPress(KeyPress.Down);
                         return;
-                    case Key.NumPad1:
-                        Game.HandleKeyPress(KeyPress.NumpadOne);//speed
+                    case Key.D1:
+                        Game.HandleKeyPress(KeyPress.PowerUp1);//speed
                         return;
-                    case Key.NumPad2:
-                        Game.HandleKeyPress(KeyPress.NumpadTwo);//speed
+                    case Key.D2:
+                        Game.HandleKeyPress(KeyPress.PowerUp2);//speed
                         return;
                     default:
                         return;
