@@ -35,7 +35,7 @@ namespace NoOpRunner.Core.PlayerStates
             }
         }
 
-        public Uri GetStatusUri()
+        public Uri GetStateUri()
         {
             switch (currentState)
             {

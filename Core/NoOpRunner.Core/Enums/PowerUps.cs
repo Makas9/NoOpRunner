@@ -1,6 +1,5 @@
 ﻿namespace NoOpRunner.Core.Enums
 {
-    
     public enum PowerUps
     {
         Speed_Boost,

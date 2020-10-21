@@ -59,6 +59,7 @@
     <Compile Include="PlayerDoubleJumpDecorator.cs" />
     <Compile Include="PlayerInvulnerabilityDecorator.cs" />
     <Compile Include="PlayerOnePowerUps.cs" />
+    <Compile Include="PlayerRenderer.cs" />
     <Compile Include="PlayerSpeedBoostDecorator.cs" />
     <Compile Include="Rendering\GifImage.cs" />
     <Compile Include="Dtos\PlayerStateDto.cs" />

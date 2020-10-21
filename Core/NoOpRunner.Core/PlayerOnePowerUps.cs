@@ -9,86 +9,84 @@ namespace NoOpRunner.Core
     /// </summary>
     public class PlayerOnePowerUps
     {
-        private IList<PowerUps?> usedPowerUp;
-        
+        private IList<PowerUps?> exhaustedPowerUps;
+
         public PowerUps? UsedPowerUp
         {
             get
             {
-                var temp = usedPowerUp.FirstOrDefault();
+                var temp = exhaustedPowerUps.FirstOrDefault();
 
-                if (temp!= null)
+                if (temp != null)
                 {
-                    usedPowerUp.Remove(temp);    
+                    exhaustedPowerUps.Remove(temp);
                 }
 
                 return temp;
             }
             private set
             {
-                if (!usedPowerUp.Contains(value))
+                if (!exhaustedPowerUps.Contains(value))
                 {
-                    usedPowerUp.Add(value);                    
+                    exhaustedPowerUps.Add(value);
                 }
-            } 
+            }
         }
 
-        private IDictionary<PowerUps, int> usingPowerUps;
+        private IDictionary<PowerUps, int> activePowerUps;
 
-        public IList<PowerUps> UsingPowerUps => usingPowerUps.Keys.ToList();
+        public IList<PowerUps> UsingPowerUps => activePowerUps.Keys.ToList();
 
-        private IList<PowerUps> takenPowerUps;
+        private IList<PowerUps> availablePowerUps;
 
         public PlayerOnePowerUps()
         {
-            this.usedPowerUp = new List<PowerUps?>();
-            this.usingPowerUps = new Dictionary<PowerUps, int>();
-            this.takenPowerUps = new List<PowerUps>();
+            this.exhaustedPowerUps = new List<PowerUps?>();
+            this.activePowerUps = new Dictionary<PowerUps, int>();
+            this.availablePowerUps = new List<PowerUps>();
         }
 
         public void OnLoopFired()
         {
-            foreach (var powerUp in usingPowerUps.Keys.ToList())
+            foreach (var powerUp in activePowerUps.Keys.ToList())
             {
-                usingPowerUps[powerUp]--;
+                activePowerUps[powerUp]--;
             }
 
-            foreach (var powerUp in usingPowerUps.Where((x) => x.Value <= 0).Select(x => x.Key).ToList())
+            foreach (var powerUp in activePowerUps.Where((x) => x.Value <= 0).Select(x => x.Key).ToList())
             {
-
-                usingPowerUps.Remove(powerUp);
+                activePowerUps.Remove(powerUp);
                 UsedPowerUp = powerUp;
             }
         }
 
         public void TakePowerUp(PowerUps powerUp)
         {
-            if (!takenPowerUps.Contains(powerUp))
+            if (!availablePowerUps.Contains(powerUp))
             {
-                takenPowerUps.Add(powerUp);
+                availablePowerUps.Add(powerUp);
             }
         }
 
         public bool UsePowerUp(PowerUps powerUp)
         {
-            if (!takenPowerUps.Contains(powerUp)) 
-                
+            if (!availablePowerUps.Contains(powerUp))
+
                 return false;
-            
-            takenPowerUps.Remove(powerUp);
-                
-            if (powerUp ==PowerUps.Double_Jump)
+
+            availablePowerUps.Remove(powerUp);
+
+            if (powerUp == PowerUps.Double_Jump)
             {
-                UsedPowerUp = powerUp;    
+                UsedPowerUp = powerUp;
             }
             else
             {
                 //two sec
-                usingPowerUps[powerUp] = 1000*5/GameSettings.Fps.Milliseconds;
+                activePowerUps[powerUp] = 1000 * 5 / GameSettings.TimeBetweenFrames.Milliseconds;
             }
 
             return true;
-
         }
     }
 }

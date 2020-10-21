@@ -124,10 +124,7 @@ namespace NoOpRunner.Core.Configurators
 
             var shape = action(Platforms.AsReadOnly());
 
-            //For now
             gameState.PowerUpsContainer.AddShape(new PowerUp(shape.CenterPosX, shape.CenterPosY + 1, type));
-            gameState.PowerUpsContainer.AddShape(new PowerUp(shape.CenterPosX+1, shape.CenterPosY + 1, PowerUps.Double_Jump));
-            gameState.PowerUpsContainer.AddShape(new PowerUp(shape.CenterPosX+2, shape.CenterPosY + 1, PowerUps.Invulnerability));
 
             Logging.Instance.Write("Added power up");
 

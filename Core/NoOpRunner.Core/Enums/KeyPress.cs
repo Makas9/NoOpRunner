@@ -7,7 +7,7 @@
         Left,
         Space,
         Down,
-        NumpadOne,
-        NumpadTwo
+        PowerUp1,
+        PowerUp2
     }
 }

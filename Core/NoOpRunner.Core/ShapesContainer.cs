@@ -10,7 +10,7 @@ namespace NoOpRunner.Core
         [JsonProperty] 
         protected List<BaseShape> shapes { get; set; }
 
-        public int SizeX { get; set; }//can remove? GameSetting have it already
+        public int SizeX { get; set; }
 
         public int SizeY { get; set; }
 

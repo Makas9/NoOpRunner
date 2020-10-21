@@ -13,7 +13,7 @@ using NoOpRunner.Core.Shapes.GenerationStrategies;
 
 namespace NoOpRunner.Core.Shapes
 {
-    public class Player : MovingShape, IObserver, IVisualElement
+    public class Player : MovingShape, IObserver
     {
         private const int MaxHealth = 3;
         private int currentHealth = 0;
@@ -25,13 +25,15 @@ namespace NoOpRunner.Core.Shapes
         {
             StateMachine = new PlayerOneStateMachine();
             PlayerOnePowerUps = new PlayerOnePowerUps();
-            
+
             currentHealth = MaxHealth;
         }
 
         private const int MovementIncrement = 1;
         private PlayerOneStateMachine StateMachine { get; set; } //dumb implementation of State machine pattern
-        
+
+        public Uri StateUri => StateMachine.GetStateUri();
+
         private PlayerOnePowerUps PlayerOnePowerUps { get; set; }
 
         private const decimal JumpAcceleration = 0.1m;
@@ -99,7 +101,7 @@ namespace NoOpRunner.Core.Shapes
             return pixels;
         }
 
-        private WindowPixel GetAnimationPixel(out int hitBoxY, out int hitBoxX)
+        public WindowPixel GetAnimationPixel(out int hitBoxY, out int hitBoxX)
         {
             var animationShapeBlock = ShapeBlocks[0];
 
@@ -111,6 +113,7 @@ namespace NoOpRunner.Core.Shapes
 
             return new WindowPixel(absX, absY, isShape: true);
         }
+
         public void HandleKeyPress(KeyPress key, WindowPixel[,] gameScreen)
         {
             switch (key)
@@ -143,7 +146,9 @@ namespace NoOpRunner.Core.Shapes
                         VerticalAcceleration = JumpAcceleration;
                         VerticalAccelerationPool = JumpAccelerationPool;
                         VerticalSpeed = JumpVerticalSpeed;
-                    }else if (PlayerOnePowerUps.UsePowerUp(PowerUps.Double_Jump) && !IsShapeHit(gameScreen, CenterPosX, CenterPosY + MovementIncrement))
+                    }
+                    else if (PlayerOnePowerUps.UsePowerUp(PowerUps.Double_Jump) &&
+                             !IsShapeHit(gameScreen, CenterPosX, CenterPosY + MovementIncrement))
                     {
                         StateMachine.Jump();
                         IsJumping = true;
@@ -167,10 +172,10 @@ namespace NoOpRunner.Core.Shapes
                     // Use power-up
 
                     return;
-                case KeyPress.NumpadOne:
+                case KeyPress.PowerUp1:
                     PlayerOnePowerUps.UsePowerUp(PowerUps.Speed_Boost);
                     break;
-                case KeyPress.NumpadTwo:
+                case KeyPress.PowerUp2:
                     PlayerOnePowerUps.UsePowerUp(PowerUps.Invulnerability);
                     break;
                 default:
@@ -180,8 +185,8 @@ namespace NoOpRunner.Core.Shapes
 
         public void LoopPowerUps()
         {
-            this.PlayerOnePowerUps.OnLoopFired();  
-        } 
+            this.PlayerOnePowerUps.OnLoopFired();
+        }
 
         public IList<PowerUps> UsingPowerUps => PlayerOnePowerUps.UsingPowerUps;
         public PowerUps? UsedPowerUp => PlayerOnePowerUps.UsedPowerUp;
@@ -221,7 +226,7 @@ namespace NoOpRunner.Core.Shapes
                     return;
             }
         }
-        
+
         public bool IsLookingLeft
         {
             get => StateMachine.IsLookingLeft;
@@ -234,13 +239,18 @@ namespace NoOpRunner.Core.Shapes
             private set => StateMachine.State = value;
         }
 
+        public bool IsTurning => StateMachine.IsTurning;
+
+        public bool StateHasChanged => StateMachine.StateHasChanged;
+
+
         public void Update(MessageDto message)
         {
-            if (message.MessageType != MessageType.PlayerUpdate) 
+            if (message.MessageType != MessageType.PlayerUpdate)
                 return;
-            
+
             Console.WriteLine("Observer: Player, say Hello World");
-            
+
             var messageDto = message.Payload as PlayerStateDto;
 
             State = messageDto.State;
@@ -248,68 +258,11 @@ namespace NoOpRunner.Core.Shapes
 
             CenterPosX = messageDto.CenterPosX;
             CenterPosY = messageDto.CenterPosY;
-            
         }
 
         public void TakePowerUp(PowerUps powerUp)
         {
             PlayerOnePowerUps.TakePowerUp(powerUp);
-        }
-        public void Display(Canvas canvas)
-        {
-            var animationPixel = GetAnimationPixel(out int hitBoxY, out int hitBoxX);
-            
-            var gifWidth = canvas.ActualWidth / GameSettings.HorizontalCellCount;
-            var gifHeight = canvas.ActualHeight / GameSettings.VerticalCellCount;
-            
-            var playerAnimation = canvas.Children.OfType<GifImage>().FirstOrDefault(x=> x.VisualType == VisualElementType.Player);
-
-            if (playerAnimation == null)
-            {
-                playerAnimation = new GifImage()
-                {
-                    Width = gifWidth,
-                    Height = gifHeight,
-                    VisualType = VisualElementType.Player,
-                    GifSource = StateMachine.GetStatusUri(),
-                    Stretch = Stretch.Fill
-                };
-                
-                Canvas.SetLeft(playerAnimation, gifWidth * animationPixel.X * hitBoxX);
-                Canvas.SetBottom(playerAnimation, gifHeight * animationPixel.Y * hitBoxY);
-
-                canvas.Children.Add(playerAnimation);
-                
-                playerAnimation.StartAnimation();
-            }
-            else
-            {
-                if (StateMachine.StateHasChanged)
-                {
-                    playerAnimation.SetValue(GifImage.GifSourceProperty,
-                        StateMachine.GetStatusUri());
-                }
-            }
-
-            foreach (UIElement canvasChild in canvas.Children)
-            {
-                //Move
-                RenderingHelper.AnimateUiElementMove(canvasChild, gifWidth * animationPixel.X,
-                    gifHeight * animationPixel.Y);
-                
-                //Resize
-                canvasChild.SetValue(FrameworkElement.WidthProperty, gifWidth * hitBoxX); // sketch for all hit box
-                canvasChild.SetValue(FrameworkElement.HeightProperty, gifHeight * hitBoxY); // sketch for all hit box
-                
-                //Mirror
-                if (StateMachine.IsTurning)
-                {
-                    canvasChild.SetValue(UIElement.RenderTransformProperty,
-                        IsLookingLeft
-                            ? new ScaleTransform() {ScaleX = -1, CenterX = gifWidth / 2}
-                            : new ScaleTransform() {ScaleX = 1, CenterX = gifWidth / 2});
-                }
-            }
         }
     }
 }

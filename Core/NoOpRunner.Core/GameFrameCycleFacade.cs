@@ -42,7 +42,7 @@ namespace NoOpRunner.Core
         {
             if (Player == null)
             {
-                Player = game.Player;
+                Player = new PlayerRenderer(game.Player);
             }
             
             game.Player.LoopPowerUps();
