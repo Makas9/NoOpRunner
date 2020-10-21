@@ -4,7 +4,6 @@ using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
-using NoOpRunner.Core.Shapes.ShapeFactories;
 using NoOpRunner.Core.Shapes.StaticShapes;
 using System;
 using System.Collections.Generic;
@@ -205,11 +204,6 @@ namespace NoOpRunner.Core
             PlatformsContainer = platforms;
         }
 
-        public void HandleKeyPress(KeyPress keyPress)
-        {
-            Player.HandleKeyPress(keyPress, (WindowPixel[,]) PlatformsContainer.GetShapes().Clone());
-        }
-
         private void InitializeGameState()
         {
             var gameeStateBuilder = new GameStateBuilder();
@@ -227,11 +221,6 @@ namespace NoOpRunner.Core
             GameState = initialGameState;
             
             //LabTest.TestPrototype(); // DEMO: Prototype Pattern
-        }
-
-        public void HandleKeyRelease(KeyPress key)
-        {
-            Player.HandleKeyRelease(key, (WindowPixel[,]) PlatformsContainer.GetShapes().Clone());
         }
 
         public void Notify(MessageDto message)

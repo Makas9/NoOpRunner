@@ -1,12 +1,12 @@
+using NoOpRunner.Client.Controls;
 using NoOpRunner.Client.Logic.ViewModels;
 using NoOpRunner.Client.Rendering;
 using NoOpRunner.Core;
-using NoOpRunner.Core.Enums;
+using NoOpRunner.Core.Controls;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -22,6 +22,8 @@ namespace NoOpRunner.Client
 
         private Core.NoOpRunner Game;
 
+        private IInputHandlerAbstraction inputHandler;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -33,6 +35,16 @@ namespace NoOpRunner.Client
                 var viewModel = (MainViewModel) DataContext;
 
                 Game = viewModel.Game;
+
+                InputHandlerImplementor inputHandlerImpl;
+                if (Game.IsHost)
+                    inputHandlerImpl = new InputHandlerImplementorPlayerOne(Game.Player);
+                else
+                    inputHandlerImpl = new InputHandlerImplementorPlayerTwo();
+
+
+                inputHandler = new InputHandlerAbstractionArrows(inputHandlerImpl);
+                //inputHandler = new InputHandlerAbstractionWasd(inputHandlerImpl);
 
                 ConfigureKeys();
 
@@ -83,41 +95,12 @@ namespace NoOpRunner.Client
         {
             this.KeyDown += (s, e) =>
             {
-                switch (e.Key)
-                {
-                    case Key.Up:
-                        Game.HandleKeyPress(KeyPress.Up);
-                        return;
-                    case Key.Right:
-                        Game.HandleKeyPress(KeyPress.Right);
-                        return;
-                    case Key.Left:
-                        Game.HandleKeyPress(KeyPress.Left);
-                        return;
-                    case Key.Space:
-                        Game.HandleKeyPress(KeyPress.Space);
-                        return;
-                    case Key.Down:
-                        Game.HandleKeyPress(KeyPress.Down);
-                        return;
-                    default:
-                        return;
-                }
+                inputHandler.HandleKeyEvent(e, (WindowPixel[,])Game.PlatformsContainer.GetShapes().Clone());
             };
 
             this.KeyUp += (s, e) =>
             {
-                switch (e.Key)
-                {
-                    case Key.Right:
-                        Game.HandleKeyRelease(KeyPress.Right);
-                        return;
-                    case Key.Left:
-                        Game.HandleKeyRelease(KeyPress.Left);
-                        return;
-                    default:
-                        return;
-                }
+                inputHandler.HandleKeyUpEvent(e, (WindowPixel[,])Game.PlatformsContainer.GetShapes().Clone());
             };
         }
     }
