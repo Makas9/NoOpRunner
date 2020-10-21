@@ -1,12 +1,7 @@
 ﻿using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Shapes;
 using NoOpRunner.Core.Shapes.ShapeFactories;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NoOpRunner.Core
 {
