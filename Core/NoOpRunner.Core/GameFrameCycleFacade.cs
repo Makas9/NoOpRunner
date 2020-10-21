@@ -61,7 +61,7 @@ namespace NoOpRunner.Core
                 game.PowerUpsContainer.RemovePowerUp(game.Player.CenterPosX, game.Player.CenterPosY);//Remove power up from display
             }
 
-            foreach (var usingPowerUp in game.Player.UsingPowerUps)
+            foreach (var usingPowerUp in game.Player.ActivePowerUps)
             {
                 if (DisplayingPlayerOnePowerUps.Contains(usingPowerUp)) 
                     
@@ -72,7 +72,7 @@ namespace NoOpRunner.Core
                 AddDecoratorLayer(usingPowerUp);
             }
 
-            var playerUsedPowerUp = game.Player.UsedPowerUp;
+            var playerUsedPowerUp = game.Player.ExhaustedPowerUp;
             
             if (playerUsedPowerUp != null)
             {

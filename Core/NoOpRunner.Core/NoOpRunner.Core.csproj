@@ -54,6 +54,9 @@
     <Compile Include="Configurators\ImpassablePlatformConfigurator.cs" />
     <Compile Include="Configurators\PassablePlatformConfigurator.cs" />
     <Compile Include="Configurators\ShapeConfigurator.cs" />
+    <Compile Include="Controls\InputHandlerImplementor.cs" />
+    <Compile Include="Controls\InputHandlerImplementorPlayerOne.cs" />
+    <Compile Include="Controls\InputHandlerImplementorPlayerTwo.cs" />
     <Compile Include="Decorators\PlayerDecorator.cs" />
     <Compile Include="GameFrameCycleFacade.cs" />
     <Compile Include="PlayerDoubleJumpDecorator.cs" />

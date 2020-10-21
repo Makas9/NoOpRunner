@@ -11,7 +11,7 @@ namespace NoOpRunner.Core
     {
         private IList<PowerUps?> exhaustedPowerUps;
 
-        public PowerUps? UsedPowerUp
+        public PowerUps? ExhaustedPowerUp
         {
             get
             {
@@ -35,7 +35,7 @@ namespace NoOpRunner.Core
 
         private IDictionary<PowerUps, int> activePowerUps;
 
-        public IList<PowerUps> UsingPowerUps => activePowerUps.Keys.ToList();
+        public IList<PowerUps> ActivePowerUps => activePowerUps.Keys.ToList();
 
         private IList<PowerUps> availablePowerUps;
 
@@ -56,7 +56,7 @@ namespace NoOpRunner.Core
             foreach (var powerUp in activePowerUps.Where((x) => x.Value <= 0).Select(x => x.Key).ToList())
             {
                 activePowerUps.Remove(powerUp);
-                UsedPowerUp = powerUp;
+                ExhaustedPowerUp = powerUp;
             }
         }
 
@@ -78,7 +78,7 @@ namespace NoOpRunner.Core
 
             if (powerUp == PowerUps.Double_Jump)
             {
-                UsedPowerUp = powerUp;
+                ExhaustedPowerUp = powerUp;
             }
             else
             {

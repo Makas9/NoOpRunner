@@ -32,6 +32,9 @@ namespace NoOpRunner.Client.Controls
                 case Key.D1:
                     implementor.HandlePower1(gameScreen);
                     return;
+                case Key.D2:
+                    implementor.HandlePower2(gameScreen);
+                    return;
                 default:
                     return;
             }

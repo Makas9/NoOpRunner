@@ -1,5 +1,6 @@
 ﻿using NoOpRunner.Core.Shapes;
 using System;
+using NoOpRunner.Core.Enums;
 
 namespace NoOpRunner.Core.Controls
 {
@@ -34,8 +35,12 @@ namespace NoOpRunner.Core.Controls
 
         public override void HandlePower1(WindowPixel[,] gameScreen)
         {
-            // Will be implemented soon with Lukas' PR
-            throw new NotImplementedException("powerup activation not yet implemented");
+            player.UsePowerUp(PowerUps.Speed_Boost);
+        }
+
+        public override void HandlePower2(WindowPixel[,] gameScreen)
+        {
+            player.UsePowerUp(PowerUps.Invulnerability);
         }
 
         public override void HandleLeftRelease(WindowPixel[,] gameScreen)
