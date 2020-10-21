@@ -133,6 +133,5 @@
     <Content Include="Resources\Sprites\PlayerOne\mid air.gif" />
     <Resource Include="Resources\Sprites\PlayerOne\run.gif" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

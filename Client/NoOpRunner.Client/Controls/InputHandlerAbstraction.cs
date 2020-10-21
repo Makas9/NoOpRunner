@@ -5,7 +5,7 @@ namespace NoOpRunner.Client.Controls
 {
     public interface IInputHandlerAbstraction
     {
-        void HandleKeyEvent(KeyEventArgs e, WindowPixel[,] gameScreen);
+        void HandleKeyDownEvent(KeyEventArgs e, WindowPixel[,] gameScreen);
         void HandleKeyUpEvent(KeyEventArgs e, WindowPixel[,] gameScreen);
     }
 }

@@ -13,7 +13,7 @@ namespace NoOpRunner.Client.Controls
             this.implementor = implementor;
         }
 
-        public void HandleKeyEvent(KeyEventArgs e, WindowPixel[,] gameScreen)
+        public void HandleKeyDownEvent(KeyEventArgs e, WindowPixel[,] gameScreen)
         {
             switch (e.Key)
             {
