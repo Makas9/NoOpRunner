@@ -4,7 +4,6 @@ using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
-using NoOpRunner.Core.Shapes.ShapeFactories;
 using NoOpRunner.Core.Shapes.StaticShapes;
 using System;
 using System.Collections.Generic;
@@ -28,10 +27,10 @@ namespace NoOpRunner.Core
 
         public event EventHandler<MessageDto> OnMessageReceived;
 
-        public PlatformsContainer PlatformsContainer 
+        public PlatformsContainer PlatformsContainer
         {
-            get => GameState?.Platforms; 
-            set => GameState.Platforms = value; 
+            get => GameState?.Platforms;
+            set => GameState.Platforms = value;
         }
 
         public Player Player
@@ -103,7 +102,7 @@ namespace NoOpRunner.Core
                 case MessageType.InitialConnection:
                 case MessageType.InitialGame:
                     messageDto.Payload = GameState;
-                    
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -141,7 +140,7 @@ namespace NoOpRunner.Core
                     break;
                 case MessageType.InitialConnection:
                 case MessageType.InitialGame:
-                    
+
                     GameState = message.Payload as GameState;
 
                     AddObserver(GameState.Player);
@@ -180,9 +179,10 @@ namespace NoOpRunner.Core
             });
         }
 
-        public void HandleKeyPress(KeyPress keyPress)
+        public void FireClientLoop(PlatformsContainer platforms, Player player)
         {
-            Player.HandleKeyPress(keyPress, (WindowPixel[,]) PlatformsContainer.GetShapes().Clone());
+            Player = player;
+            PlatformsContainer = platforms;
         }
 
         private void InitializeGameState()
@@ -198,13 +198,13 @@ namespace NoOpRunner.Core
                 .AddPowerUp(PowerUps.Speed_Boost, platforms => platforms.First(p => p.GetType() == typeof(ImpassablePlatform)))
                 .AddPowerUp(PowerUps.Double_Jump, platforms  =>
                 {
-                    
+
                     var plat = platforms.First(p => p.GetType() == typeof(ImpassablePlatform));
                     return new PowerUp(plat.CenterPosX+1, plat.CenterPosY, PowerUps.Double_Jump);
                 })
                 .AddPowerUp(PowerUps.Invulnerability, platforms  =>
                 {
-                    
+
                     var plat = platforms.First(p => p.GetType() == typeof(ImpassablePlatform));
                     return new PowerUp(plat.CenterPosX+2, plat.CenterPosY, PowerUps.Invulnerability);
                 })
@@ -212,13 +212,8 @@ namespace NoOpRunner.Core
                 .Build();
 
             GameState = initialGameState;
-            
-            //LabTest.TestPrototype(); // DEMO: Prototype Pattern
-        }
 
-        public void HandleKeyRelease(KeyPress key)
-        {
-            Player.HandleKeyRelease(key, (WindowPixel[,]) PlatformsContainer.GetShapes().Clone());
+            //LabTest.TestPrototype(); // DEMO: Prototype Pattern
         }
 
         public void Notify(MessageDto message)

@@ -114,82 +114,53 @@ namespace NoOpRunner.Core.Shapes
             return new WindowPixel(absX, absY, isShape: true);
         }
 
-        public void HandleKeyPress(KeyPress key, WindowPixel[,] gameScreen)
+        public void MoveRight(WindowPixel[,] gameScreen)
         {
-            switch (key)
+            if (!IsShapeHit(gameScreen, CenterPosX + HorizontalSpeed, CenterPosY))
             {
-                case KeyPress.Right:
-                    if (!IsShapeHit(gameScreen, CenterPosX + HorizontalSpeed, CenterPosY))
-                    {
-                        HorizontalSpeed = Math.Min(HorizontalSpeed + 1, HorizontalSpeedLimit);
-                        if (HorizontalSpeed > 0)
-                            StateMachine.TurnRight();
-                    }
-
-                    return;
-                case KeyPress.Left:
-                    if (!IsShapeHit(gameScreen, CenterPosX - HorizontalSpeed, CenterPosY))
-                    {
-                        HorizontalSpeed = Math.Max(HorizontalSpeed - 1, -HorizontalSpeedLimit);
-                        if (HorizontalSpeed < 0)
-                            StateMachine.TurnLeft();
-                    }
-
-                    return;
-                case KeyPress.Up:
-                    if (!IsJumping && CanJump && !IsShapeHit(gameScreen, CenterPosX, CenterPosY + MovementIncrement))
-                    {
-                        StateMachine.Jump();
-                        IsJumping = true;
-                        CanJump = false;
-
-                        VerticalAcceleration = JumpAcceleration;
-                        VerticalAccelerationPool = JumpAccelerationPool;
-                        VerticalSpeed = JumpVerticalSpeed;
-                    }
-                    else if (PlayerOnePowerUps.UsePowerUp(PowerUps.Double_Jump) &&
-                             !IsShapeHit(gameScreen, CenterPosX, CenterPosY + MovementIncrement))
-                    {
-                        StateMachine.Jump();
-                        IsJumping = true;
-                        CanJump = false;
-
-                        VerticalAcceleration = JumpAcceleration;
-                        VerticalAccelerationPool = JumpAccelerationPool;
-                        VerticalSpeed = JumpVerticalSpeed;
-                    }
-
-                    return;
-                case KeyPress.Down:
-                    if (!IsShapeHit(gameScreen, CenterPosX, CenterPosY - MovementIncrement))
-                    {
-                        StateMachine.Land();
-                        VerticalSpeed = -MovementIncrement;
-                    }
-
-                    return;
-                case KeyPress.Space:
-                    // Use power-up
-
-                    return;
-                case KeyPress.PowerUp1:
-                    PlayerOnePowerUps.UsePowerUp(PowerUps.Speed_Boost);
-                    break;
-                case KeyPress.PowerUp2:
-                    PlayerOnePowerUps.UsePowerUp(PowerUps.Invulnerability);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(key), key, null);
+                HorizontalSpeed = Math.Min(HorizontalSpeed + 1, HorizontalSpeedLimit);
+                if (HorizontalSpeed > 0)
+                    StateMachine.TurnRight();
             }
         }
 
-        public void LoopPowerUps()
+        public void MoveLeft(WindowPixel[,] gameScreen)
         {
-            this.PlayerOnePowerUps.OnLoopFired();
+            if (!IsShapeHit(gameScreen, CenterPosX - HorizontalSpeed, CenterPosY))
+            {
+                HorizontalSpeed = Math.Max(HorizontalSpeed - 1, -HorizontalSpeedLimit);
+                if (HorizontalSpeed < 0)
+                    StateMachine.TurnLeft();
+            }
         }
 
-        public IList<PowerUps> UsingPowerUps => PlayerOnePowerUps.UsingPowerUps;
-        public PowerUps? UsedPowerUp => PlayerOnePowerUps.UsedPowerUp;
+        public void Jump(WindowPixel[,] gameScreen)
+        {
+            if (!IsJumping && CanJump && !IsShapeHit(gameScreen, CenterPosX, CenterPosY + MovementIncrement))
+            {
+                StateMachine.Jump();
+                IsJumping = true;
+                CanJump = false;
+
+                VerticalAcceleration = JumpAcceleration;
+                VerticalAccelerationPool = JumpAccelerationPool;
+                VerticalSpeed = JumpVerticalSpeed;
+            }
+        }
+
+        public void DropDown(WindowPixel[,] gameScreen)
+        {
+            if (!IsShapeHit(gameScreen, CenterPosX, CenterPosY - MovementIncrement))
+            {
+                StateMachine.Land();
+                VerticalSpeed = -MovementIncrement;
+            }
+        }
+
+        public void Stop()
+        {
+            HorizontalSpeed = 0;
+        }
 
         public void ModifyHealth(int healthPoints)
         {
@@ -216,16 +187,14 @@ namespace NoOpRunner.Core.Shapes
             throw new NotImplementedException();
         }
 
-        public void HandleKeyRelease(KeyPress key, WindowPixel[,] gameScreen)
-        {
-            switch (key)
-            {
-                case KeyPress.Right:
-                case KeyPress.Left:
-                    HorizontalSpeed = 0;
-                    return;
-            }
-        }
+        public bool StateHasChanged => StateMachine.StateHasChanged;
+
+
+        public Uri GetStateAnimationUri => StateMachine.GetStatusUri();
+
+
+        public bool IsPlayerTurning => StateMachine.IsTurning;
+
 
         public bool IsLookingLeft
         {
