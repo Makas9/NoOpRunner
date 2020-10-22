@@ -27,9 +27,9 @@ namespace NoOpRunner.Client.Logic.Commands
                 return false;
 
             if (newVolume < 0)
-                return settingsViewModel?.VolumeLevel - newVolume >= 0;
+                return newVolume >= 0;
 
-            return settingsViewModel?.VolumeLevel + newVolume <= 100;
+            return newVolume <= 100;
         }
 
         public override void Undo()
