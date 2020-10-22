@@ -1,6 +1,5 @@
 using NoOpRunner.Client.Controls;
 using NoOpRunner.Client.Logic.ViewModels;
-using NoOpRunner.Client.Rendering;
 using NoOpRunner.Core;
 using NoOpRunner.Core.Controls;
 using System;
@@ -22,6 +21,7 @@ namespace NoOpRunner.Client
 
         private Core.NoOpRunner Game;
 
+        private RenderGameFramesFacade facade;
         private IInputHandlerAbstraction inputHandler;
 
         public MainWindow()
@@ -36,6 +36,8 @@ namespace NoOpRunner.Client
 
                 Game = viewModel.Game;
 
+                facade = new RenderGameFramesFacade();
+
                 InputHandlerImplementor inputHandlerImpl;
                 if (Game.IsHost)
                     inputHandlerImpl = new InputHandlerImplementorPlayerOne(Game.Player);
@@ -49,7 +51,7 @@ namespace NoOpRunner.Client
                 ConfigureKeys();
 
                 timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(70);
+                timer.Interval = GameSettings.TimeBetweenFrames;
                 timer.Tick += async (o, a) =>
                 {
                     await TriggerRender();
@@ -64,20 +66,15 @@ namespace NoOpRunner.Client
         {
             if (Game.IsHost)
             {
-                await Game.FireHostLoop();
+                await facade.HostGameCycle(Game, player_window, power_ups, game_platforms);
             }
-
-            if (Game.PlatformsContainer != null && Game.Player != null && Game.PowerUpsContainer != null)
+            else//for client
             {
-                GameWindowRenderer.RenderPowerUps(Game.PowerUpsContainer, power_ups);//for now
-                
-                GameWindowRenderer.RenderPlayer(Game.Player, player_window, Game.PlatformsContainer);
-
-                GameWindowRenderer.RenderPlatforms(Game.PlatformsContainer, game_platforms);
+                if (Game.PlatformsContainer != null && Game.Player != null && Game.PowerUpsContainer != null)
+                {
+                    facade.ClientGameCycle(Game, player_window, game_platforms, power_ups);
+                }
             }
-
-
-            //Use one more canvas for power-ups and one more for traps
         }
 
         /// <summary>
@@ -87,7 +84,7 @@ namespace NoOpRunner.Client
         {
             for (int i = 1; i < 6; i++)
             {
-                background_panel.Children.Add(new Image(){Source = new BitmapImage(SpritesUriHandler.GetBackground(i)), Stretch = Stretch.Fill});
+                background_panel.Children.Add(new Image(){Source = new BitmapImage(ResourcesUriHandler.GetBackground(i)), Stretch = Stretch.Fill});
             }
         }
 

@@ -27,8 +27,10 @@ namespace NoOpRunner.Core
             shapes.Add(shape);
         }
 
+        //Ora ora ora ora
         public void OnLoopFired(WindowPixel[,] gameMap)
         {
+            //Wut????? It do nothing 
             shapes.ForEach(x => x.OnLoopFired(gameMap));
         }
 
@@ -55,7 +57,6 @@ namespace NoOpRunner.Core
                     }
                     else
                     {
-                        // TODO: YES, YES, YES, YES
                         throw new Exception("Shape collision occured");
                     }
                 }
