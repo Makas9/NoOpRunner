@@ -21,7 +21,7 @@ namespace NoOpRunner.Client
 
         private Core.NoOpRunner Game;
 
-        private GameFrameCycleFacade facade;
+        private RenderGameFramesFacade facade;
         private IInputHandlerAbstraction inputHandler;
 
         public MainWindow()
@@ -36,7 +36,7 @@ namespace NoOpRunner.Client
 
                 Game = viewModel.Game;
 
-                facade = new GameFrameCycleFacade();
+                facade = new RenderGameFramesFacade();
 
                 InputHandlerImplementor inputHandlerImpl;
                 if (Game.IsHost)

@@ -11,7 +11,7 @@ using NoOpRunner.Core.Interfaces;
 
 namespace NoOpRunner.Client
 {
-    public class GameFrameCycleFacade
+    public class RenderGameFramesFacade
     {
         private IVisualElement PlayerRenderer { get; set; }
         
@@ -21,7 +21,7 @@ namespace NoOpRunner.Client
         
         private IList<PowerUps> DisplayingPlayerOnePowerUps { get; set; }
 
-        public GameFrameCycleFacade()
+        public RenderGameFramesFacade()
         {
             DisplayingPlayerOnePowerUps = new List<PowerUps>();
         }
