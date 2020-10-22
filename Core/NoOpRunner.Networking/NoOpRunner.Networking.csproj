@@ -79,6 +79,8 @@
     <Compile Include="ConnectionManager.cs" />
     <Compile Include="GameHub.cs" />
     <Compile Include="HostBridge.cs" />
+    <Compile Include="LoggingConnectionManager.cs" />
+    <Compile Include="LoggingConnectionManagerAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

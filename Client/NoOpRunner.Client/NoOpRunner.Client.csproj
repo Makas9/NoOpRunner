@@ -59,6 +59,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\InputHandlerAbstraction.cs" />
+    <Compile Include="Controls\InputHandlerAbstractionArrows.cs" />
+    <Compile Include="Controls\InputHandlerAbstractionWasd.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Rendering\GameWindowRenderer.cs" />
     <Compile Include="Rendering\GifImage.cs" />
@@ -137,6 +140,5 @@
     <Content Include="Resources\Sprites\PlayerOne\mid air.gif" />
     <Resource Include="Resources\Sprites\PlayerOne\run.gif" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

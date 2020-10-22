@@ -204,11 +204,6 @@ namespace NoOpRunner.Core
             PlatformsContainer = platforms;
         }
 
-        public void HandleKeyPress(KeyPress keyPress)
-        {
-            Player.HandleKeyPress(keyPress, (WindowPixel[,]) PlatformsContainer.GetShapes().Clone());
-        }
-
         private void InitializeGameState()
         {
             var gameeStateBuilder = new GameStateBuilder();
@@ -224,11 +219,8 @@ namespace NoOpRunner.Core
                 .Build();
 
             GameState = initialGameState;
-        }
-
-        public void HandleKeyRelease(KeyPress key)
-        {
-            Player.HandleKeyRelease(key, (WindowPixel[,]) PlatformsContainer.GetShapes().Clone());
+            
+            //LabTest.TestPrototype(); // DEMO: Prototype Pattern
         }
 
         public void Notify(MessageDto message)

@@ -102,54 +102,53 @@ namespace NoOpRunner.Core.Shapes
 
             return new WindowPixel(absX, absY, isShape: true);
         }
-        public void HandleKeyPress(KeyPress key, WindowPixel[,] gameScreen)
+
+        public void MoveRight(WindowPixel[,] gameScreen)
         {
-            switch (key)
+            if (!IsShapeHit(gameScreen, CenterPosX + HorizontalSpeed, CenterPosY))
             {
-                case KeyPress.Right:
-                    if (!IsShapeHit(gameScreen, CenterPosX + HorizontalSpeed, CenterPosY))
-                    {
-                        HorizontalSpeed = Math.Min(HorizontalSpeed + 1, HorizontalSpeedLimit);
-                        if (HorizontalSpeed > 0)
-                            StateMachine.TurnRight();
-                    }
-
-                    return;
-                case KeyPress.Left:
-                    if (!IsShapeHit(gameScreen, CenterPosX - HorizontalSpeed, CenterPosY))
-                    {
-                        HorizontalSpeed = Math.Max(HorizontalSpeed - 1, -HorizontalSpeedLimit);
-                        if (HorizontalSpeed < 0)
-                            StateMachine.TurnLeft();
-                    }
-
-                    return;
-                case KeyPress.Up:
-                    if (!IsJumping && CanJump && !IsShapeHit(gameScreen, CenterPosX, CenterPosY + MovementIncrement))
-                    {
-                        StateMachine.Jump();
-                        IsJumping = true;
-                        CanJump = false;
-
-                        VerticalAcceleration = JumpAcceleration;
-                        VerticalAccelerationPool = JumpAccelerationPool;
-                        VerticalSpeed = JumpVerticalSpeed;
-                    }
-
-                    return;
-                case KeyPress.Down:
-                    if (!IsShapeHit(gameScreen, CenterPosX, CenterPosY - MovementIncrement))
-                    {
-                        StateMachine.Land();
-                        VerticalSpeed = -MovementIncrement;
-                    }
-
-                    return;
-                case KeyPress.Space:
-                    // Use power-up
-
-                    return;
+                HorizontalSpeed = Math.Min(HorizontalSpeed + 1, HorizontalSpeedLimit);
+                if (HorizontalSpeed > 0)
+                    StateMachine.TurnRight();
             }
+        }
+
+        public void MoveLeft(WindowPixel[,] gameScreen)
+        {
+            if (!IsShapeHit(gameScreen, CenterPosX - HorizontalSpeed, CenterPosY))
+            {
+                HorizontalSpeed = Math.Max(HorizontalSpeed - 1, -HorizontalSpeedLimit);
+                if (HorizontalSpeed < 0)
+                    StateMachine.TurnLeft();
+            }
+        }
+
+        public void Jump(WindowPixel[,] gameScreen)
+        {
+            if (!IsJumping && CanJump && !IsShapeHit(gameScreen, CenterPosX, CenterPosY + MovementIncrement))
+            {
+                StateMachine.Jump();
+                IsJumping = true;
+                CanJump = false;
+
+                VerticalAcceleration = JumpAcceleration;
+                VerticalAccelerationPool = JumpAccelerationPool;
+                VerticalSpeed = JumpVerticalSpeed;
+            }
+        }
+
+        public void DropDown(WindowPixel[,] gameScreen)
+        {
+            if (!IsShapeHit(gameScreen, CenterPosX, CenterPosY - MovementIncrement))
+            {
+                StateMachine.Land();
+                VerticalSpeed = -MovementIncrement;
+            }
+        }
+
+        public void Stop()
+        {
+            HorizontalSpeed = 0;
         }
 
         public void ModifyHealth(int healthPoints)
@@ -175,17 +174,6 @@ namespace NoOpRunner.Core.Shapes
         public override void OnCollision(BaseShape other)
         {
             throw new NotImplementedException();
-        }
-
-        public void HandleKeyRelease(KeyPress key, WindowPixel[,] gameScreen)
-        {
-            switch (key)
-            {
-                case KeyPress.Right:
-                case KeyPress.Left:
-                    HorizontalSpeed = 0;
-                    return;
-            }
         }
 
         public bool StateHasChanged => StateMachine.StateHasChanged;

@@ -2,8 +2,9 @@
 
 namespace NoOpRunner.Core
 {
-    public sealed class Logging
+    public sealed class Logging : ILogger
     {
+        private LoggingLevel enabledLevels = LoggingLevel.Other | LoggingLevel.Pattern | LoggingLevel.Trace;
         private Logging() { }
 
         private static readonly object bolt = new object();
@@ -29,9 +30,22 @@ namespace NoOpRunner.Core
             }
         }
 
-        public void Write(string info)
+        public void Write(string info, LoggingLevel level = LoggingLevel.Other)
         {
+            if (!enabledLevels.HasFlag(level))
+                return;
+
             Console.WriteLine(info);
+        }
+
+        public void DisableLevel(LoggingLevel level)
+        {
+            enabledLevels &= ~level;
+        }
+
+        public void EnableLevel(LoggingLevel level)
+        {
+            enabledLevels |= level;
         }
     }
 }
