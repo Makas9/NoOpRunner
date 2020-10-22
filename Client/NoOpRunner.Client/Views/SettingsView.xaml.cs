@@ -12,46 +12,39 @@ namespace NoOpRunner.Client.Views
         {
             InitializeComponent();
 
-            this.volumeSlider.ValueChanged += (o, a) =>
+            this.Loaded += (s, e) =>
             {
                 var dataContext = (SettingsViewModel)DataContext;
 
-                dataContext.ChangeVolume((int)((Slider)o).Value);
-            };
+                this.volumeSlider.ValueChanged += (o, a) =>
+                {
+                    dataContext.ChangeVolume((int)((Slider)o).Value);
+                };
 
-            this.resetButton.Click += (o, a) =>
-            {
-                var dataContext = (SettingsViewModel)DataContext;
+                this.resetButton.Click += (o, a) =>
+                {
+                    dataContext.Reset();
+                };
 
-                dataContext.Reset();
-            };
+                this.undoButton.Click += (o, a) =>
+                {
+                    dataContext.Undo();
+                };
 
-            this.undoButton.Click += (o, a) =>
-            {
-                var dataContext = (SettingsViewModel)DataContext;
+                this.resolutionDropdown.SelectionChanged += (o, a) =>
+                {
+                    dataContext.ChangeResolution((int)((ComboBox)o).SelectedIndex);
+                };
 
-                dataContext.Undo();
-            };
+                this.applyButton.Click += (o, a) =>
+                {
+                    dataContext.ApplySettings();
+                };
 
-            this.resolutionDropdown.SelectionChanged += (o, a) =>
-            {
-                var dataContext = (SettingsViewModel)DataContext;
-
-                dataContext.ChangeResolution((int)((ComboBox)o).SelectedIndex);
-            };
-
-            this.applyButton.Click+= (o, a) =>
-            {
-                var dataContext = (SettingsViewModel)DataContext;
-
-                dataContext.ApplySettings();
-            };
-
-            this.closeButton.Click += (o, a) =>
-            {
-                var dataContext = (SettingsViewModel)DataContext;
-
-                dataContext.CloseSettings();
+                this.closeButton.Click += (o, a) =>
+                {
+                    dataContext.CloseSettings();
+                };
             };
         }
     }
