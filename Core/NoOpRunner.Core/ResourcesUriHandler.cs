@@ -108,78 +108,79 @@ namespace NoOpRunner.Core
         public static Uri GetPlayerPowerUp(VisualElementType visual)
         {
             byte[] data;
+
+            string resource;
             switch (visual)
             {
                 case VisualElementType.DoubleJump:
-                    spritesReader.GetResourceData("PlayerDoubleJumpVisual", out _, out data);
-
-                    return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
-                                   System.Text.Encoding.UTF8.GetString(data).Substring(1));
+                    resource = "PlayerDoubleJumpVisual";
+                    break;
 
                 case VisualElementType.Invulnerability:
-                    spritesReader.GetResourceData("PlayerInvulnerabilityVisual", out _, out data);
+                    resource = "PlayerInvulnerabilityVisual";
+                    break;
 
-                    return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
-                                   System.Text.Encoding.UTF8.GetString(data).Substring(1));
                 case VisualElementType.SpeedBoost:
-                    spritesReader.GetResourceData("PlayerSpeedBoostVisual", out _, out data);
+                    resource = "PlayerSpeedBoostVisual";
+                    break;
 
-                    return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
-                                   System.Text.Encoding.UTF8.GetString(data).Substring(1));
                 default:
                     throw new ArgumentOutOfRangeException(nameof(visual), visual, null);
             }
+
+            spritesReader.GetResourceData(resource, out _, out data);
+
+            return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
+                           System.Text.Encoding.UTF8.GetString(data).Substring(1));
         }
 
         public static Uri GetPowerUp(PowerUps powerUp)
         {
             byte[] data;
+
+            string resource;
             switch (powerUp)
             {
                 case PowerUps.Speed_Boost:
-                    spritesReader.GetResourceData("SpeedBoost", out _, out data);
+                    resource = "SpeedBoost";
+                    break;
 
-                    return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
-                                   System.Text.Encoding.UTF8.GetString(data).Substring(1));
                 case PowerUps.Invisibility:
-                    spritesReader.GetResourceData("Invisibility", out _, out data);
+                    resource = "Invisibility";
+                    break;
 
-                    return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
-                                   System.Text.Encoding.UTF8.GetString(data).Substring(1));
                 case PowerUps.Invulnerability:
-                    spritesReader.GetResourceData("Invulnerability", out _, out data);
-
-                    return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
-                                   System.Text.Encoding.UTF8.GetString(data).Substring(1));
+                    resource = "Invulnerability";
+                    break;
 
                 case PowerUps.Double_Jump:
-                    spritesReader.GetResourceData("DoubleJump", out _, out data);
+                    resource = "DoubleJump";
+                    break;
 
-                    return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
-                                   System.Text.Encoding.UTF8.GetString(data).Substring(1));
                 case PowerUps.Rocket:
-                    spritesReader.GetResourceData("Rocket", out _, out data);
+                    resource = "Rocket";
+                    break;
 
-                    return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
-                                   System.Text.Encoding.UTF8.GetString(data).Substring(1));
                 case PowerUps.Proximity_Mine:
-                    spritesReader.GetResourceData("ProximityMine", out _, out data);
+                    resource = "ProximityMine";
+                    break;
 
-                    return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
-                                   System.Text.Encoding.UTF8.GetString(data).Substring(1));
                 case PowerUps.Saw:
-                    spritesReader.GetResourceData("Saw", out _, out data);
+                    resource = "Saw";
+                    break;
 
-                    return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
-                                   System.Text.Encoding.UTF8.GetString(data).Substring(1));
                 case PowerUps.Knockback_Bomb:
-                    spritesReader.GetResourceData("KnockBackBomb", out _, out data);
+                    resource = "KnockBackBomb";
+                    break;
 
-                    return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
-                                   System.Text.Encoding.UTF8.GetString(data).Substring(1));
                 default:
                     throw new ArgumentOutOfRangeException(nameof(powerUp), powerUp, null);
             }
+
+            spritesReader.GetResourceData(resource, out _, out data);
+
+            return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
+                           System.Text.Encoding.UTF8.GetString(data).Substring(1));
         }
     }
 }
