@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
@@ -21,6 +22,8 @@ namespace NoOpRunner.Core
             if (message.MessageType != MessageType.PlatformsUpdate)
                 return;
 
+            Console.WriteLine("Observer: PlatformsContainer, say Hello World");
+            
             var platformsColumn = message.Payload as IList<IList<ShapeBlock>>;
 
             shapes.ForEach(x =>
@@ -33,5 +36,7 @@ namespace NoOpRunner.Core
             }
             
         }
+
+        
     }
 }

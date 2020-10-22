@@ -57,8 +57,10 @@
     <Compile Include="Controls\InputHandlerImplementorPlayerOne.cs" />
     <Compile Include="Controls\InputHandlerImplementorPlayerTwo.cs" />
     <Compile Include="Dtos\GameStateDto.cs" />
+    <Compile Include="PlayerOnePowerUps.cs" />
     <Compile Include="Dtos\PlayerStateDto.cs" />
     <Compile Include="Enums\Entity.cs" />
+    <Compile Include="Enums\VisualElementType.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="ILogger.cs" />
@@ -66,6 +68,7 @@
     <Compile Include="Interfaces\IShapeConfigurator.cs" />
     <Compile Include="Interfaces\IObserver.cs" />
     <Compile Include="Interfaces\ISubject.cs" />
+    <Compile Include="Interfaces\IVisualElement.cs" />
     <Compile Include="LabTest.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="LoggingLevel.cs" />
@@ -109,13 +112,16 @@
     <Compile Include="Shapes\StaticShapes\PassablePlatform.cs" />
     <Compile Include="Shapes\Player.cs" />
     <Compile Include="Shapes\ShapeBlock.cs" />
-    <Compile Include="SpritesUriHandler.cs" />
+    <Compile Include="ResourcesUriHandler.cs" />
     <Compile Include="Shapes\ShapeFactories\ShapeFactory.cs" />
     <Compile Include="WindowPixel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Decorators" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

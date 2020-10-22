@@ -19,11 +19,17 @@ namespace NoOpRunner.Core.Shapes
         public Player(int x, int y) : base(new FillGenerationStrategy(), x, y, x + HitBoxWidth, y + HitBoxHeight)
         {
             StateMachine = new PlayerOneStateMachine();
+            PlayerOnePowerUps = new PlayerOnePowerUps();
+
             currentHealth = MaxHealth;
         }
 
         private const int MovementIncrement = 1;
         private PlayerOneStateMachine StateMachine { get; set; } //dumb implementation of State machine pattern
+
+        public Uri StateUri => StateMachine.GetStateUri();
+
+        private PlayerOnePowerUps PlayerOnePowerUps { get; set; }
 
         private const decimal JumpAcceleration = 0.1m;
         private const decimal JumpAccelerationPool = 0.5m;
@@ -125,7 +131,9 @@ namespace NoOpRunner.Core.Shapes
 
         public void Jump(WindowPixel[,] gameScreen)
         {
-            if (!IsJumping && CanJump && !IsShapeHit(gameScreen, CenterPosX, CenterPosY + MovementIncrement))
+            if (!IsJumping && CanJump && !IsShapeHit(gameScreen, CenterPosX, CenterPosY + MovementIncrement) ||
+                (!IsShapeHit(gameScreen, CenterPosX, CenterPosY + MovementIncrement) &&//double jump
+                 PlayerOnePowerUps.UsePowerUp(PowerUps.Double_Jump)))
             {
                 StateMachine.Jump();
                 IsJumping = true;
@@ -135,6 +143,11 @@ namespace NoOpRunner.Core.Shapes
                 VerticalAccelerationPool = JumpAccelerationPool;
                 VerticalSpeed = JumpVerticalSpeed;
             }
+        }
+
+        public void UsePowerUp(PowerUps powerUp)
+        {
+            PlayerOnePowerUps.UsePowerUp(powerUp);
         }
 
         public void DropDown(WindowPixel[,] gameScreen)
@@ -176,14 +189,16 @@ namespace NoOpRunner.Core.Shapes
             throw new NotImplementedException();
         }
 
-        public bool StateHasChanged => StateMachine.StateHasChanged;
-
-
-        public Uri GetStateAnimationUri => StateMachine.GetStatusUri();
-
-
-        public bool IsPlayerTurning => StateMachine.IsTurning;
-
+        public void HandleKeyRelease(KeyPress key, WindowPixel[,] gameScreen)
+        {
+            switch (key)
+            {
+                case KeyPress.Right:
+                case KeyPress.Left:
+                    HorizontalSpeed = 0;
+                    return;
+            }
+        }
 
         public bool IsLookingLeft
         {
@@ -197,11 +212,18 @@ namespace NoOpRunner.Core.Shapes
             private set => StateMachine.State = value;
         }
 
+        public bool IsTurning => StateMachine.IsTurning;
+
+        public bool StateHasChanged => StateMachine.StateHasChanged;
+
+
         public void Update(MessageDto message)
         {
-            if (message.MessageType != MessageType.PlayerUpdate) 
+            if (message.MessageType != MessageType.PlayerUpdate)
                 return;
-            
+
+            Console.WriteLine("Observer: Player, say Hello World");
+
             var messageDto = message.Payload as PlayerStateDto;
 
             State = messageDto.State;
@@ -209,8 +231,20 @@ namespace NoOpRunner.Core.Shapes
 
             CenterPosX = messageDto.CenterPosX;
             CenterPosY = messageDto.CenterPosY;
+        }
 
+        public void TakePowerUp(PowerUps powerUp)
+        {
+            PlayerOnePowerUps.TakePowerUp(powerUp);
+        }
 
+        public PowerUps? ExhaustedPowerUp => PlayerOnePowerUps.ExhaustedPowerUp;
+
+        public IList<PowerUps> ActivePowerUps => PlayerOnePowerUps.ActivePowerUps;
+
+        public void LoopPowerUps()
+        {
+            PlayerOnePowerUps.OnLoopFired();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using NoOpRunner.Core.Enums;
 
 namespace NoOpRunner.Client.Rendering
 {
@@ -11,6 +12,8 @@ namespace NoOpRunner.Client.Rendering
         private bool isInitialized;
         private GifBitmapDecoder gifDecoder;
         private Int32Animation animation;
+        
+        public VisualElementType VisualType { get; set; }
 
         public int FrameIndex
         {

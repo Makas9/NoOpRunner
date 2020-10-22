@@ -27,10 +27,10 @@ namespace NoOpRunner.Core
 
         public event EventHandler<MessageDto> OnMessageReceived;
 
-        public PlatformsContainer PlatformsContainer 
+        public PlatformsContainer PlatformsContainer
         {
-            get => GameState?.Platforms; 
-            set => GameState.Platforms = value; 
+            get => GameState?.Platforms;
+            set => GameState.Platforms = value;
         }
 
         public Player Player
@@ -101,13 +101,8 @@ namespace NoOpRunner.Core
             {
                 case MessageType.InitialConnection:
                 case MessageType.InitialGame:
-                    messageDto.Payload = new GameStateDto()
-                        {
-                            Platforms = PlatformsContainer,
-                            Player = Player,
-                            PowerUps = PowerUpsContainer
-                        };
-                    
+                    messageDto.Payload = GameState;
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -145,18 +140,12 @@ namespace NoOpRunner.Core
                     break;
                 case MessageType.InitialConnection:
                 case MessageType.InitialGame:
-                    var gameState = message.Payload as GameStateDto;
 
-                    GameState = new GameState()
-                    {
-                        Platforms = gameState.Platforms,
-                        Player = gameState.Player,
-                        PowerUpsContainer = gameState.PowerUps
-                    };
+                    GameState = message.Payload as GameState;
 
-                    AddObserver(gameState.Player);
-                    AddObserver(gameState.Platforms);
-                    AddObserver(gameState.PowerUps);
+                    AddObserver(GameState.Player);
+                    AddObserver(GameState.Platforms);
+                    AddObserver(GameState.PowerUpsContainer);
 
                     break;
                 default:
@@ -175,16 +164,8 @@ namespace NoOpRunner.Core
             Logging.Instance.Write("Started hosting..");
         }
 
-        public async Task FireHostLoop()
+        public async Task UpdateClientsGame()
         {
-            var map = (WindowPixel[,]) PlatformsContainer.GetShapes().Clone();
-
-            //this need to be separated, player and map move at diff speed
-            //right now map dont move at all
-            Player.OnLoopFired(map);
-            PlatformsContainer.OnLoopFired(map);
-
-            //Less data to send than sending whole player instance
             await connectionManager.SendMessageToClient(new MessageDto()
             {
                 MessageType = MessageType.PlayerUpdate,
@@ -214,12 +195,24 @@ namespace NoOpRunner.Core
                 .AddPassableShape(f => f.CreateStaticShape(Shape.Platform, new PlatformerGenerationStrategy(), 0, GameSettings.VerticalCellCount / 3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount * 2 / 3))
                 .AddPassableShape(f => f.CreateStaticShape(Shape.Platform, new RandomlySegmentedGenerationStrategy(), 0, GameSettings.VerticalCellCount * 2 / 3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount - 3))
                 .AddPlayer(platforms => platforms.Skip(1).First(p => p.GetType() == typeof(PassablePlatform)))
-                .AddPowerUp(PowerUps.Double_Jump, platforms => platforms.First(p => p.GetType() == typeof(ImpassablePlatform)))
+                .AddPowerUp(PowerUps.Speed_Boost, platforms => platforms.First(p => p.GetType() == typeof(ImpassablePlatform)))
+                .AddPowerUp(PowerUps.Double_Jump, platforms  =>
+                {
+
+                    var plat = platforms.First(p => p.GetType() == typeof(ImpassablePlatform));
+                    return new PowerUp(plat.CenterPosX+1, plat.CenterPosY, PowerUps.Double_Jump);
+                })
+                .AddPowerUp(PowerUps.Invulnerability, platforms  =>
+                {
+
+                    var plat = platforms.First(p => p.GetType() == typeof(ImpassablePlatform));
+                    return new PowerUp(plat.CenterPosX+2, plat.CenterPosY, PowerUps.Invulnerability);
+                })
                 //.AddShape(f => f.GetShape(Shape.Saw, 2, 5)) // DEMO: Factory Pattern
                 .Build();
 
             GameState = initialGameState;
-            
+
             //LabTest.TestPrototype(); // DEMO: Prototype Pattern
         }
 

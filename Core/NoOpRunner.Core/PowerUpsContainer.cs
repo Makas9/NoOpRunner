@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
@@ -16,6 +17,21 @@ namespace NoOpRunner.Core
         {
         }
 
+        public IList<Tuple<WindowPixel, PowerUps>> GetPowerUpsEnumerable()
+        {
+            var shapesPixels = GetShapesEnumerable().ToList();
+            var shapesPowerUps = shapes.Select(x => ((PowerUp) x).PowerUpType).ToList();
+
+            return shapesPixels.Zip(shapesPowerUps, (shapesPixel, shapesPowerUp)=> new Tuple<WindowPixel, PowerUps>(shapesPixel, shapesPowerUp)).ToList();
+        }
+        public void RemovePowerUp(int centerPosX, int centerPosY)
+        {
+            shapes.Remove(GetPowerUpAt(centerPosX, centerPosY));
+        }
+        public PowerUp GetPowerUpAt(int centerPosX, int centerPosY)
+        {
+            return shapes.FirstOrDefault(x => x.CenterPosX == centerPosX && x.CenterPosY == centerPosY) as PowerUp;
+        }
         public void ClickShape(int x, int y)
         {
             shapes.FirstOrDefault(s => s.IsHit(x, y))?.OnClick();
@@ -29,6 +45,8 @@ namespace NoOpRunner.Core
         {
             if (message.MessageType != MessageType.PowerUpsUpdate) 
                 return;
+            
+            Console.WriteLine("Observer: PowerUpsContainer, say Hello World");
             
             shapes.ForEach(x => x.CenterPosX--); //Push cells
 
