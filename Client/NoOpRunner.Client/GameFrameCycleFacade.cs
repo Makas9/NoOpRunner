@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using NoOpRunner.Core.Decorators;
+using NoOpRunner.Client.PlayerAnimationDecorators;
+using NoOpRunner.Client.Rendering;
+using NoOpRunner.Core;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
-using NoOpRunner.Core.Rendering;
 
-namespace NoOpRunner.Core
+namespace NoOpRunner.Client
 {
     public class GameFrameCycleFacade
     {
-        private IVisualElement Player { get; set; }
+        private IVisualElement PlayerRenderer { get; set; }
+        
+        private IVisualElement PlatformsRenderer { get; set; }
+        
+        private IVisualElement PowerUpsRenderer { get; set; }
         
         private IList<PowerUps> DisplayingPlayerOnePowerUps { get; set; }
 
@@ -21,7 +26,7 @@ namespace NoOpRunner.Core
             DisplayingPlayerOnePowerUps = new List<PowerUps>();
         }
 
-        public async Task HostGameCycle(NoOpRunner game, Canvas playerCanvas, Canvas powerUpsCanvas,
+        public async Task HostGameCycle(Core.NoOpRunner game, Canvas playerCanvas, Canvas powerUpsCanvas,
             Canvas platformsCanvas)
         {
 
@@ -32,18 +37,23 @@ namespace NoOpRunner.Core
             await game.UpdateClientsGame();
         }
 
-        public void ClientGameCycle(NoOpRunner game, Canvas playerCanvas, Canvas platformsCanvas, Canvas powerUpsCanvas)
+        public void ClientGameCycle(Core.NoOpRunner game, Canvas playerCanvas, Canvas platformsCanvas, Canvas powerUpsCanvas)
         {
             //More incoming
             BaseCycle(game, playerCanvas, platformsCanvas, powerUpsCanvas);
         }
 
-        private void BaseCycle(NoOpRunner game, Canvas playerCanvas, Canvas platformsCanvas, Canvas powerUpsCanvas)
+        private void BaseCycle(Core.NoOpRunner game, Canvas playerCanvas, Canvas platformsCanvas, Canvas powerUpsCanvas)
         {
-            if (Player == null)
+            if (PlayerRenderer == null || PlatformsRenderer == null || PowerUpsRenderer == null)
             {
-                Player = new PlayerRenderer(game.Player);
+                PlayerRenderer = new PlayerRenderer(game.Player);
+                
+                PlatformsRenderer = new PlatformsRenderer(game.PlatformsContainer);
+                
+                PowerUpsRenderer = new PowerUpsRenderer(game.PowerUpsContainer);
             }
+            
             
             game.Player.LoopPowerUps();
             
@@ -82,7 +92,7 @@ namespace NoOpRunner.Core
                 switch (playerUsedPowerUp)
                 {
                     case PowerUps.Speed_Boost:
-                        Player = ((PlayerDecorator) Player).RemoveLayer(VisualElementType.SpeedBoost);
+                        PlayerRenderer = ((PlayerDecorator) PlayerRenderer).RemoveLayer(VisualElementType.SpeedBoost);
                         
                         animation = playerCanvas.Children.OfType<GifImage>()
                             .FirstOrDefault(x => x.VisualType == VisualElementType.SpeedBoost);
@@ -93,7 +103,7 @@ namespace NoOpRunner.Core
                         
                         break;
                     case PowerUps.Invulnerability:
-                        Player = ((PlayerDecorator) Player).RemoveLayer(VisualElementType.Invulnerability);
+                        PlayerRenderer = ((PlayerDecorator) PlayerRenderer).RemoveLayer(VisualElementType.Invulnerability);
                         
                         animation = playerCanvas.Children.OfType<GifImage>()
                             .FirstOrDefault(x => x.VisualType == VisualElementType.Invulnerability);
@@ -101,7 +111,7 @@ namespace NoOpRunner.Core
                         playerCanvas.Children.Remove(animation);
                         break;
                     case PowerUps.Double_Jump:
-                        Player = ((PlayerDecorator) Player).RemoveLayer(VisualElementType.DoubleJump);
+                        PlayerRenderer = ((PlayerDecorator) PlayerRenderer).RemoveLayer(VisualElementType.DoubleJump);
                         
                         animation = playerCanvas.Children.OfType<GifImage>()
                             .FirstOrDefault(x => x.VisualType == VisualElementType.DoubleJump);
@@ -114,11 +124,11 @@ namespace NoOpRunner.Core
                 }
             }
             
-            game.PlatformsContainer.Display(platformsCanvas);
+            PowerUpsRenderer.Display(platformsCanvas);
 
-            game.PowerUpsContainer.Display(powerUpsCanvas);
+            PlatformsRenderer.Display(powerUpsCanvas);
 
-            Player.Display(playerCanvas);
+            PlayerRenderer.Display(playerCanvas);
         }
 
         private void AddDecoratorLayer(PowerUps elementType)
@@ -126,16 +136,16 @@ namespace NoOpRunner.Core
             switch (elementType)
             {
                 case PowerUps.Speed_Boost:
-                    Player = new PlayerSpeedBoostDecorator(Player);
+                    PlayerRenderer = new PlayerSpeedBoostDecorator(PlayerRenderer);
                     break;
                 case PowerUps.Invisibility:
                     break;
                 case PowerUps.Invulnerability:
-                    Player = new PlayerInvulnerabilityDecorator(Player);
+                    PlayerRenderer = new PlayerInvulnerabilityDecorator(PlayerRenderer);
 
                     return;
                 case PowerUps.Double_Jump:
-                    Player = new PlayerDoubleJumpDecorator(Player);
+                    PlayerRenderer = new PlayerDoubleJumpDecorator(PlayerRenderer);
                     return;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(elementType), elementType, null);

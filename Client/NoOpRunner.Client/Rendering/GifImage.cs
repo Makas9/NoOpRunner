@@ -5,7 +5,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using NoOpRunner.Core.Enums;
 
-namespace NoOpRunner.Core.Rendering
+namespace NoOpRunner.Client.Rendering
 {
     public class GifImage : Image
     {

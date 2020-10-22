@@ -4,7 +4,7 @@ using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
 
-namespace NoOpRunner.Core.Decorators
+namespace NoOpRunner.Client.PlayerAnimationDecorators
 {
     public class PlayerDecorator : IVisualElement
     {
@@ -22,7 +22,7 @@ namespace NoOpRunner.Core.Decorators
 
         public virtual IVisualElement RemoveLayer(VisualElementType visualElementType)
         {
-            throw new AggregateException("Call concrete, not abstract");
+            throw new NotImplementedException("Call concrete, not abstract");
         }
 
         protected void UpdatePlayerWhileRemoving(VisualElementType visualElementType)

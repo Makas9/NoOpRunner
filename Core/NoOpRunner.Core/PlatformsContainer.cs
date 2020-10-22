@@ -13,7 +13,7 @@ using NoOpRunner.Core.Shapes;
 
 namespace NoOpRunner.Core
 {
-    public class PlatformsContainer : ShapesContainer, IObserver, IVisualElement
+    public class PlatformsContainer : ShapesContainer, IObserver
     {
         public PlatformsContainer(int sizeX, int sizeY) : base(sizeX, sizeY)
         {
@@ -43,43 +43,6 @@ namespace NoOpRunner.Core
             
         }
 
-        public void Display(Canvas canvas)
-        {
-            var rectangleWidth = canvas.ActualWidth / this.SizeX;
-            var rectangleHeight = canvas.ActualHeight / this.SizeY;
-
-            var pixels = GetShapesEnumerable().ToList();
-            if (canvas.Children.Count != pixels.Count)
-            {
-                canvas.Children.Clear();
-
-                var imageBrush = new ImageBrush(new BitmapImage(ResourcesUriHandler.GetPlatformUri()));
-
-                foreach (var pixel in pixels)
-                {
-                    var rec = new Rectangle
-                    {
-                        Width = rectangleWidth,
-                        Height = rectangleHeight,
-                        Fill = imageBrush
-                    };
-                    Canvas.SetLeft(rec, rectangleWidth * pixel.X);
-                    Canvas.SetBottom(rec, rectangleHeight * pixel.Y);
-
-                    canvas.Children.Add(rec);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < pixels.Count; i++)
-                {
-                    canvas.Children[i].SetValue(FrameworkElement.WidthProperty, rectangleWidth);
-                    canvas.Children[i].SetValue(FrameworkElement.HeightProperty, rectangleHeight);
-
-                    Canvas.SetLeft(canvas.Children[i], rectangleWidth * pixels[i].X);
-                    Canvas.SetBottom(canvas.Children[i], rectangleHeight * pixels[i].Y);
-                }
-            }
-        }
+        
     }
 }

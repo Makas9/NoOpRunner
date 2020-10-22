@@ -1,9 +1,9 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using NoOpRunner.Core;
 
-namespace NoOpRunner.Core.Rendering
+namespace NoOpRunner.Client.Rendering
 {
     public static class RenderingHelper
     {

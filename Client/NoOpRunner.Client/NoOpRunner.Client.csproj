@@ -63,6 +63,11 @@
     <Compile Include="Controls\InputHandlerAbstractionArrows.cs" />
     <Compile Include="Controls\InputHandlerAbstractionWasd.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Rendering\GifImage.cs" />
+    <Compile Include="Rendering\PlatformsRenderer.cs" />
+    <Compile Include="Rendering\PlayerRenderer.cs" />
+    <Compile Include="Rendering\PowerUpsRenderer.cs" />
+    <Compile Include="Rendering\RenderingHelper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -71,12 +76,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GameFrameCycleFacade.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlayerAnimationDecorators\PlayerDecorator.cs" />
+    <Compile Include="PlayerAnimationDecorators\PlayerDoubleJumpDecorator.cs" />
+    <Compile Include="PlayerAnimationDecorators\PlayerInvulnerabilityDecorator.cs" />
+    <Compile Include="PlayerAnimationDecorators\PlayerSpeedBoostDecorator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

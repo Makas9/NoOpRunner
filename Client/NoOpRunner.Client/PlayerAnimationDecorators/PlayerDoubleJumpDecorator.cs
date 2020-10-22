@@ -2,12 +2,12 @@
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
-using NoOpRunner.Core.Decorators;
+using NoOpRunner.Client.Rendering;
+using NoOpRunner.Core;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
-using NoOpRunner.Core.Rendering;
 
-namespace NoOpRunner.Core
+namespace NoOpRunner.Client.PlayerAnimationDecorators
 {
     public class PlayerDoubleJumpDecorator : PlayerDecorator
     {

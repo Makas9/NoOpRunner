@@ -65,7 +65,7 @@ namespace NoOpRunner.Core
             return windowPixels;
         }
 
-        protected IEnumerable<WindowPixel> GetShapesEnumerable()
+        public IEnumerable<WindowPixel> GetShapesEnumerable()
         {
             foreach (var shape in shapes)
             {

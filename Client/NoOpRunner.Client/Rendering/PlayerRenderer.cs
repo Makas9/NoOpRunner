@@ -2,12 +2,12 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using NoOpRunner.Core;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
-using NoOpRunner.Core.Rendering;
 using NoOpRunner.Core.Shapes;
 
-namespace NoOpRunner.Core
+namespace NoOpRunner.Client.Rendering
 {
     public class PlayerRenderer : IVisualElement
     {

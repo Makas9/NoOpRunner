@@ -16,12 +16,19 @@ namespace NoOpRunner.Core
     /// <summary>
     /// Power ups 
     /// </summary>
-    public class PowerUpsContainer : ShapesContainer, IObserver, IVisualElement
+    public class PowerUpsContainer : ShapesContainer, IObserver
     {
         public PowerUpsContainer(int sizeX, int sizeY) : base(sizeX, sizeY)
         {
         }
 
+        public IList<Tuple<WindowPixel, PowerUps>> GetPowerUpsEnumerable()
+        {
+            var shapesPixels = GetShapesEnumerable().ToList();
+            var shapesPowerUps = shapes.Select(x => ((PowerUp) x).PowerUpType).ToList();
+
+            return shapesPixels.Zip(shapesPowerUps, (shapesPixel, shapesPowerUp)=> new Tuple<WindowPixel, PowerUps>(shapesPixel, shapesPowerUp)).ToList();
+        }
         public void RemovePowerUp(int centerPosX, int centerPosY)
         {
             shapes.Remove(GetPowerUpAt(centerPosX, centerPosY));
@@ -54,46 +61,6 @@ namespace NoOpRunner.Core
             shapes.RemoveAll(x => x.CenterPosX < 0); //Remove out of bounds
 
             shapes.AddRange(message.Payload as List<BaseShape>); //Append generated power ups
-        }
-
-        public void Display(Canvas canvas)
-        {
-            var rectangleWidth = canvas.ActualWidth / this.SizeX;
-            var rectangleHeight = canvas.ActualHeight / this.SizeY;
-
-
-            var pixels = GetShapesEnumerable().ToList();
-            
-            if (canvas.Children.Count != pixels.Count)
-            {
-                canvas.Children.Clear();
-
-                foreach (PowerUp powerUp in shapes)
-                {
-                    var rec = new Rectangle
-                    {
-                        Width = rectangleWidth,
-                        Height = rectangleHeight,
-                        Fill = new ImageBrush(new BitmapImage(ResourcesUriHandler.GetPowerUp(powerUp.PowerUpType))),
-                        Stretch = Stretch.Fill
-                    };
-                    Canvas.SetLeft(rec, rectangleWidth * powerUp.CenterPosX);
-                    Canvas.SetBottom(rec, rectangleHeight * powerUp.CenterPosY);
-
-                    canvas.Children.Add(rec);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < pixels.Count; i++)
-                {
-                    canvas.Children[i].SetValue(Canvas.WidthProperty, rectangleWidth);
-                    canvas.Children[i].SetValue(Canvas.HeightProperty, rectangleHeight);
-
-                    Canvas.SetLeft(canvas.Children[i], rectangleWidth * pixels[i].X);
-                    Canvas.SetBottom(canvas.Children[i], rectangleHeight * pixels[i].Y);
-                }
-            }
         }
     }
 }
