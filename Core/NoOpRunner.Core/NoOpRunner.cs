@@ -40,7 +40,7 @@ namespace NoOpRunner.Core
         }
         public PowerUpsContainer PowerUpsContainer
         {
-            get => GameState.PowerUpsContainer;
+            get => GameState?.PowerUpsContainer;
             set => GameState.PowerUpsContainer = value;
         }
 

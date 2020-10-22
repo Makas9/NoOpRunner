@@ -53,9 +53,13 @@
     <Compile Include="Configurators\ImpassablePlatformConfigurator.cs" />
     <Compile Include="Configurators\PassablePlatformConfigurator.cs" />
     <Compile Include="Configurators\ShapeConfigurator.cs" />
+    <Compile Include="Controls\InputHandlerImplementor.cs" />
+    <Compile Include="Controls\InputHandlerImplementorPlayerOne.cs" />
+    <Compile Include="Controls\InputHandlerImplementorPlayerTwo.cs" />
     <Compile Include="Dtos\GameStateDto.cs" />
     <Compile Include="Dtos\PlayerStateDto.cs" />
     <Compile Include="Enums\Entity.cs" />
+    <Compile Include="Enums\KeyPress.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="ILogger.cs" />
@@ -88,7 +92,6 @@
     <Compile Include="Enums\PowerUps.cs" />
     <Compile Include="Enums\Shape.cs" />
     <Compile Include="Enums\Color.cs" />
-    <Compile Include="Enums\KeyPress.cs" />
     <Compile Include="Enums\MessageType.cs" />
     <Compile Include="Enums\PlayerOneState.cs" />
     <Compile Include="Interfaces\IConnectionManager.cs" />

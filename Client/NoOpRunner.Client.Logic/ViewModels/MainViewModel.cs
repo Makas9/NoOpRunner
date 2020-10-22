@@ -19,7 +19,7 @@ namespace NoOpRunner.Client.Logic.ViewModels
             var connectionManager = new LoggingConnectionManagerAdapter(new LoggingConnectionManager(Logging.Instance));
 
             Game = new Core.NoOpRunner(connectionManager);
-            SettingsViewModel = new SettingsViewModel();
+            SettingsViewModel = new SettingsViewModel(this);
 
             Game.OnMessageReceived += HandleMessageReceived;
         }
@@ -78,6 +78,20 @@ namespace NoOpRunner.Client.Logic.ViewModels
                 SetField(ref _IsSettingsViewOpen, value);
                 RaisePropertyChanged(nameof(IsGameViewOpen));
             }
+        }
+
+        private int screenWidth = 800;
+        public int ScreenWidth
+        {
+            get => screenWidth;
+            set => SetField(ref screenWidth, value);
+        }
+
+        private int screenHeight = 600;
+        public int ScreenHeight
+        {
+            get => screenHeight;
+            set => SetField(ref screenHeight, value);
         }
 
         public bool IsGameViewOpen => !IsSettingsViewOpen;

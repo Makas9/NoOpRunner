@@ -43,9 +43,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\RelayCommand.cs" />
-    <Compile Include="Commands\RaiseVolumeCommand.cs" />
-    <Compile Include="Commands\LowerVolumeCommand.cs" />
+    <Compile Include="Commands\BaseCommand.cs" />
+    <Compile Include="Commands\ChangeResolutionCommand.cs" />
+    <Compile Include="Commands\ChangeVolumeCommand.cs" />
     <Compile Include="Commands\CommandInvoker.cs" />
+    <Compile Include="Dto\DropdownDto.cs" />
+    <Compile Include="Dto\ResolutionOptionDto.cs" />
     <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />

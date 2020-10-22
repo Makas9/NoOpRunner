@@ -6,7 +6,7 @@
         xmlns:ViewModels="clr-namespace:NoOpRunner.Client.Logic.ViewModels;assembly=NoOpRunner.Client.Logic"
         xmlns:local="clr-namespace:NoOpRunner.Client"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="{Binding ScreenHeight, Mode=TwoWay}" Width="{Binding ScreenWidth, Mode=TwoWay}">
     <Window.DataContext>
         <ViewModels:MainViewModel/>
     </Window.DataContext>

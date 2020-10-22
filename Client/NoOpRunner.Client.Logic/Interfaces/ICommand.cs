@@ -2,10 +2,13 @@
 {
     public interface ICommand
     {
-        bool PreExecute();
-
         bool Execute();
 
         void Undo();
+    }
+
+    public interface ICommand<TRequest> : ICommand
+    {
+        bool Execute(TRequest request);
     }
 }

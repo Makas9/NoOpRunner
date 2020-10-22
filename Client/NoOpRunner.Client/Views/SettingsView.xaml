@@ -6,27 +6,41 @@
              xmlns:local="clr-namespace:NoOpRunner.Client.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Background="White">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+    <DockPanel LastChildFill="False">
+        <Grid Margin="0, 10" DockPanel.Dock="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0">Volume level</TextBlock>
-            <Button x:Name="lowerVolumeButton" Grid.Column="1">Lower</Button>
-            <TextBlock Grid.Column="2" Text="{Binding VolumeLevel}"/>
-            <Button x:Name="raiseVolumeButton" Grid.Column="3">Higher</Button>
+                <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Volume level</TextBlock>
+                <Slider x:Name="volumeSlider" Grid.Column="1" Minimum="0" Maximum="50" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding VolumeLevelDisplay, Mode=OneWay}"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Resolution</TextBlock>
+                <ComboBox Grid.Column="1" x:Name="resolutionDropdown" ItemsSource="{Binding ResolutionOptions}" SelectedIndex="{Binding SelectedResolutionIndexDisplay, Mode=OneWay}" Margin="10">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Value}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Grid>
         </Grid>
-        <StackPanel Orientation="Horizontal" Grid.Row="1">
-            <Button x:Name="undoButton">Undo</Button>
-            <Button x:Name="resetButton">Reset</Button>
+        <StackPanel Height="30" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2" DockPanel.Dock="Bottom">
+            <Button Width="50" Margin="10, 0" x:Name="closeButton">Close</Button>
+            <Button Width="50" Margin="10, 0" x:Name="undoButton">Undo</Button>
+            <Button Width="50" Margin="10, 0" x:Name="resetButton">Reset</Button>
+            <Button Width="50" Margin="10, 0" x:Name="applyButton">Apply</Button>
         </StackPanel>
-    </Grid>
+    </DockPanel>
 </UserControl>

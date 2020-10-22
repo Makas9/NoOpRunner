@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NoOpRunner.Client.Logic.Commands
 {
-    public class CommandInvoker
+    public class CommandInvoker<TCommand> where TCommand : ICommand
     {
         private LinkedList<ICommand> commandQueue;
 
@@ -12,9 +12,9 @@ namespace NoOpRunner.Client.Logic.Commands
             commandQueue = new LinkedList<ICommand>();
         }
 
-        public void InvokeCommand(ICommand command)
+        public void InvokeCommand<TRequest>(ICommand<TRequest> command, TRequest request)
         {
-            var result = command.Execute();
+            var result = command.Execute(request);
 
             if (result)
                 commandQueue.AddFirst(command);
@@ -24,15 +24,15 @@ namespace NoOpRunner.Client.Logic.Commands
         {
             if (commandQueue.Count == 0) return;
 
-            var last = commandQueue.Last;
+            var command = commandQueue.First;
 
-            last.Value.Undo();
+            command.Value.Undo();
 
-            while (last.Previous != null)
+            while (command.Next != null)
             {
-                last = last.Previous;
+                command = command.Next;
 
-                last.Value.Undo();
+                command.Value.Undo();
             }
 
             commandQueue.Clear();
@@ -42,11 +42,16 @@ namespace NoOpRunner.Client.Logic.Commands
         {
             if (commandQueue.Count == 0) return;
 
-            var last = commandQueue.Last;
+            var command = commandQueue.First;
 
-            last.Value.Undo();
+            command.Value.Undo();
 
-            commandQueue.RemoveLast();
+            commandQueue.RemoveFirst();
+        }
+
+        public void Reset()
+        {
+            commandQueue.Clear();
         }
     }
 }

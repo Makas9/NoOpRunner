@@ -12,18 +12,11 @@ namespace NoOpRunner.Client.Views
         {
             InitializeComponent();
 
-            this.lowerVolumeButton.Click += (o, a) =>
+            this.volumeSlider.ValueChanged += (o, a) =>
             {
                 var dataContext = (SettingsViewModel)DataContext;
 
-                dataContext.LowerVolume();
-            };
-
-            this.raiseVolumeButton.Click += (o, a) =>
-            {
-                var dataContext = (SettingsViewModel)DataContext;
-
-                dataContext.RaiseVolume();
+                dataContext.ChangeVolume((int)((Slider)o).Value);
             };
 
             this.resetButton.Click += (o, a) =>
@@ -38,6 +31,27 @@ namespace NoOpRunner.Client.Views
                 var dataContext = (SettingsViewModel)DataContext;
 
                 dataContext.Undo();
+            };
+
+            this.resolutionDropdown.SelectionChanged += (o, a) =>
+            {
+                var dataContext = (SettingsViewModel)DataContext;
+
+                dataContext.ChangeResolution((int)((ComboBox)o).SelectedIndex);
+            };
+
+            this.applyButton.Click+= (o, a) =>
+            {
+                var dataContext = (SettingsViewModel)DataContext;
+
+                dataContext.ApplySettings();
+            };
+
+            this.closeButton.Click += (o, a) =>
+            {
+                var dataContext = (SettingsViewModel)DataContext;
+
+                dataContext.CloseSettings();
             };
         }
     }
