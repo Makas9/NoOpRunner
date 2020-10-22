@@ -59,7 +59,6 @@
     <Compile Include="Dtos\GameStateDto.cs" />
     <Compile Include="Dtos\PlayerStateDto.cs" />
     <Compile Include="Enums\Entity.cs" />
-    <Compile Include="Enums\KeyPress.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="ILogger.cs" />
