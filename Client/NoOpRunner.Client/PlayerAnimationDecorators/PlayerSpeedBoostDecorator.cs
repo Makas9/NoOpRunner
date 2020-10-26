@@ -19,13 +19,13 @@ namespace NoOpRunner.Client.PlayerAnimationDecorators
 
             MediaPlayer.Open(ResourcesUriHandler.GetPowerUpSound(PowerUps.Speed_Boost));
 
-            MediaPlayer.MediaEnded += (o,a) =>
+            MediaPlayer.MediaEnded += (o, a) =>
             {
                 MediaPlayer.Position = TimeSpan.Zero;
                 MediaPlayer.Play();
             };
 
-            MediaPlayer.Volume = 0.1;
+            MediaPlayer.Volume = 0.01;
             MediaPlayer.Play();
         }
 
@@ -33,7 +33,8 @@ namespace NoOpRunner.Client.PlayerAnimationDecorators
         {
             Console.WriteLine("Player decorator: Displaying Speed boost animation");
 
-            var speedBoostAnimation = canvas.Children.OfType<GifImage>().FirstOrDefault(x=> x.VisualType == VisualElementType.SpeedBoost);
+            var speedBoostAnimation = canvas.Children.OfType<GifImage>()
+                .FirstOrDefault(x => x.VisualType == VisualElementType.SpeedBoost);
 
             if (speedBoostAnimation == null)
             {
@@ -56,8 +57,6 @@ namespace NoOpRunner.Client.PlayerAnimationDecorators
             {
                 MediaPlayer.Pause();
                 MediaPlayer.Close();
-                
-                
                 
                 return Player;
             }

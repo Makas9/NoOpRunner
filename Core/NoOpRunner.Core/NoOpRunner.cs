@@ -21,7 +21,7 @@ namespace NoOpRunner.Core
     {
         public bool IsGameStarted { get; set; } = false;
 
-        public event EventHandler OnLoopFired;
+        // public event EventHandler OnLoopFired;//Un
 
         private IList<IObserver> Observers { get; set; }
 
@@ -56,6 +56,26 @@ namespace NoOpRunner.Core
             Observers = new List<IObserver>();
         }
 
+        public async Task OnMapMoveLoopFired()
+        {
+            Player.OnMapMoveLoopFired((WindowPixel[,])PlatformsContainer.GetShapes().Clone());
+            
+            PowerUpsContainer.MoveWithMap();
+            
+            PlatformsContainer.MoveWithMap();
+            
+            await connectionManager.SendMessageToClient(new MessageDto()
+            {
+                MessageType = MessageType.PlatformsUpdate,
+                Payload = PlatformsContainer.GenerateSequel()
+            });
+        }
+        /// <summary>
+        /// Eh??? Useless?? ORAORAORAORAORAORA
+        /// </summary>
+        /// <param name="platformXCoords"></param>
+        /// <param name="platformYCoords"></param>
+        /// <returns></returns>
         private int RandLocation(int[] platformXCoords, int[] platformYCoords)
         {
             int found = -1, x = -1;
@@ -174,15 +194,10 @@ namespace NoOpRunner.Core
                     State = Player.State,
                     CenterPosX = Player.CenterPosX,
                     CenterPosY = Player.CenterPosY,
-                    IsLookingLeft = Player.IsLookingLeft
+                    IsLookingLeft = Player.IsLookingLeft,
+                    PlayerOnePowerUps = Player.PlayerOnePowerUps
                 }
             });
-        }
-
-        public void FireClientLoop(PlatformsContainer platforms, Player player)
-        {
-            Player = player;
-            PlatformsContainer = platforms;
         }
 
         private void InitializeGameState()

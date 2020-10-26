@@ -10,5 +10,7 @@ namespace NoOpRunner.Core.Dtos
         
         public int CenterPosX { get; set; }
         public int CenterPosY { get; set; }
+        
+        public PlayerOnePowerUps PlayerOnePowerUps { get; set; }
     }
 }

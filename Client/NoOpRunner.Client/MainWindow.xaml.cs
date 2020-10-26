@@ -51,7 +51,7 @@ namespace NoOpRunner.Client
                 ConfigureKeys();
 
                 timer = new DispatcherTimer();
-                timer.Interval = GameSettings.TimeBetweenFrames;
+                timer.Interval = TimeSpan.FromMilliseconds(GameSettings.TimeBetweenFramesMs);
                 timer.Tick += async (o, a) =>
                 {
                     await TriggerRender();
@@ -66,13 +66,13 @@ namespace NoOpRunner.Client
         {
             if (Game.IsHost)
             {
-                await facade.HostGameCycle(Game, player_window, power_ups, game_platforms);
+                await facade.CycleHostGame(Game, player_window, power_ups, game_platforms);
             }
             else//for client
             {
                 if (Game.PlatformsContainer != null && Game.Player != null && Game.PowerUpsContainer != null)
                 {
-                    facade.ClientGameCycle(Game, player_window, game_platforms, power_ups);
+                    facade.CycleClientGame(Game, player_window, game_platforms, power_ups);
                 }
             }
         }
