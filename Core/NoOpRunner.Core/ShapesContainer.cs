@@ -22,16 +22,14 @@ namespace NoOpRunner.Core
             shapes = new List<BaseShape>();
         }
 
+        public virtual void MoveWithMap()
+        {
+            throw new NotImplementedException();
+        }
+
         public void AddShape(BaseShape shape)
         {
             shapes.Add(shape);
-        }
-
-        //Ora ora ora ora
-        public void OnLoopFired(WindowPixel[,] gameMap)
-        {
-            //Wut????? It do nothing 
-            shapes.ForEach(x => x.OnLoopFired(gameMap));
         }
 
         public WindowPixel[,] GetShapes()
@@ -73,6 +71,13 @@ namespace NoOpRunner.Core
 
                 foreach (var pixel in shapePixels)
                 {
+                    if (pixel.X < 0 ||
+                        pixel.Y < 0 ||
+                        pixel.X >= SizeX ||
+                        pixel.Y >= SizeY)
+                    {
+                        throw new Exception("Shape pixel outside the bounds of the game window");
+                    }
                     yield return pixel;
                 }
             }

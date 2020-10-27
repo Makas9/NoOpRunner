@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
@@ -29,7 +30,8 @@ namespace NoOpRunner.Core.Shapes
 
         public Uri StateUri => StateMachine.GetStateUri();
 
-        private PlayerOnePowerUps PlayerOnePowerUps { get; set; }
+        [JsonProperty]
+        public PlayerOnePowerUps PlayerOnePowerUps { get; private set; }
 
         private const decimal JumpAcceleration = 0.1m;
         private const decimal JumpAccelerationPool = 0.5m;
@@ -189,17 +191,6 @@ namespace NoOpRunner.Core.Shapes
             throw new NotImplementedException();
         }
 
-        public void HandleKeyRelease(KeyPress key, WindowPixel[,] gameScreen)
-        {
-            switch (key)
-            {
-                case KeyPress.Right:
-                case KeyPress.Left:
-                    HorizontalSpeed = 0;
-                    return;
-            }
-        }
-
         public bool IsLookingLeft
         {
             get => StateMachine.IsLookingLeft;
@@ -231,6 +222,8 @@ namespace NoOpRunner.Core.Shapes
 
             CenterPosX = messageDto.CenterPosX;
             CenterPosY = messageDto.CenterPosY;
+
+            PlayerOnePowerUps = messageDto.PlayerOnePowerUps;
         }
 
         public void TakePowerUp(PowerUps powerUp)
@@ -245,6 +238,22 @@ namespace NoOpRunner.Core.Shapes
         public void LoopPowerUps()
         {
             PlayerOnePowerUps.OnLoopFired();
+        }
+
+        public void OnMapMoveLoopFired(WindowPixel[,] windowPixels)
+        {
+            if (CenterPosX-1 <= 0)
+            {
+                Jump(windowPixels);
+                if (!IsShapeHit(windowPixels, CenterPosX + 1, CenterPosY))
+                {
+                    CenterPosX++;
+                }
+            }
+            else
+            {
+                CenterPosX--;
+            }
         }
     }
 }

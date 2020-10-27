@@ -12,7 +12,34 @@ namespace NoOpRunner.Core
         public PlatformsContainer(int sizeX, int sizeY) : base(sizeX, sizeY)
         {
         }
-        
+
+        public List<List<ShapeBlock>> GenerateSequel()
+        {
+            var generatedExtendingShapeBlocks = new List<List<ShapeBlock>>();
+            foreach (var t in shapes)
+            {
+                var extendingShapeBlocks =
+                    new List<ShapeBlock>(new[]
+                    {
+                        new ShapeBlock()
+                        {
+                            OffsetX = SizeX - 1,
+                            OffsetY = 0
+                        }
+                    });
+                generatedExtendingShapeBlocks.Add(extendingShapeBlocks);
+                ((StaticShape)t).AppendPlatform(extendingShapeBlocks);
+            }
+
+            return generatedExtendingShapeBlocks;
+        }
+
+        public override void MoveWithMap()
+        {
+            shapes.ForEach(x =>
+                ((StaticShape) x).PushAndRemove()
+            );//Push and remove out of bounds
+        }
         /// <summary>
         /// For platforms update, append generated cells
         /// </summary>
@@ -24,11 +51,9 @@ namespace NoOpRunner.Core
 
             Console.WriteLine("Observer: PlatformsContainer, say Hello World");
             
-            var platformsColumn = message.Payload as IList<IList<ShapeBlock>>;
+            var platformsColumn = message.Payload as List<List<ShapeBlock>>;
 
-            shapes.ForEach(x =>
-                ((StaticShape) x).PushAndRemove()
-            );//Push and remove out of bounds
+            MoveWithMap();
 
             for (int i = 0; i < shapes.Count; i++)
             {

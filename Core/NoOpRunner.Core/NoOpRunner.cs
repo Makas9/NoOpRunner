@@ -21,8 +21,6 @@ namespace NoOpRunner.Core
     {
         public bool IsGameStarted { get; set; } = false;
 
-        public event EventHandler OnLoopFired;
-
         private IList<IObserver> Observers { get; set; }
 
         public event EventHandler<MessageDto> OnMessageReceived;
@@ -44,7 +42,7 @@ namespace NoOpRunner.Core
             set => GameState.PowerUpsContainer = value;
         }
 
-        public GameState GameState { get; private set; }
+        private GameState GameState { get; set; }
 
         public bool IsHost { get; private set; }
 
@@ -56,22 +54,25 @@ namespace NoOpRunner.Core
             Observers = new List<IObserver>();
         }
 
-        private int RandLocation(int[] platformXCoords, int[] platformYCoords)
+        public async Task OnMapMoveLoopFired()
         {
-            int found = -1, x = -1;
-            while (found == -1)
+            Player.OnMapMoveLoopFired((WindowPixel[,])PlatformsContainer.GetShapes().Clone());
+            
+            PowerUpsContainer.MoveWithMap();
+            
+            PlatformsContainer.MoveWithMap();
+            
+            await connectionManager.SendMessageToClient(new MessageDto()
             {
-                x = RandomNumber.GetInstance().Next(2, platformXCoords.Length - 2);
-                if (platformYCoords[x - 2] == platformYCoords[x] &&
-                    platformYCoords[x - 1] == platformYCoords[x] &&
-                    platformYCoords[x + 1] == platformYCoords[x] &&
-                    platformYCoords[x + 2] == platformYCoords[x])
-                {
-                    found = x; // Spawn power up between flat platform
-                }
-            }
+                MessageType = MessageType.PlatformsUpdate,
+                Payload = PlatformsContainer.GenerateSequel()
+            });
 
-            return x;
+            //Send null for now, because make client push power ups by himself will make a lot of sync problems
+            await connectionManager.SendMessageToClient(new MessageDto()
+            {
+                MessageType = MessageType.PowerUpsUpdate
+            });
         }
 
         public async Task SendMessage()
@@ -174,15 +175,10 @@ namespace NoOpRunner.Core
                     State = Player.State,
                     CenterPosX = Player.CenterPosX,
                     CenterPosY = Player.CenterPosY,
-                    IsLookingLeft = Player.IsLookingLeft
+                    IsLookingLeft = Player.IsLookingLeft,
+                    PlayerOnePowerUps = Player.PlayerOnePowerUps
                 }
             });
-        }
-
-        public void FireClientLoop(PlatformsContainer platforms, Player player)
-        {
-            Player = player;
-            PlatformsContainer = platforms;
         }
 
         private void InitializeGameState()

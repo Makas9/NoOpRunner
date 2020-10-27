@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using NoOpRunner.Core.Enums;
 
 namespace NoOpRunner.Core
@@ -9,6 +10,7 @@ namespace NoOpRunner.Core
     /// </summary>
     public class PlayerOnePowerUps
     {
+        [JsonProperty]
         private IList<PowerUps?> exhaustedPowerUps;
 
         public PowerUps? ExhaustedPowerUp
@@ -33,10 +35,12 @@ namespace NoOpRunner.Core
             }
         }
 
+        [JsonProperty]
         private IDictionary<PowerUps, int> activePowerUps;
 
         public IList<PowerUps> ActivePowerUps => activePowerUps.Keys.ToList();
 
+        [JsonProperty]
         private IList<PowerUps> availablePowerUps;
 
         public PlayerOnePowerUps()
@@ -83,7 +87,7 @@ namespace NoOpRunner.Core
             else
             {
                 //two sec
-                activePowerUps[powerUp] = 1000 * 5 / GameSettings.TimeBetweenFrames.Milliseconds;
+                activePowerUps[powerUp] = 1000 * 5 / GameSettings.TimeBetweenFramesMs;
             }
 
             return true;

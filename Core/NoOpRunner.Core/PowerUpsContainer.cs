@@ -32,9 +32,12 @@ namespace NoOpRunner.Core
         {
             return shapes.FirstOrDefault(x => x.CenterPosX == centerPosX && x.CenterPosY == centerPosY) as PowerUp;
         }
-        public void ClickShape(int x, int y)
+
+        public override void MoveWithMap()
         {
-            shapes.FirstOrDefault(s => s.IsHit(x, y))?.OnClick();
+            shapes.ForEach(x => x.CenterPosX--); //Push cells
+
+            shapes.RemoveAll(x => x.CenterPosX < 0); //Remove out of bounds
         }
 
         /// <summary>
@@ -47,15 +50,12 @@ namespace NoOpRunner.Core
                 return;
             
             Console.WriteLine("Observer: PowerUpsContainer, say Hello World");
+
+            MoveWithMap();
+
+            if (message.Payload !=null)
             
-            shapes.ForEach(x => x.CenterPosX--); //Push cells
-
-            //Will need in the future, update player two instance
-            var pickedUpPowerUps = shapes.Where(x => x.CenterPosX < 0);
-                
-            shapes.RemoveAll(x => x.CenterPosX < 0); //Remove out of bounds
-
-            shapes.AddRange(message.Payload as List<BaseShape>); //Append generated power ups
+                shapes.AddRange(message.Payload as List<BaseShape>); //Append generated power ups    
         }
     }
 }
