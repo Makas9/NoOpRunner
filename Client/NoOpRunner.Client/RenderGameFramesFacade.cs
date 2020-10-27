@@ -20,8 +20,9 @@ namespace NoOpRunner.Client
         private IVisualElement PowerUpsRenderer { get; set; }
 
         private IList<PowerUps> DisplayingPlayerOnePowerUps { get; set; }
-        
+
         private int CountBetweenFrames { get; set; }
+
         public RenderGameFramesFacade()
         {
             DisplayingPlayerOnePowerUps = new List<PowerUps>();
@@ -41,11 +42,11 @@ namespace NoOpRunner.Client
             }
 
             CountBetweenFrames++;
-            
+
             game.Player.OnLoopFired((WindowPixel[,]) game.PlatformsContainer.GetShapes().Clone());
-            
+
             await game.UpdateClientsGame();
-            
+
             BaseCycle(game, playerCanvas, platformsCanvas, powerUpsCanvas);
         }
 
@@ -66,7 +67,7 @@ namespace NoOpRunner.Client
 
                 PowerUpsRenderer = new PowerUpsRenderer(game.PowerUpsContainer);
             }
-            
+
             game.Player.LoopPowerUps();
 
             var powerUp = game.PowerUpsContainer.GetPowerUpAt(game.Player.CenterPosX, game.Player.CenterPosY);
@@ -102,8 +103,8 @@ namespace NoOpRunner.Client
 
             if (playerUsedPowerUp != null)
             {
-                DisplayingPlayerOnePowerUps.Remove((PowerUps)playerUsedPowerUp);
-                    
+                DisplayingPlayerOnePowerUps.Remove((PowerUps) playerUsedPowerUp);
+
                 GifImage animation;
                 //Remove layer
                 switch (playerUsedPowerUp)

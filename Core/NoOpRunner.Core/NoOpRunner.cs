@@ -21,8 +21,6 @@ namespace NoOpRunner.Core
     {
         public bool IsGameStarted { get; set; } = false;
 
-        // public event EventHandler OnLoopFired;//Un
-
         private IList<IObserver> Observers { get; set; }
 
         public event EventHandler<MessageDto> OnMessageReceived;
@@ -44,7 +42,7 @@ namespace NoOpRunner.Core
             set => GameState.PowerUpsContainer = value;
         }
 
-        public GameState GameState { get; private set; }
+        private GameState GameState { get; set; }
 
         public bool IsHost { get; private set; }
 
@@ -69,29 +67,12 @@ namespace NoOpRunner.Core
                 MessageType = MessageType.PlatformsUpdate,
                 Payload = PlatformsContainer.GenerateSequel()
             });
-        }
-        /// <summary>
-        /// Eh??? Useless?? ORAORAORAORAORAORA
-        /// </summary>
-        /// <param name="platformXCoords"></param>
-        /// <param name="platformYCoords"></param>
-        /// <returns></returns>
-        private int RandLocation(int[] platformXCoords, int[] platformYCoords)
-        {
-            int found = -1, x = -1;
-            while (found == -1)
-            {
-                x = RandomNumber.GetInstance().Next(2, platformXCoords.Length - 2);
-                if (platformYCoords[x - 2] == platformYCoords[x] &&
-                    platformYCoords[x - 1] == platformYCoords[x] &&
-                    platformYCoords[x + 1] == platformYCoords[x] &&
-                    platformYCoords[x + 2] == platformYCoords[x])
-                {
-                    found = x; // Spawn power up between flat platform
-                }
-            }
 
-            return x;
+            //Send null for now, because make client push power ups by himself will make a lot of sync problems
+            await connectionManager.SendMessageToClient(new MessageDto()
+            {
+                MessageType = MessageType.PowerUpsUpdate
+            });
         }
 
         public async Task SendMessage()

@@ -53,7 +53,9 @@ namespace NoOpRunner.Core
 
             MoveWithMap();
 
-            shapes.AddRange(message.Payload as List<BaseShape>); //Append generated power ups
+            if (message.Payload !=null)
+            
+                shapes.AddRange(message.Payload as List<BaseShape>); //Append generated power ups    
         }
     }
 }
