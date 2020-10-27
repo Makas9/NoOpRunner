@@ -22,7 +22,7 @@ namespace NoOpRunner.Core
             Shapes = new List<BaseShape>();
         }
 
-        public abstract void ShiftPlatforms();
+        public abstract void ShiftShapes();
 
         public void AddShape(BaseShape shape)
         {

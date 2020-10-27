@@ -58,13 +58,14 @@ namespace NoOpRunner.Core
         {
             Player.OnMapMoveLoopFired((WindowPixel[,])PlatformsContainer.GetShapes().Clone());
             
-            PowerUpsContainer.ShiftPlatforms();
+            PowerUpsContainer.ShiftShapes();
             
-            PlatformsContainer.ShiftPlatforms();
+            PlatformsContainer.ShiftShapes();
             
             await connectionManager.SendMessageToClient(new MessageDto()
             {
-                MessageType = MessageType.PlatformsUpdate
+                MessageType = MessageType.PlatformsUpdate,
+                Payload = PlatformsContainer.GetNextBlocks()
             });
 
             //Send null for now, because make client push power ups by himself will make a lot of sync problems
