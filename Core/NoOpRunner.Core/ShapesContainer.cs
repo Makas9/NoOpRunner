@@ -8,7 +8,7 @@ namespace NoOpRunner.Core
     public abstract class ShapesContainer
     {
         [JsonProperty] 
-        protected List<BaseShape> shapes { get; set; }
+        protected List<BaseShape> Shapes { get; set; }
 
         public int SizeX { get; set; }
 
@@ -19,21 +19,21 @@ namespace NoOpRunner.Core
             SizeX = sizeX;
             SizeY = sizeY;
 
-            shapes = new List<BaseShape>();
+            Shapes = new List<BaseShape>();
         }
 
         public abstract void ShiftPlatforms();
 
         public void AddShape(BaseShape shape)
         {
-            shapes.Add(shape);
+            Shapes.Add(shape);
         }
 
         public WindowPixel[,] GetShapes()
         {
             var windowPixels = new WindowPixel[SizeX, SizeY];
 
-            foreach (var shape in shapes)
+            foreach (var shape in Shapes)
             {
                 var shapePixels = shape.Render();
 
@@ -62,7 +62,7 @@ namespace NoOpRunner.Core
 
         public IEnumerable<WindowPixel> GetShapesEnumerable()
         {
-            foreach (var shape in shapes)
+            foreach (var shape in Shapes)
             {
                 var shapePixels = shape.Render();
 

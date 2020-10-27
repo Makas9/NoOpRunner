@@ -6,6 +6,7 @@ using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.PlayerStates;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
+using NoOpRunner.Core.Shapes.StaticShapes;
 
 namespace NoOpRunner.Core.Shapes
 {
@@ -37,8 +38,9 @@ namespace NoOpRunner.Core.Shapes
         private const decimal JumpAccelerationPool = 0.5m;
         private const int JumpVerticalSpeed = 1;
 
-        private bool IsJumping = false;
-        private bool CanJump = true;
+        private bool isJumping = false;
+        private bool canJump = true;
+        public bool CanPassPlatforms { get; set; } = false;
 
         private decimal VerticalAccelerationPool;
 
@@ -46,7 +48,7 @@ namespace NoOpRunner.Core.Shapes
         {
             base.OnLoopFired(gameScreen);
 
-            if (IsJumping)
+            if (isJumping)
             {
                 if (VerticalAccelerationPool >= JumpAcceleration)
                 {
@@ -55,7 +57,7 @@ namespace NoOpRunner.Core.Shapes
 
                     if (VerticalAccelerationPool <= 0)
                     {
-                        IsJumping = false;
+                        isJumping = false;
                         VerticalSpeed = 0;
                     }
                 }
@@ -66,11 +68,11 @@ namespace NoOpRunner.Core.Shapes
                 {
                     StateMachine.Land();
                     CenterPosY -= MovementIncrement;
-                    CanJump = false;
+                    canJump = false;
                 }
                 else
                 {
-                    CanJump = true;
+                    canJump = true;
 
                     if (HorizontalSpeed == 0)
                     {
@@ -79,7 +81,7 @@ namespace NoOpRunner.Core.Shapes
                 }
             }
 
-            if (Math.Abs(HorizontalSpeed) > 0 && CanJump)
+            if (Math.Abs(HorizontalSpeed) > 0 && canJump)
             {
                 StateMachine.Run();
             }
@@ -133,13 +135,13 @@ namespace NoOpRunner.Core.Shapes
 
         public void Jump(WindowPixel[,] gameScreen)
         {
-            if (!IsJumping && CanJump && !IsShapeHit(gameScreen, CenterPosX, CenterPosY + MovementIncrement) ||
+            if (!isJumping && canJump && !IsShapeHit(gameScreen, CenterPosX, CenterPosY + MovementIncrement) ||
                 (!IsShapeHit(gameScreen, CenterPosX, CenterPosY + MovementIncrement) &&//double jump
                  PlayerOnePowerUps.UsePowerUp(PowerUps.Double_Jump)))
             {
                 StateMachine.Jump();
-                IsJumping = true;
-                CanJump = false;
+                isJumping = true;
+                canJump = false;
 
                 VerticalAcceleration = JumpAcceleration;
                 VerticalAccelerationPool = JumpAccelerationPool;
@@ -183,7 +185,17 @@ namespace NoOpRunner.Core.Shapes
 
         public override bool CanOverlap(BaseShape other)
         {
-            throw new NotImplementedException();
+            // TODO: This is currently not used, but collision handling needs heavy refactoring, as we currently check for collisions only with WindowPixels -> I have no type info to work with.
+            // It'll be fixed with a separate PR
+            switch(other)
+            {
+                case PassablePlatform p:
+                    return CanPassPlatforms;
+                case ImpassablePlatform _:
+                    return false;
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         public override void OnCollision(BaseShape other)

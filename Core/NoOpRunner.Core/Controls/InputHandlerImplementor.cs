@@ -12,5 +12,7 @@
 
         public virtual void HandleLeftRelease(WindowPixel[,] gameScreen) { }
         public virtual void HandleRightRelease(WindowPixel[,] gameScreen) { }
+        public virtual void HandleUpRelease(WindowPixel[,] gameScreen) { }
+        public virtual void HandleDownRelease(WindowPixel[,] gameScreen) { }
     }
 }

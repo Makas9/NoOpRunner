@@ -14,7 +14,7 @@ namespace NoOpRunner.Core
 
         public override void ShiftPlatforms()
         {
-            shapes.ForEach(x =>
+            Shapes.ForEach(x =>
                 ((StaticShape) x).ShiftAndUpdate()
             ); //Push and remove out of bounds
         }
