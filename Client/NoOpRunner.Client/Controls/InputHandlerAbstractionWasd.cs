@@ -47,6 +47,12 @@ namespace NoOpRunner.Client.Controls
                 case Key.A:
                     implementor.HandleLeftRelease(gameScreen);
                     return;
+                case Key.W:
+                    implementor.HandleUpRelease(gameScreen);
+                    return;
+                case Key.S:
+                    implementor.HandleDownRelease(gameScreen);
+                    return;
                 default:
                     return;
             }

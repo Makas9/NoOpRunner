@@ -58,14 +58,14 @@ namespace NoOpRunner.Core
         {
             Player.OnMapMoveLoopFired((WindowPixel[,])PlatformsContainer.GetShapes().Clone());
             
-            PowerUpsContainer.MoveWithMap();
+            PowerUpsContainer.ShiftShapes();
             
-            PlatformsContainer.MoveWithMap();
+            PlatformsContainer.ShiftShapes();
             
             await connectionManager.SendMessageToClient(new MessageDto()
             {
                 MessageType = MessageType.PlatformsUpdate,
-                Payload = PlatformsContainer.GenerateSequel()
+                Payload = PlatformsContainer.GetNextBlocks()
             });
 
             //Send null for now, because make client push power ups by himself will make a lot of sync problems
@@ -187,7 +187,7 @@ namespace NoOpRunner.Core
             var initialGameState = gameeStateBuilder.Configure()
                 .InitializeMap(GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount)
                 .InitializePowerUps(GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount)
-                .AddImpassableShape(f => f.CreateStaticShape(Shape.Platform, new CombinedGenerationStrategy(), 0, 0, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount / 3))
+                .AddImpassableShape(f => f.CreateStaticShape(Shape.Platform, new RandomlySegmentedGenerationStrategy(), 0, 0, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount / 3))
                 .AddPassableShape(f => f.CreateStaticShape(Shape.Platform, new PlatformerGenerationStrategy(), 0, GameSettings.VerticalCellCount / 3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount * 2 / 3))
                 .AddPassableShape(f => f.CreateStaticShape(Shape.Platform, new RandomlySegmentedGenerationStrategy(), 0, GameSettings.VerticalCellCount * 2 / 3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount - 3))
                 .AddPlayer(platforms => platforms.Skip(1).First(p => p.GetType() == typeof(PassablePlatform)))

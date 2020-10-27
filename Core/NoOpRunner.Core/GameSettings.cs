@@ -13,7 +13,7 @@ namespace NoOpRunner.Core
         
         public const int TimeBetweenFramesMs = 70;
 
-        public static int TimeBetweenMapStep => 1000 / 70;
+        public static int TimeBetweenMapStep => 500 / 70;
 
         public static int HorizontalCellCount => AspectRatioWidth * CellsSizeMultiplier;
         public static int VerticalCellCount => AspectRatioHeight * CellsSizeMultiplier;

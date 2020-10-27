@@ -20,24 +20,24 @@ namespace NoOpRunner.Core
         public IList<Tuple<WindowPixel, PowerUps>> GetPowerUpsEnumerable()
         {
             var shapesPixels = GetShapesEnumerable().ToList();
-            var shapesPowerUps = shapes.Select(x => ((PowerUp) x).PowerUpType).ToList();
+            var shapesPowerUps = Shapes.Select(x => ((PowerUp) x).PowerUpType).ToList();
 
             return shapesPixels.Zip(shapesPowerUps, (shapesPixel, shapesPowerUp)=> new Tuple<WindowPixel, PowerUps>(shapesPixel, shapesPowerUp)).ToList();
         }
         public void RemovePowerUp(int centerPosX, int centerPosY)
         {
-            shapes.Remove(GetPowerUpAt(centerPosX, centerPosY));
+            Shapes.Remove(GetPowerUpAt(centerPosX, centerPosY));
         }
         public PowerUp GetPowerUpAt(int centerPosX, int centerPosY)
         {
-            return shapes.FirstOrDefault(x => x.CenterPosX == centerPosX && x.CenterPosY == centerPosY) as PowerUp;
+            return Shapes.FirstOrDefault(x => x.CenterPosX == centerPosX && x.CenterPosY == centerPosY) as PowerUp;
         }
 
-        public override void MoveWithMap()
+        public override void ShiftShapes()
         {
-            shapes.ForEach(x => x.CenterPosX--); //Push cells
+            Shapes.ForEach(x => x.CenterPosX--); //Push cells
 
-            shapes.RemoveAll(x => x.CenterPosX < 0); //Remove out of bounds
+            Shapes.RemoveAll(x => x.CenterPosX < 0); //Remove out of bounds
         }
 
         /// <summary>
@@ -51,11 +51,11 @@ namespace NoOpRunner.Core
             
             Console.WriteLine("Observer: PowerUpsContainer, say Hello World");
 
-            MoveWithMap();
+            ShiftShapes();
 
             if (message.Payload !=null)
             
-                shapes.AddRange(message.Payload as List<BaseShape>); //Append generated power ups    
+                Shapes.AddRange(message.Payload as List<BaseShape>); //Append generated power ups    
         }
     }
 }

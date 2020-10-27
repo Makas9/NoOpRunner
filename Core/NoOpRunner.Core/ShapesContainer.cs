@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace NoOpRunner.Core
 {
-    public class ShapesContainer
+    public abstract class ShapesContainer
     {
         [JsonProperty] 
-        protected List<BaseShape> shapes { get; set; }
+        protected List<BaseShape> Shapes { get; set; }
 
         public int SizeX { get; set; }
 
@@ -19,24 +19,21 @@ namespace NoOpRunner.Core
             SizeX = sizeX;
             SizeY = sizeY;
 
-            shapes = new List<BaseShape>();
+            Shapes = new List<BaseShape>();
         }
 
-        public virtual void MoveWithMap()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void ShiftShapes();
 
         public void AddShape(BaseShape shape)
         {
-            shapes.Add(shape);
+            Shapes.Add(shape);
         }
 
         public WindowPixel[,] GetShapes()
         {
             var windowPixels = new WindowPixel[SizeX, SizeY];
 
-            foreach (var shape in shapes)
+            foreach (var shape in Shapes)
             {
                 var shapePixels = shape.Render();
 
@@ -65,7 +62,7 @@ namespace NoOpRunner.Core
 
         public IEnumerable<WindowPixel> GetShapesEnumerable()
         {
-            foreach (var shape in shapes)
+            foreach (var shape in Shapes)
             {
                 var shapePixels = shape.Render();
 

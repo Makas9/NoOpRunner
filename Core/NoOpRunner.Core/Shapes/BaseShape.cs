@@ -12,6 +12,11 @@ namespace NoOpRunner.Core.Shapes
 
         [JsonProperty]
         protected List<ShapeBlock> ShapeBlocks = new List<ShapeBlock>();
+        protected IEnumerable<ShapeBlock> VisibleShapeBlocks => ShapeBlocks.Where(x => x.OffsetX < GameSettings.HorizontalCellCount);
+
+        protected GenerationStrategy Strategy { get; set; }
+        protected int lowerBoundY;
+        protected int upperBoundY;
 
         protected BaseShape() { } // Needed for JSON deserialization
 
@@ -24,7 +29,10 @@ namespace NoOpRunner.Core.Shapes
             var blocks = strategy.GenerateShapeBlocks(lowerBoundX, lowerBoundY, upperBoundX, upperBoundY);
             CenterPosX = blocks[0].OffsetX;
             CenterPosY = blocks[0].OffsetY;
+            this.lowerBoundY = lowerBoundY;
+            this.upperBoundY = upperBoundY;
             ShapeBlocks = GenerationStrategy.MakeRelative(blocks, CenterPosX, CenterPosY);
+            Strategy = strategy;
         }
 
         public (int[], int[]) GetCoords()
@@ -32,14 +40,14 @@ namespace NoOpRunner.Core.Shapes
             List<int> xCoords = new List<int>();
             List<int> yCoords = new List<int>();
 
-            ShapeBlocks.ForEach(x =>
+            foreach (var x in VisibleShapeBlocks)
             {
                 var absX = CenterPosX + x.OffsetX;
                 var absY = CenterPosY + x.OffsetY;
 
                 xCoords.Add(absX);
                 yCoords.Add(absY);
-            });
+            }
 
             return (xCoords.ToArray(), yCoords.ToArray());
         }
@@ -51,13 +59,13 @@ namespace NoOpRunner.Core.Shapes
             var windowPixels = new List<WindowPixel>();
 
             //Could use Flyweight pattern or Prototype pattern in the future
-            ShapeBlocks.ForEach(x =>
+            foreach (var x in VisibleShapeBlocks)
             {
                 var absX = CenterPosX + x.OffsetX;
                 var absY = CenterPosY + x.OffsetY;
 
                 windowPixels.Add(new WindowPixel(absX, absY, isShape: true));
-            });
+            }
 
             return windowPixels;
         }

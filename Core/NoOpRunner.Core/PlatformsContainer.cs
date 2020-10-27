@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Documents;
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
@@ -13,35 +15,20 @@ namespace NoOpRunner.Core
         {
         }
 
-        public List<List<ShapeBlock>> GenerateSequel()
+        public override void ShiftShapes()
         {
-            var generatedExtendingShapeBlocks = new List<List<ShapeBlock>>();
-            foreach (var t in shapes)
-            {
-                var extendingShapeBlocks =
-                    new List<ShapeBlock>(new[]
-                    {
-                        new ShapeBlock()
-                        {
-                            OffsetX = SizeX - 1,
-                            OffsetY = 0
-                        }
-                    });
-                generatedExtendingShapeBlocks.Add(extendingShapeBlocks);
-                ((StaticShape)t).AppendPlatform(extendingShapeBlocks);
-            }
-
-            return generatedExtendingShapeBlocks;
+            Shapes.ForEach(x =>
+                ((StaticShape) x).ShiftBlocks()
+            ); //Push and remove out of bounds
         }
 
-        public override void MoveWithMap()
+        public List<List<ShapeBlock>> GetNextBlocks()
         {
-            shapes.ForEach(x =>
-                ((StaticShape) x).PushAndRemove()
-            );//Push and remove out of bounds
+            return Shapes.Select(x => (x as StaticShape).GetNextBlocks()).ToList();
         }
+
         /// <summary>
-        /// For platforms update, append generated cells
+        /// For platforms update from client side, append generated cells
         /// </summary>
         /// <param name="message"></param>
         public void Update(MessageDto message)
@@ -50,18 +37,14 @@ namespace NoOpRunner.Core
                 return;
 
             Console.WriteLine("Observer: PlatformsContainer, say Hello World");
-            
-            var platformsColumn = message.Payload as List<List<ShapeBlock>>;
 
-            MoveWithMap();
+            ShiftShapes();
 
-            for (int i = 0; i < shapes.Count; i++)
+            var generatedBlocks = message.Payload as List<List<ShapeBlock>>;
+            for (int i = 0; i < Shapes.Count; ++i)
             {
-                ((StaticShape) shapes[i]).AppendPlatform(platformsColumn[i]);//Append platforms with generated cells
-            }
-            
+                (Shapes[i] as StaticShape).AddShapeBlocks(generatedBlocks[i]);
+            }    
         }
-
-        
     }
 }
