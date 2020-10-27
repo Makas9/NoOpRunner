@@ -33,7 +33,7 @@ namespace NoOpRunner.Core
             return shapes.FirstOrDefault(x => x.CenterPosX == centerPosX && x.CenterPosY == centerPosY) as PowerUp;
         }
 
-        public override void MoveWithMap()
+        public override void ShiftPlatforms()
         {
             shapes.ForEach(x => x.CenterPosX--); //Push cells
 
@@ -51,7 +51,7 @@ namespace NoOpRunner.Core
             
             Console.WriteLine("Observer: PowerUpsContainer, say Hello World");
 
-            MoveWithMap();
+            ShiftPlatforms();
 
             if (message.Payload !=null)
             

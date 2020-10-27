@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
@@ -13,33 +12,13 @@ namespace NoOpRunner.Core
         {
         }
 
-        public List<List<ShapeBlock>> GenerateSequel()
-        {
-            var generatedExtendingShapeBlocks = new List<List<ShapeBlock>>();
-            foreach (var t in shapes)
-            {
-                var extendingShapeBlocks =
-                    new List<ShapeBlock>(new[]
-                    {
-                        new ShapeBlock()
-                        {
-                            OffsetX = SizeX - 1,
-                            OffsetY = 0
-                        }
-                    });
-                generatedExtendingShapeBlocks.Add(extendingShapeBlocks);
-                ((StaticShape)t).AppendPlatform(extendingShapeBlocks);
-            }
-
-            return generatedExtendingShapeBlocks;
-        }
-
-        public override void MoveWithMap()
+        public override void ShiftPlatforms()
         {
             shapes.ForEach(x =>
-                ((StaticShape) x).PushAndRemove()
-            );//Push and remove out of bounds
+                ((StaticShape) x).ShiftAndUpdate()
+            ); //Push and remove out of bounds
         }
+
         /// <summary>
         /// For platforms update, append generated cells
         /// </summary>
@@ -50,18 +29,8 @@ namespace NoOpRunner.Core
                 return;
 
             Console.WriteLine("Observer: PlatformsContainer, say Hello World");
-            
-            var platformsColumn = message.Payload as List<List<ShapeBlock>>;
 
-            MoveWithMap();
-
-            for (int i = 0; i < shapes.Count; i++)
-            {
-                ((StaticShape) shapes[i]).AppendPlatform(platformsColumn[i]);//Append platforms with generated cells
-            }
-            
+            ShiftPlatforms();            
         }
-
-        
     }
 }

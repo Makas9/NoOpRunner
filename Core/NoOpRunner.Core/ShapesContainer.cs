@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace NoOpRunner.Core
 {
-    public class ShapesContainer
+    public abstract class ShapesContainer
     {
         [JsonProperty] 
         protected List<BaseShape> shapes { get; set; }
@@ -22,10 +22,7 @@ namespace NoOpRunner.Core
             shapes = new List<BaseShape>();
         }
 
-        public virtual void MoveWithMap()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void ShiftPlatforms();
 
         public void AddShape(BaseShape shape)
         {
