@@ -84,6 +84,8 @@ namespace NoOpRunner.Client.Logic.ViewModels
         {
             mainViewModel.ScreenWidth = ResolutionOptions[SelectedResolutionIndex].Width;
             mainViewModel.ScreenHeight = ResolutionOptions[SelectedResolutionIndex].Height;
+
+            commandInvoker.Reset();
         }
 
         public void CloseSettings()
