@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="NoOpRunner.Client.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NoOpRunner.Client.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Background="White">
+    <DockPanel LastChildFill="False">
+        <Grid Margin="0, 10" DockPanel.Dock="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Volume level</TextBlock>
+                <Slider x:Name="volumeSlider" Grid.Column="1" Minimum="0" Maximum="50" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding VolumeLevelDisplay, Mode=OneWay}"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Resolution</TextBlock>
+                <ComboBox Grid.Column="1" x:Name="resolutionDropdown" ItemsSource="{Binding ResolutionOptions}" SelectedIndex="{Binding SelectedResolutionIndexDisplay, Mode=OneWay}" Margin="10">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Value}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Grid>
+        </Grid>
+        <StackPanel Height="30" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2" DockPanel.Dock="Bottom">
+            <Button Width="50" Margin="10, 0" x:Name="closeButton">Close</Button>
+            <Button Width="50" Margin="10, 0" x:Name="undoButton">Undo</Button>
+            <Button Width="50" Margin="10, 0" x:Name="resetButton">Reset</Button>
+            <Button Width="50" Margin="10, 0" x:Name="applyButton">Apply</Button>
+        </StackPanel>
+    </DockPanel>
+</UserControl>
