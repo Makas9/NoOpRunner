@@ -5,13 +5,12 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using NoOpRunner.Client.PlayerAnimationDecorators;
 using NoOpRunner.Client.Rendering;
-using NoOpRunner.Core;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 
 namespace NoOpRunner.Client
 {
-    public class RenderGameFramesFacade
+    public abstract class RenderingFacade
     {
         private IVisualElement PlayerRenderer { get; set; }
 
@@ -21,43 +20,22 @@ namespace NoOpRunner.Client
 
         private IList<PowerUps> DisplayingPlayerOnePowerUps { get; set; }
 
-        private int CountBetweenFrames { get; set; }
+        protected int CountBetweenFrames { get; set; }
 
-        public RenderGameFramesFacade()
+        protected RenderingFacade()
         {
             DisplayingPlayerOnePowerUps = new List<PowerUps>();
 
             CountBetweenFrames = 0;
         }
 
-
-        public async Task CycleHostGame(Core.NoOpRunner game, Canvas playerCanvas, Canvas powerUpsCanvas,
+        public virtual async Task CycleGameFrames(Core.NoOpRunner game, Canvas playerCanvas, Canvas powerUpsCanvas,
             Canvas platformsCanvas)
         {
-            if (CountBetweenFrames == GameSettings.TimeBetweenMapStep)
-            {
-                CountBetweenFrames = 0;
-
-                await game.OnMapMoveLoopFired();
-            }
-
-            CountBetweenFrames++;
-
-            game.Player.OnLoopFired((WindowPixel[,]) game.PlatformsContainer.GetShapes().Clone());
-
-            await game.UpdateClientsGame();
-
-            BaseCycle(game, playerCanvas, platformsCanvas, powerUpsCanvas);
+            throw new NotImplementedException();
         }
 
-        public void CycleClientGame(Core.NoOpRunner game, Canvas playerCanvas, Canvas platformsCanvas,
-            Canvas powerUpsCanvas)
-        {
-            //More incoming
-            BaseCycle(game, playerCanvas, platformsCanvas, powerUpsCanvas);
-        }
-
-        private void BaseCycle(Core.NoOpRunner game, Canvas playerCanvas, Canvas platformsCanvas, Canvas powerUpsCanvas)
+        protected void BaseCycle(Core.NoOpRunner game, Canvas playerCanvas, Canvas platformsCanvas, Canvas powerUpsCanvas)
         {
             if (PlayerRenderer == null || PlatformsRenderer == null || PowerUpsRenderer == null)
             {
@@ -150,7 +128,7 @@ namespace NoOpRunner.Client
             PlayerRenderer.Display(playerCanvas);
         }
 
-        private void AddDecoratorLayer(PowerUps elementType)
+        protected void AddDecoratorLayer(PowerUps elementType)
         {
             switch (elementType)
             {
@@ -170,5 +148,7 @@ namespace NoOpRunner.Client
                     throw new ArgumentOutOfRangeException(nameof(elementType), elementType, null);
             }
         }
+        
+        
     }
 }

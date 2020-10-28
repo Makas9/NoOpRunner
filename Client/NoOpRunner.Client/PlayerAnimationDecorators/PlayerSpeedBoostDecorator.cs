@@ -31,7 +31,7 @@ namespace NoOpRunner.Client.PlayerAnimationDecorators
 
         public override void Display(Canvas canvas)
         {
-            Console.WriteLine("Player decorator: Displaying Speed boost animation");
+            Logging.Instance.Write("Player decorator: Displaying Speed boost animation", LoggingLevel.Pattern);
 
             var speedBoostAnimation = canvas.Children.OfType<GifImage>()
                 .FirstOrDefault(x => x.VisualType == VisualElementType.SpeedBoost);
