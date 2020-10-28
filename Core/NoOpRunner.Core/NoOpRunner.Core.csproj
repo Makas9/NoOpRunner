@@ -56,6 +56,7 @@
     <Compile Include="Controls\InputHandlerImplementor.cs" />
     <Compile Include="Controls\InputHandlerImplementorPlayerOne.cs" />
     <Compile Include="Controls\InputHandlerImplementorPlayerTwo.cs" />
+    <Compile Include="Enums\KeyPress.cs" />
     <Compile Include="PlayerOnePowerUps.cs" />
     <Compile Include="Dtos\PlayerStateDto.cs" />
     <Compile Include="Enums\Entity.cs" />
@@ -93,7 +94,6 @@
     <Compile Include="Enums\PowerUps.cs" />
     <Compile Include="Enums\Shape.cs" />
     <Compile Include="Enums\Color.cs" />
-    <Compile Include="Enums\KeyPress.cs" />
     <Compile Include="Enums\MessageType.cs" />
     <Compile Include="Enums\PlayerOneState.cs" />
     <Compile Include="Interfaces\IConnectionManager.cs" />
@@ -121,7 +121,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Decorators" />
+    <Folder Include="Decorators\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
