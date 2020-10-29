@@ -29,7 +29,7 @@ namespace NoOpRunner.Core
             Shapes.Add(shape);
         }
 
-        public WindowPixel[,] GetShapes()
+        public WindowPixel[,] GetShapes(bool ignoreCollision = false)
         {
             var windowPixels = new WindowPixel[SizeX, SizeY];
 
@@ -52,7 +52,10 @@ namespace NoOpRunner.Core
                     }
                     else
                     {
-                        throw new Exception("Shape collision occured");
+                        if (!ignoreCollision)
+                        {
+                            throw new Exception("Shape collision occured");
+                        }
                     }
                 }
             }
