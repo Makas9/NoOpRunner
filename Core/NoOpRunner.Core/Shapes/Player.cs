@@ -225,8 +225,8 @@ namespace NoOpRunner.Core.Shapes
             if (message.MessageType != MessageType.PlayerUpdate)
                 return;
 
-            Console.WriteLine("Observer: Player, say Hello World");
-
+            Logging.Instance.Write("Observer: player got update", LoggingLevel.Pattern);
+            
             var messageDto = message.Payload as PlayerStateDto;
 
             State = messageDto.State;

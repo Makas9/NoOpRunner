@@ -59,10 +59,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ClientRenderingFacade.cs" />
     <Compile Include="Controls\InputHandlerAbstraction.cs" />
     <Compile Include="Controls\InputHandlerAbstractionArrows.cs" />
     <Compile Include="Controls\InputHandlerAbstractionWasd.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="RenderingFacade.cs" />
     <Compile Include="Rendering\GifImage.cs" />
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
@@ -79,7 +81,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="RenderGameFramesFacade.cs" />
+    <Compile Include="HostRenderingFacade.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

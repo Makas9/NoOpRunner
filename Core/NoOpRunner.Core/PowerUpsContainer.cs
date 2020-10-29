@@ -49,7 +49,7 @@ namespace NoOpRunner.Core
             if (message.MessageType != MessageType.PowerUpsUpdate) 
                 return;
             
-            Console.WriteLine("Observer: PowerUpsContainer, say Hello World");
+            Logging.Instance.Write("Observer: power ups got update", LoggingLevel.Pattern);
 
             ShiftShapes();
 

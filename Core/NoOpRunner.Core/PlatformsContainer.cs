@@ -33,8 +33,8 @@ namespace NoOpRunner.Core
             if (message.MessageType != MessageType.PlatformsUpdate)
                 return;
 
-            Console.WriteLine("Observer: PlatformsContainer, say Hello World");
-
+            Logging.Instance.Write("Observer: platforms got update", LoggingLevel.Pattern);
+            
             ShiftShapes();
 
             var generatedBlocks = message.Payload as List<List<ShapeBlock>>;
