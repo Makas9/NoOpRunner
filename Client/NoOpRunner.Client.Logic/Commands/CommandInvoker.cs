@@ -1,4 +1,5 @@
 ﻿using NoOpRunner.Client.Logic.Interfaces;
+using NoOpRunner.Core;
 using System.Collections.Generic;
 
 namespace NoOpRunner.Client.Logic.Commands
@@ -14,6 +15,8 @@ namespace NoOpRunner.Client.Logic.Commands
 
         public void InvokeCommand<TRequest>(ICommand<TRequest> command, TRequest request)
         {
+            Logging.Instance.Write($"[Command] Command invoked: {command.GetType().Name}");
+
             var result = command.Execute(request);
 
             if (result)
@@ -32,6 +35,8 @@ namespace NoOpRunner.Client.Logic.Commands
             {
                 command = command.Next;
 
+                Logging.Instance.Write($"[Command] Undoing command: {command.Value.GetType().Name}");
+
                 command.Value.Undo();
             }
 
@@ -44,6 +49,8 @@ namespace NoOpRunner.Client.Logic.Commands
 
             var command = commandQueue.First;
 
+            Logging.Instance.Write($"[Command] Undoing command: {command.Value.GetType().Name}");
+
             command.Value.Undo();
 
             commandQueue.RemoveFirst();
@@ -51,6 +58,8 @@ namespace NoOpRunner.Client.Logic.Commands
 
         public void Reset()
         {
+            Logging.Instance.Write("[Command] Clearing queue");
+
             commandQueue.Clear();
         }
     }

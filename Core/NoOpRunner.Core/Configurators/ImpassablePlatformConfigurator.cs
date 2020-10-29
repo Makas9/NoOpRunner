@@ -7,6 +7,8 @@ namespace NoOpRunner.Core.Configurators
     {
         public override BaseShape Build()
         {
+            Logging.Instance.Write("[ShapeBuilder/ImpassablePlatform] Created impassable platform");
+
             return new ImpassablePlatform(GenerationStrategy, LowerBoundX, LowerBoundY, UpperBoundX, UpperBoundY);
         }
     }
