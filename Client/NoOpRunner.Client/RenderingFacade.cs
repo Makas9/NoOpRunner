@@ -29,11 +29,8 @@ namespace NoOpRunner.Client
             CountBetweenFrames = 0;
         }
 
-        public virtual async Task CycleGameFrames(Core.NoOpRunner game, Canvas playerCanvas, Canvas powerUpsCanvas,
-            Canvas platformsCanvas)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract Task CycleGameFrames(Core.NoOpRunner game, Canvas playerCanvas, Canvas powerUpsCanvas,
+            Canvas platformsCanvas);
 
         protected void BaseCycle(Core.NoOpRunner game, Canvas playerCanvas, Canvas platformsCanvas, Canvas powerUpsCanvas)
         {
