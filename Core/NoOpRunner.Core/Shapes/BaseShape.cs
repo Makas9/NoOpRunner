@@ -45,6 +45,16 @@ namespace NoOpRunner.Core.Shapes
             ShapeBlocks.RemoveAll(x => CenterPosX + x.OffsetX < 0);
         }
 
+        public int getClosestY(int xCoord)
+        {
+            foreach (var x in VisibleShapeBlocks)
+            {
+                if (x.OffsetX == xCoord) return CenterPosY + x.OffsetY;
+            }
+
+            return 0;
+        }
+
         public (int[], int[]) GetCoords()
         {
             List<int> xCoords = new List<int>();

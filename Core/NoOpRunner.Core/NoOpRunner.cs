@@ -232,18 +232,26 @@ namespace NoOpRunner.Core
                 .AddPassableShape(f => f.CreateStaticShape(Shape.Platform, new PlatformerGenerationStrategy(), 0, GameSettings.VerticalCellCount / 3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount * 2 / 3))
                 .AddPassableShape(f => f.CreateStaticShape(Shape.Platform, new RandomlySegmentedGenerationStrategy(), 0, GameSettings.VerticalCellCount * 2 / 3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount - 3))
                 .AddPlayer(platforms => platforms.Skip(1).First(p => p.GetType() == typeof(PassablePlatform)))
-                .AddPowerUp(PowerUps.Speed_Boost, platforms => platforms.First(p => p.GetType() == typeof(ImpassablePlatform)))
+                .AddPowerUp(PowerUps.Speed_Boost, platforms =>
+                {
+                    var plat = platforms.First(p => p.GetType() == typeof(ImpassablePlatform));
+                    int xCoord = plat.CenterPosX + 10;
+                    int yCoord = plat.getClosestY(xCoord) + 1;
+                    return new PowerUp(xCoord, yCoord, PowerUps.Speed_Boost);
+                })
                 .AddPowerUp(PowerUps.Double_Jump, platforms  =>
                 {
-
                     var plat = platforms.First(p => p.GetType() == typeof(ImpassablePlatform));
-                    return new PowerUp(plat.CenterPosX+1, plat.CenterPosY, PowerUps.Double_Jump);
+                    int xCoord = plat.CenterPosX + 20;
+                    int yCoord = plat.getClosestY(xCoord) + 1;
+                    return new PowerUp(xCoord, yCoord, PowerUps.Double_Jump);
                 })
                 .AddPowerUp(PowerUps.Invulnerability, platforms  =>
                 {
-
                     var plat = platforms.First(p => p.GetType() == typeof(ImpassablePlatform));
-                    return new PowerUp(plat.CenterPosX+2, plat.CenterPosY, PowerUps.Invulnerability);
+                    int xCoord = plat.CenterPosX + 25;
+                    int yCoord = plat.getClosestY(xCoord) + 1;
+                    return new PowerUp(xCoord, yCoord, PowerUps.Invulnerability);
                 })
                 //.AddShape(f => f.GetShape(Shape.Saw, 2, 5)) // DEMO: Factory Pattern
                 .Build();
