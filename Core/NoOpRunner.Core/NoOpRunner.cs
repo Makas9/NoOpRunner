@@ -1,9 +1,11 @@
+using Newtonsoft.Json.Linq;
 using NoOpRunner.Core.Builders;
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
+using NoOpRunner.Core.Shapes.ShapeFactories;
 using NoOpRunner.Core.Shapes.StaticShapes;
 using System;
 using System.Collections.Generic;
@@ -105,6 +107,11 @@ namespace NoOpRunner.Core
                     messageDto.Payload = GameState;
 
                     break;
+                case MessageType.PlayerTwoPowerUp:
+                    var dto = ((JObject)message.Payload).ToObject<PowerUpUseDto>();
+                    HandlePlayerTwoPowerUp(dto);
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -150,7 +157,7 @@ namespace NoOpRunner.Core
 
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    break;
             }
 
             OnMessageReceived?.Invoke(this, message);
@@ -178,6 +185,40 @@ namespace NoOpRunner.Core
                     IsLookingLeft = Player.IsLookingLeft,
                     PlayerOnePowerUps = Player.PlayerOnePowerUps
                 }
+            });
+        }
+
+        private void HandlePlayerTwoPowerUp(PowerUpUseDto dto)
+        {
+            switch (dto.Type)
+            {
+                case PowerUps.Saw:
+                    var impassableShapeFactory = new ImpassableShapeFactory();
+                    var saw = impassableShapeFactory.CreateEntityShape(Shape.Saw, dto.X, dto.Y);
+                    PlatformsContainer.AddShape(saw);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void HandleMouseClick(int x, int y)
+        {
+            if (IsHost)
+                return;
+
+            var dto = new PowerUpUseDto
+            {
+                Type = PowerUps.Saw, // TODO: different types
+                X = x,
+                Y = y
+            };
+            HandlePlayerTwoPowerUp(dto);
+
+            connectionManager.SendMessageToHost(new MessageDto
+            {
+                MessageType = MessageType.PlayerTwoPowerUp,
+                Payload = dto
             });
         }
 

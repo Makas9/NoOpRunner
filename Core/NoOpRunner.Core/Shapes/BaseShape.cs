@@ -35,6 +35,18 @@ namespace NoOpRunner.Core.Shapes
             Strategy = strategy;
         }
 
+        public virtual List<ShapeBlock> GetNextBlocks()
+        {
+            return GetShapes();
+        }
+
+        public virtual void ShiftBlocks()
+        {
+            CenterPosX -= 1;
+
+            ShapeBlocks.RemoveAll(x => CenterPosX + x.OffsetX < 0);
+        }
+
         public (int[], int[]) GetCoords()
         {
             List<int> xCoords = new List<int>();

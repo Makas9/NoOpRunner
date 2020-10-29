@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Documents;
-using NoOpRunner.Core.Dtos;
+﻿using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NoOpRunner.Core
 {
@@ -17,14 +16,12 @@ namespace NoOpRunner.Core
 
         public override void ShiftShapes()
         {
-            Shapes.ForEach(x =>
-                ((StaticShape) x).ShiftBlocks()
-            ); //Push and remove out of bounds
+            Shapes.ForEach(x => x.ShiftBlocks()); //Push and remove out of bounds
         }
 
         public List<List<ShapeBlock>> GetNextBlocks()
         {
-            return Shapes.Select(x => (x as StaticShape).GetNextBlocks()).ToList();
+            return Shapes.Select(x => x.GetNextBlocks()).ToList();
         }
 
         /// <summary>
@@ -43,7 +40,8 @@ namespace NoOpRunner.Core
             var generatedBlocks = message.Payload as List<List<ShapeBlock>>;
             for (int i = 0; i < Shapes.Count; ++i)
             {
-                (Shapes[i] as StaticShape).AddShapeBlocks(generatedBlocks[i]);
+                if (Shapes[i] is StaticShape staticShape)
+                    staticShape.AddShapeBlocks(generatedBlocks[i]);
             }    
         }
     }
