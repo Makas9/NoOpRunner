@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NoOpRunner.Core.Shapes
 {
@@ -33,6 +34,15 @@ namespace NoOpRunner.Core.Shapes
             this.upperBoundY = upperBoundY;
             ShapeBlocks = GenerationStrategy.MakeRelative(blocks, CenterPosX, CenterPosY);
             Strategy = strategy;
+        }
+
+        public virtual List<ShapeBlock> GetNextBlocks() => throw new NotImplementedException();
+
+        public virtual void ShiftBlocks()
+        {
+            CenterPosX -= 1;
+
+            ShapeBlocks.RemoveAll(x => CenterPosX + x.OffsetX < 0);
         }
 
         public int getClosestY(int xCoord)

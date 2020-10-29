@@ -63,6 +63,15 @@ namespace NoOpRunner.Client
 
                 timer.Start();
                 Game.IsGameStarted = true;
+
+                background_panel.MouseLeftButtonDown += (o, a) =>
+                {
+                    var pos = a.GetPosition(background_panel);
+                    var cellWidth = (int)background_panel.ActualWidth / GameSettings.HorizontalCellCount;
+                    var cellHeight = (int)background_panel.ActualHeight / GameSettings.VerticalCellCount;
+
+                    Game.HandleMouseClick((int)pos.X / cellWidth, (int)(background_panel.ActualHeight - pos.Y) / cellHeight);
+                };
             };
         }
 
@@ -90,12 +99,12 @@ namespace NoOpRunner.Client
         {
             this.KeyDown += (s, e) =>
             {
-                inputHandler.HandleKeyDownEvent(e, (WindowPixel[,]) Game.PlatformsContainer.GetShapes().Clone());
+                inputHandler.HandleKeyDownEvent(e, (WindowPixel[,])Game.PlatformsContainer.GetShapes(!Game.IsHost).Clone());
             };
 
             this.KeyUp += (s, e) =>
             {
-                inputHandler.HandleKeyUpEvent(e, (WindowPixel[,]) Game.PlatformsContainer.GetShapes().Clone());
+                inputHandler.HandleKeyUpEvent(e, (WindowPixel[,])Game.PlatformsContainer.GetShapes(!Game.IsHost).Clone());
             };
         }
     }

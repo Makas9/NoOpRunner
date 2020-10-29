@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using NoOpRunner.Core.Shapes.GenerationStrategies;
+using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Documents;
-using NoOpRunner.Core.Shapes.GenerationStrategies;
 
 namespace NoOpRunner.Core.Shapes
 {
@@ -10,21 +9,21 @@ namespace NoOpRunner.Core.Shapes
         protected StaticShape() { } // Needed for JSON deserialization
         public StaticShape(GenerationStrategy strategy, int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY)
             : base(strategy, lowerBoundX, lowerBoundY, upperBoundX, upperBoundY) { }
-        
+
         /// <summary>
         /// For platforms sliding
         /// platforms CenterPosX is all ways 0
         /// </summary>
-        public void ShiftBlocks()
+        public override void ShiftBlocks()
         {
-            ShapeBlocks.ForEach(x=> x.OffsetX--);
+            ShapeBlocks.ForEach(x => x.OffsetX--);
             ShapeBlocks.RemoveAll(x => x.OffsetX < 0);
         }
 
         /// <summary>
         /// Get the first out-of-bounds ShapeBlocks, which should be sent to client. Called by host.
         /// </summary>
-        public List<ShapeBlock> GetNextBlocks()
+        public override List<ShapeBlock> GetNextBlocks()
         {
             var nextBlock = ShapeBlocks.FirstOrDefault(x => x.OffsetX >= GameSettings.HorizontalCellCount);
             if (nextBlock is null)

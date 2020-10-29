@@ -6,6 +6,7 @@
         PlatformsUpdate,
         InitialConnection,
         PlayerUpdate,
-        PowerUpsUpdate
+        PowerUpsUpdate,
+        PlayerTwoPowerUp
     }
 }
