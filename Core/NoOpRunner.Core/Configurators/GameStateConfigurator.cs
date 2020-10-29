@@ -29,7 +29,7 @@ namespace NoOpRunner.Core.Configurators
 
             mapInitialized = true;
 
-            Logging.Instance.Write("[GameStateBuilder] Map initialized");
+            Logging.Instance.Write("[GameStateBuilder] Map initialized", LoggingLevel.Pattern);
 
             return this;
         }
@@ -40,7 +40,7 @@ namespace NoOpRunner.Core.Configurators
 
             powerUpsInitialized = true;
 
-            Logging.Instance.Write("[GameStateBuilder] Power ups initialized");
+            Logging.Instance.Write("[GameStateBuilder] Power ups initialized", LoggingLevel.Pattern);
 
             return this;
         }
@@ -55,7 +55,7 @@ namespace NoOpRunner.Core.Configurators
 
             gameState.Platforms.AddShape(shape);
 
-            Logging.Instance.Write("[GameStateBuilder] Added shape");
+            Logging.Instance.Write("[GameStateBuilder] Added shape", LoggingLevel.Pattern);
 
             return this;
         }
@@ -66,7 +66,7 @@ namespace NoOpRunner.Core.Configurators
 
             gameState.Platforms.AddShape(shape);
 
-            Logging.Instance.Write("[GameStateBuilder] Added shape");
+            Logging.Instance.Write("[GameStateBuilder] Added shape", LoggingLevel.Pattern);
 
             return this;
         }
@@ -93,7 +93,7 @@ namespace NoOpRunner.Core.Configurators
 
             gameState.Platforms.AddShape(shape);
 
-            Logging.Instance.Write("[GameStateBuilder] Add impassable shape");
+            Logging.Instance.Write("[GameStateBuilder] Add impassable shape", LoggingLevel.Pattern);
 
             return this;
         }
@@ -113,7 +113,7 @@ namespace NoOpRunner.Core.Configurators
 
             gameState.Platforms.AddShape(shape);
 
-            Logging.Instance.Write("[GameStateBuilder] Added passable shape");
+            Logging.Instance.Write("[GameStateBuilder] Added passable shape", LoggingLevel.Pattern);
 
             return this;
         }
@@ -126,7 +126,7 @@ namespace NoOpRunner.Core.Configurators
 
             gameState.PowerUpsContainer.AddShape(new PowerUp(shape.CenterPosX, shape.CenterPosY + 1, type));
 
-            Logging.Instance.Write("[GameStateBuilder] Added power up");
+            Logging.Instance.Write("[GameStateBuilder] Added power up", LoggingLevel.Pattern);
 
             return this;
         }
@@ -139,7 +139,7 @@ namespace NoOpRunner.Core.Configurators
 
             gameState.Player = new Player(shape.CenterPosX, shape.CenterPosY + 1);
 
-            Logging.Instance.Write("[GameStateBuilder] Added player");
+            Logging.Instance.Write("[GameStateBuilder] Added player", LoggingLevel.Pattern);
 
             return this;
         }
