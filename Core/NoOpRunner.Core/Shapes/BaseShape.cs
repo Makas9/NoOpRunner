@@ -47,12 +47,7 @@ namespace NoOpRunner.Core.Shapes
 
         public int getClosestY(int xCoord)
         {
-            foreach (var x in VisibleShapeBlocks)
-            {
-                if (x.OffsetX == xCoord) return CenterPosY + x.OffsetY;
-            }
-
-            return 0;
+            return VisibleShapeBlocks.Where(x => (x.OffsetX + CenterPosX) == xCoord).Max(x => x.OffsetY) + CenterPosY;
         }
 
         public (int[], int[]) GetCoords()

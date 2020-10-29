@@ -7,7 +7,7 @@ namespace NoOpRunner.Core.Shapes.GenerationStrategies
     {
         public override List<ShapeBlock> GenerateShapeBlocks(int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY, int? startY)
         {
-            Logging.Instance.Write("Randomly segmented generation strategy used.");
+            Logging.Instance.Write("[RandomlySegmentedGenerationStrategy]: Shape blocks generated", LoggingLevel.Pattern);
 
             var blocks = new List<ShapeBlock>();
             var random = RandomNumber.GetInstance();
