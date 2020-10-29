@@ -21,7 +21,7 @@ namespace NoOpRunner.Client
 
         private Core.NoOpRunner Game;
 
-        private RenderGameFramesFacade facade;
+        private RenderingFacade renderingFacade;
         private IInputHandlerAbstraction inputHandler;
 
         public MainWindow()
@@ -36,13 +36,20 @@ namespace NoOpRunner.Client
 
                 Game = viewModel.Game;
 
-                facade = new RenderGameFramesFacade();
 
                 InputHandlerImplementor inputHandlerImpl;
                 if (Game.IsHost)
+                {
+                    renderingFacade = new HostRenderingFacade();
+
                     inputHandlerImpl = new InputHandlerImplementorPlayerOne(Game.Player);
+                }
                 else
+                {
+                    renderingFacade = new ClientRenderingFacade();
+                    
                     inputHandlerImpl = new InputHandlerImplementorPlayerTwo();
+                }
 
 
                 inputHandler = new InputHandlerAbstractionArrows(inputHandlerImpl);
@@ -52,10 +59,7 @@ namespace NoOpRunner.Client
 
                 timer = new DispatcherTimer();
                 timer.Interval = TimeSpan.FromMilliseconds(GameSettings.TimeBetweenFramesMs);
-                timer.Tick += async (o, a) =>
-                {
-                    await TriggerRender();
-                };
+                timer.Tick += async (o, a) => { await TriggerRender(); };
 
                 timer.Start();
                 Game.IsGameStarted = true;
@@ -64,16 +68,9 @@ namespace NoOpRunner.Client
 
         private async Task TriggerRender()
         {
-            if (Game.IsHost)
+            if (Game.PlatformsContainer != null && Game.Player != null && Game.PowerUpsContainer != null)
             {
-                await facade.CycleHostGame(Game, player_window, power_ups, game_platforms);
-            }
-            else//for client
-            {
-                if (Game.PlatformsContainer != null && Game.Player != null && Game.PowerUpsContainer != null)
-                {
-                    facade.CycleClientGame(Game, player_window, game_platforms, power_ups);
-                }
+                await renderingFacade.CycleGameFrames(Game, player_window, power_ups, game_platforms);
             }
         }
 
@@ -84,7 +81,8 @@ namespace NoOpRunner.Client
         {
             for (int i = 1; i < 6; i++)
             {
-                background_panel.Children.Add(new Image(){Source = new BitmapImage(ResourcesUriHandler.GetBackground(i)), Stretch = Stretch.Fill});
+                background_panel.Children.Add(new Image()
+                    {Source = new BitmapImage(ResourcesUriHandler.GetBackground(i)), Stretch = Stretch.Fill});
             }
         }
 
@@ -92,12 +90,12 @@ namespace NoOpRunner.Client
         {
             this.KeyDown += (s, e) =>
             {
-                inputHandler.HandleKeyDownEvent(e, (WindowPixel[,])Game.PlatformsContainer.GetShapes().Clone());
+                inputHandler.HandleKeyDownEvent(e, (WindowPixel[,]) Game.PlatformsContainer.GetShapes().Clone());
             };
 
             this.KeyUp += (s, e) =>
             {
-                inputHandler.HandleKeyUpEvent(e, (WindowPixel[,])Game.PlatformsContainer.GetShapes().Clone());
+                inputHandler.HandleKeyUpEvent(e, (WindowPixel[,]) Game.PlatformsContainer.GetShapes().Clone());
             };
         }
     }
