@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E3B38F3E-A1F6-4404-AB28-5088FBB36EFA}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>NoOpRunner.Client</RootNamespace>
     <AssemblyName>NoOpRunner.Client</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -35,8 +35,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Owin.Host.HttpListener, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Host.HttpListener.4.1.1\lib\net45\Microsoft.Owin.Host.HttpListener.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,7 +59,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Rendering\GameWindowRenderer.cs" />
+    <Compile Include="ClientRenderingFacade.cs" />
+    <Compile Include="Controls\InputHandlerAbstraction.cs" />
+    <Compile Include="Controls\InputHandlerAbstractionArrows.cs" />
+    <Compile Include="Controls\InputHandlerAbstractionWasd.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="RenderingFacade.cs" />
+    <Compile Include="Rendering\GifImage.cs" />
+    <Compile Include="Views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Rendering\PlatformsRenderer.cs" />
+    <Compile Include="Rendering\PlayerRenderer.cs" />
+    <Compile Include="Rendering\PowerUpsRenderer.cs" />
+    <Compile Include="Rendering\RenderingHelper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -64,12 +81,21 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="HostRenderingFacade.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlayerAnimationDecorators\PlayerDecorator.cs" />
+    <Compile Include="PlayerAnimationDecorators\PlayerDoubleJumpDecorator.cs" />
+    <Compile Include="PlayerAnimationDecorators\PlayerInvulnerabilityDecorator.cs" />
+    <Compile Include="PlayerAnimationDecorators\PlayerSpeedBoostDecorator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -87,6 +113,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -104,6 +131,24 @@
       <Project>{274B7A8C-2C33-4650-817B-7930C5A2422F}</Project>
       <Name>NoOpRunner.Client.Logic</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Sprites\Background\plx-5.png" />
+    <Content Include="Resources\Sprites\Platforms\jungle tileset.png" />
+    <Content Include="Resources\Sprites\Platforms\plx-1.png" />
+    <Content Include="Resources\Sprites\Platforms\plx-2.png" />
+    <Content Include="Resources\Sprites\Platforms\plx-3.png" />
+    <Content Include="Resources\Sprites\Platforms\plx-4.png" />
+    <Content Include="Resources\Sprites\Platforms\plx-5.png" />
+    <Resource Include="Resources\Sprites\Platforms\tile0.png" />
+    <Resource Include="Resources\Sprites\PlayerOne\idle.gif" />
+    <Resource Include="Resources\Sprites\PlayerOne\jump.gif" />
+    <Content Include="Resources\Sprites\PlayerOne\jump.png" />
+    <Resource Include="Resources\Sprites\PlayerOne\landing.gif" />
+    <Content Include="Resources\Sprites\PlayerOne\landing.png" />
+    <Content Include="Resources\Sprites\PlayerOne\ledge grab.gif" />
+    <Content Include="Resources\Sprites\PlayerOne\mid air.gif" />
+    <Resource Include="Resources\Sprites\PlayerOne\run.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

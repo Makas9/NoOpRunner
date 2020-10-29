@@ -1,43 +1,75 @@
-﻿using NoOpRunner.Core.Enums;
-using NoOpRunner.Core.Shapes;
+﻿using Newtonsoft.Json;
+using NoOpRunner.Core.Shapes.GenerationStrategies;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NoOpRunner.Core.Entities
+namespace NoOpRunner.Core.Shapes
 {
     public abstract class BaseShape
     {
         public int CenterPosX { get; set; }
         public int CenterPosY { get; set; }
 
-        protected List<ShapeBlock> ShapeBlocks;
+        [JsonProperty]
+        protected List<ShapeBlock> ShapeBlocks = new List<ShapeBlock>();
+        protected IEnumerable<ShapeBlock> VisibleShapeBlocks => ShapeBlocks.Where(x => x.OffsetX < GameSettings.HorizontalCellCount);
 
-        public BaseShape(int centerPosX, int centerPosY)
+        protected GenerationStrategy Strategy { get; set; }
+        protected int lowerBoundY;
+        protected int upperBoundY;
+
+        protected BaseShape() { } // Needed for JSON deserialization
+
+        /// <summary>
+        /// Generate a shape somewhere in the given region using the provided strategy.
+        /// CenterPos will be set to the position of the first generated ShapeBlock
+        /// </summary>
+        public BaseShape(GenerationStrategy strategy, int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY)
         {
-            CenterPosX = centerPosX;
-            CenterPosY = centerPosY;
-
-            ShapeBlocks = new List<ShapeBlock>();
+            var blocks = strategy.GenerateShapeBlocks(lowerBoundX, lowerBoundY, upperBoundX, upperBoundY);
+            CenterPosX = blocks[0].OffsetX;
+            CenterPosY = blocks[0].OffsetY;
+            this.lowerBoundY = lowerBoundY;
+            this.upperBoundY = upperBoundY;
+            ShapeBlocks = GenerationStrategy.MakeRelative(blocks, CenterPosX, CenterPosY);
+            Strategy = strategy;
         }
 
-        protected BaseShape MapShapeX(int offsetX, int offsetY, int length, Color color)
-        {
-            for (int i = 0; i < length; i++)
-            {
-                AddShapeBlock(offsetX + i, offsetY, color);
-            }
+        public virtual List<ShapeBlock> GetNextBlocks() => throw new NotImplementedException();
 
-            return this;
+        public virtual void ShiftBlocks()
+        {
+            CenterPosX -= 1;
+
+            ShapeBlocks.RemoveAll(x => CenterPosX + x.OffsetX < 0);
         }
 
-        protected BaseShape MapShapeY(int offsetX, int offsetY, int length, Color color)
+        public int getClosestY(int xCoord)
         {
-            for (int i = 0; i < length; i++)
+            foreach (var x in VisibleShapeBlocks)
             {
-                AddShapeBlock(offsetX, offsetY + i, color);
+                if (x.OffsetX == xCoord) return CenterPosY + x.OffsetY;
             }
 
-            return this;
+            return 0;
+        }
+
+        public (int[], int[]) GetCoords()
+        {
+            List<int> xCoords = new List<int>();
+            List<int> yCoords = new List<int>();
+
+            foreach (var x in VisibleShapeBlocks)
+            {
+                var absX = CenterPosX + x.OffsetX;
+                var absY = CenterPosY + x.OffsetY;
+
+                xCoords.Add(absX);
+                yCoords.Add(absY);
+            }
+
+            return (xCoords.ToArray(), yCoords.ToArray());
         }
 
         public virtual void OnLoopFired(WindowPixel[,] gameScreen) { }
@@ -46,13 +78,14 @@ namespace NoOpRunner.Core.Entities
         {
             var windowPixels = new List<WindowPixel>();
 
-            ShapeBlocks.ForEach(x =>
+            //Could use Flyweight pattern or Prototype pattern in the future
+            foreach (var x in VisibleShapeBlocks)
             {
                 var absX = CenterPosX + x.OffsetX;
                 var absY = CenterPosY + x.OffsetY;
 
-                windowPixels.Add(new WindowPixel(absX, absY, x.Color, true));
-            });
+                windowPixels.Add(new WindowPixel(absX, absY, isShape: true));
+            }
 
             return windowPixels;
         }
@@ -62,22 +95,29 @@ namespace NoOpRunner.Core.Entities
             return ShapeBlocks.Any(s => s.OffsetX + CenterPosX == x && s.OffsetY + CenterPosY == y);
         }
 
-        private void AddShapeBlock(int offsetX, int offsetY, Color color)
-        {
-            ShapeBlocks.Add(new ShapeBlock
-            {
-                OffsetX = offsetX,
-                OffsetY = offsetY,
-                Color = color
-            });
-        }
-
         public virtual void OnClick()
         {
-            ShapeBlocks.ForEach(x =>
-            {
-                x.Color = Color.Green;
-            });
+            // Do nothing by default
+        }
+
+        public abstract bool CanOverlap(BaseShape other);
+        public abstract void OnCollision(BaseShape other);
+
+        public BaseShape Clone()
+        {
+            return (BaseShape)this.MemberwiseClone();
+        }
+        public BaseShape DeepCopy()
+        {
+            BaseShape clone = (BaseShape)this.MemberwiseClone();
+            clone.ShapeBlocks = ShapeBlocks.Select(x => new ShapeBlock() { OffsetX = x.OffsetX, OffsetY = x.OffsetY }).ToList();
+
+            return clone;
+        }
+
+        public List<ShapeBlock> GetShapes()
+        {
+            return ShapeBlocks;
         }
     }
 }

@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,14 +42,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\RelayCommand.cs" />
+    <Compile Include="Commands\BaseCommand.cs" />
+    <Compile Include="Commands\ChangeResolutionCommand.cs" />
+    <Compile Include="Commands\ChangeVolumeCommand.cs" />
+    <Compile Include="Commands\CommandInvoker.cs" />
+    <Compile Include="Dto\DropdownDto.cs" />
+    <Compile Include="Dto\ResolutionOptionDto.cs" />
+    <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\NoOpRunner.Core\NoOpRunner.Core.csproj">
       <Project>{A7F441A4-15E3-4C01-92F9-5AC2D65FF43F}</Project>
       <Name>NoOpRunner.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\NoOpRunner.Networking\NoOpRunner.Networking.csproj">
+      <Project>{9EA7426D-ED02-4112-AE00-6D22FB7E4C8E}</Project>
+      <Name>NoOpRunner.Networking</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

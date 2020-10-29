@@ -1,9 +1,13 @@
-﻿using NoOpRunner.Client.Logic.Rendering;
+using NoOpRunner.Client.Controls;
 using NoOpRunner.Client.Logic.ViewModels;
-using NoOpRunner.Core.Enums;
+using NoOpRunner.Core;
+using NoOpRunner.Core.Controls;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace NoOpRunner.Client
@@ -17,54 +21,90 @@ namespace NoOpRunner.Client
 
         private Core.NoOpRunner Game;
 
+        private RenderingFacade renderingFacade;
+        private IInputHandlerAbstraction inputHandler;
+
         public MainWindow()
         {
-            this.ContentRendered += (s, e) =>
+            InitializeComponent();
+
+            play_button.Click += (s, e) =>
             {
-                Game = ((MainViewModel)DataContext).Game;
+                SetUpBackground();
+
+                var viewModel = (MainViewModel) DataContext;
+
+                Game = viewModel.Game;
+
+
+                InputHandlerImplementor inputHandlerImpl;
+                if (Game.IsHost)
+                {
+                    renderingFacade = new HostRenderingFacade();
+
+                    inputHandlerImpl = new InputHandlerImplementorPlayerOne(Game.Player);
+                }
+                else
+                {
+                    renderingFacade = new ClientRenderingFacade();
+                    
+                    inputHandlerImpl = new InputHandlerImplementorPlayerTwo();
+                }
+
+
+                inputHandler = new InputHandlerAbstractionArrows(inputHandlerImpl);
+                //inputHandler = new InputHandlerAbstractionWasd(inputHandlerImpl);
 
                 ConfigureKeys();
 
                 timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(10);
-                timer.Tick += (o, a) => TriggerRender();
+                timer.Interval = TimeSpan.FromMilliseconds(GameSettings.TimeBetweenFramesMs);
+                timer.Tick += async (o, a) => { await TriggerRender(); };
 
                 timer.Start();
-            };
+                Game.IsGameStarted = true;
 
-            InitializeComponent();
+                background_panel.MouseLeftButtonDown += (o, a) =>
+                {
+                    var pos = a.GetPosition(background_panel);
+                    var cellWidth = (int)background_panel.ActualWidth / GameSettings.HorizontalCellCount;
+                    var cellHeight = (int)background_panel.ActualHeight / GameSettings.VerticalCellCount;
+
+                    Game.HandleMouseClick((int)pos.X / cellWidth, (int)(background_panel.ActualHeight - pos.Y) / cellHeight);
+                };
+            };
         }
 
-        private void TriggerRender()
+        private async Task TriggerRender()
         {
-            var canvas = game_window;
+            if (Game.PlatformsContainer != null && Game.Player != null && Game.PowerUpsContainer != null)
+            {
+                await renderingFacade.CycleGameFrames(Game, player_window, power_ups, game_platforms);
+            }
+        }
 
-            Game.FireLoop();
-
-            GameWindowRenderer.Render(Game.GameWindow, canvas);
+        /// <summary>
+        /// Set up background, more images to make depth feel
+        /// </summary>
+        private void SetUpBackground()
+        {
+            for (int i = 1; i < 6; i++)
+            {
+                background_panel.Children.Add(new Image()
+                    {Source = new BitmapImage(ResourcesUriHandler.GetBackground(i)), Stretch = Stretch.Fill});
+            }
         }
 
         private void ConfigureKeys()
         {
             this.KeyDown += (s, e) =>
             {
-                switch (e.Key)
-                {
-                    case Key.Right:
-                        Game.HandleKeyPress(KeyPress.Right);
-                        return;
-                    case Key.Left:
-                        Game.HandleKeyPress(KeyPress.Left);
-                        return;
-                    case Key.Space:
-                        Game.HandleKeyPress(KeyPress.Space);
-                        return;
-                    case Key.Down:
-                        Game.HandleKeyPress(KeyPress.Down);
-                        return;
-                    default:
-                        return;
-                }
+                inputHandler.HandleKeyDownEvent(e, (WindowPixel[,])Game.PlatformsContainer.GetShapes(!Game.IsHost).Clone());
+            };
+
+            this.KeyUp += (s, e) =>
+            {
+                inputHandler.HandleKeyUpEvent(e, (WindowPixel[,])Game.PlatformsContainer.GetShapes(!Game.IsHost).Clone());
             };
         }
     }
