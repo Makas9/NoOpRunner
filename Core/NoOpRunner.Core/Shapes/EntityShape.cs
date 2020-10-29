@@ -1,4 +1,5 @@
-﻿using NoOpRunner.Core.Shapes.GenerationStrategies;
+﻿using System.Collections.Generic;
+using NoOpRunner.Core.Shapes.GenerationStrategies;
 
 namespace NoOpRunner.Core.Shapes
 {
@@ -11,5 +12,10 @@ namespace NoOpRunner.Core.Shapes
 
         public EntityShape(GenerationStrategy strategy, int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY)
             : base(strategy, lowerBoundX, lowerBoundY, upperBoundX, upperBoundY) { }
+
+        public override List<ShapeBlock> GetNextBlocks()
+        {
+            return GetShapes();
+        }
     }
 }

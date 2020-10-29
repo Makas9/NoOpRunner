@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NoOpRunner.Core.Shapes
 {
@@ -35,10 +36,7 @@ namespace NoOpRunner.Core.Shapes
             Strategy = strategy;
         }
 
-        public virtual List<ShapeBlock> GetNextBlocks()
-        {
-            return GetShapes();
-        }
+        public virtual List<ShapeBlock> GetNextBlocks() => throw new NotImplementedException();
 
         public virtual void ShiftBlocks()
         {
