@@ -10,6 +10,7 @@ namespace NoOpRunner.Core.Controls
 
         public InputHandlerImplementorPlayerOne(Player player)
         {
+            Logging.Instance.Write("[InputHandlerImplementorPlayerOne]: initialized", LoggingLevel.Pattern);
             this.player = player;
         }
 

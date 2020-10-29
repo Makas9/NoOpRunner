@@ -6,7 +6,7 @@ namespace NoOpRunner.Core.Shapes.GenerationStrategies
     {
         public override List<ShapeBlock> GenerateShapeBlocks(int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY, int? startY = null)
         {
-            Logging.Instance.Write("Fill generation strategy used.");
+            Logging.Instance.Write("[FillGenerationStrategy]: Shape blocks generated", LoggingLevel.Pattern);
             var blocks = new List<ShapeBlock>();
             for (var curX = lowerBoundX; curX < upperBoundX; ++curX)
             {

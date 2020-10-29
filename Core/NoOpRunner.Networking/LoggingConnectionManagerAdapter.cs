@@ -1,4 +1,5 @@
-﻿using NoOpRunner.Core.Dtos;
+﻿using NoOpRunner.Core;
+using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Interfaces;
 using System;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace NoOpRunner.Networking
 
         public async Task Connect(string url, Action<MessageDto> callback)
         {
+            Logging.Instance.Write("[LoggingConnectionManagerAdapter]: Connect called and delegated to adaptee", LoggingLevel.Pattern);
             await adaptee.CreateConnection(url, callback);
         }
 
