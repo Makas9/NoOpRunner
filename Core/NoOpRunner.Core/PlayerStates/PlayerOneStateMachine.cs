@@ -1,29 +1,50 @@
 ﻿using System;
 using NoOpRunner.Core.Enums;
+using NoOpRunner.Core.Shapes;
 
 namespace NoOpRunner.Core.PlayerStates
 {
     public class PlayerOneStateMachine
     {
-        private PlayerOneState currentState = PlayerOneState.Idle;
-        
+        private PlayerState CurrentState;
+
+        private PlayerState LastState { get; set; }
+
         public PlayerOneState State
         {
-            get => currentState;
+            get => CurrentState.getEnum();
             set
             {
-                LastState = currentState;
-                currentState = value;
+                setState(value);
             }
         }
-        
-        private PlayerOneState LastState { get; set; }
+
+        public void setState(PlayerOneState state)
+        {
+            this.LastState = this.CurrentState;
+            switch (state)
+            {
+                case PlayerOneState.Idle:
+                    this.CurrentState = new IdleState();
+                    break;
+                case PlayerOneState.Jumping:
+                    this.CurrentState = new JumpingState();
+                    break;
+                case PlayerOneState.Landing:
+                    this.CurrentState = new LandingState();
+                    break;
+                case PlayerOneState.Running:
+                    this.CurrentState = new RunningState();
+                    break;
+            }
+            this.CurrentState.SetPlayer(this);
+        }
 
         private bool isLastDirectionLeft;
 
-        public bool StateHasChanged => currentState != LastState;
+        public bool StateHasChanged => CurrentState != LastState;
 
-        private bool _isLookingLeft;
+        public bool _isLookingLeft;
 
         public bool IsLookingLeft
         {
@@ -37,45 +58,34 @@ namespace NoOpRunner.Core.PlayerStates
 
         public Uri GetStateUri()
         {
-            switch (currentState)
-            {
-                case PlayerOneState.Idle:
-                    return ResourcesUriHandler.GetIdleAnimationUri();
-                case PlayerOneState.Jumping:
-                    return ResourcesUriHandler.GetJumpingAnimationUri();
-                case PlayerOneState.Landing:
-                    return ResourcesUriHandler.GetLandingAnimationUri();
-                case PlayerOneState.Running:
-                    return ResourcesUriHandler.GetRunningAnimationUri();
-                default:
-                    return null;
-            }
+            return this.CurrentState.doAnimation();
+        }
+
+        public void DoAction()
+        {
+            this.CurrentState.doAction();
         }
 
         public bool IsTurning => isLastDirectionLeft != IsLookingLeft;
 
         public void Jump()
         {
-            LastState = currentState;
-            currentState = PlayerOneState.Jumping;
+            setState(PlayerOneState.Jumping);
         }
 
         public void Land()
         {
-            LastState = currentState;
-            currentState = PlayerOneState.Landing;
+            setState(PlayerOneState.Landing);
         }
 
         public void Run()
         {
-            LastState = currentState;
-            currentState = PlayerOneState.Running;
+            setState(PlayerOneState.Running);
         }
 
         public void Idle()
         {
-            LastState = currentState;
-            currentState = PlayerOneState.Idle;
+            setState(PlayerOneState.Idle);
         }
 
         public void TurnRight()

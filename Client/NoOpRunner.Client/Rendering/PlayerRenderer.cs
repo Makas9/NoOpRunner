@@ -28,6 +28,8 @@ namespace NoOpRunner.Client.Rendering
             var playerAnimation = canvas.Children.OfType<GifImage>()
                 .FirstOrDefault(x => x.VisualType == VisualElementType.Player);
 
+            Player.DoAction();
+
             if (playerAnimation == null)
             {
                 playerAnimation = new GifImage()

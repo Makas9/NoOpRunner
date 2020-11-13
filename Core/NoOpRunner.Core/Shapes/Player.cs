@@ -215,6 +215,11 @@ namespace NoOpRunner.Core.Shapes
             private set => StateMachine.State = value;
         }
 
+        public void DoAction()
+        {
+            StateMachine.DoAction();
+        }
+
         public bool IsTurning => StateMachine.IsTurning;
 
         public bool StateHasChanged => StateMachine.StateHasChanged;
