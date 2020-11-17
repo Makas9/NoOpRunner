@@ -4,29 +4,29 @@ namespace NoOpRunner.Core.PlayerStates
 {
     public class PlayerOneStateMachine
     {
-        private PlayerState CurrentState = new IdleState();
+        private PlayerState currentState = new IdleState();
 
         private PlayerState LastState { get; set; }
 
         public PlayerState State
         {
-            get => CurrentState;
+            get => currentState;
             set
             {
-                setState(value);
+                SetState(value);
             }
         }
 
-        public void setState(PlayerState state)
+        public void SetState(PlayerState state)
         {
-            this.LastState = this.CurrentState;
-            this.CurrentState = state;
-            this.CurrentState.SetPlayer(this);
+            this.LastState = this.currentState;
+            this.currentState = state;
+            this.currentState.SetPlayer(this);
         }
 
         private bool isLastDirectionLeft;
 
-        public bool StateHasChanged => CurrentState != LastState;
+        public bool StateHasChanged => currentState != LastState;
 
         public bool _isLookingLeft;
 
@@ -42,29 +42,29 @@ namespace NoOpRunner.Core.PlayerStates
 
         public Uri GetStateUri()
         {
-            return this.CurrentState.GetAnimationUri();
+            return this.currentState.GetAnimationUri();
         }
 
         public bool IsTurning => isLastDirectionLeft != IsLookingLeft;
 
         public void Jump()
         {
-            setState(new JumpingState());
+            SetState(new JumpingState());
         }
 
         public void Land()
         {
-            setState(new LandingState());
+            SetState(new LandingState());
         }
 
         public void Run()
         {
-            setState(new RunningState());
+            SetState(new RunningState());
         }
 
         public void Idle()
         {
-            setState(new IdleState());
+            SetState(new IdleState());
         }
 
         public void TurnRight()
