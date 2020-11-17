@@ -18,6 +18,8 @@ namespace NoOpRunner.Core.Shapes
         protected GenerationStrategy Strategy { get; set; }
         protected int lowerBoundY;
         protected int upperBoundY;
+        
+        private WindowPixel FlyweightPixel { get; set; }
 
         protected BaseShape() { } // Needed for JSON deserialization
 
@@ -55,39 +57,26 @@ namespace NoOpRunner.Core.Shapes
             return 0;
         }
 
-        public (int[], int[]) GetCoords()
-        {
-            List<int> xCoords = new List<int>();
-            List<int> yCoords = new List<int>();
-
-            foreach (var x in VisibleShapeBlocks)
-            {
-                var absX = CenterPosX + x.OffsetX;
-                var absY = CenterPosY + x.OffsetY;
-
-                xCoords.Add(absX);
-                yCoords.Add(absY);
-            }
-
-            return (xCoords.ToArray(), yCoords.ToArray());
-        }
-
         public virtual void OnLoopFired(WindowPixel[,] gameScreen) { }
 
-        public virtual List<WindowPixel> Render()
+        public virtual IEnumerable<WindowPixel> Render()
         {
-            var windowPixels = new List<WindowPixel>();
-
-            //Could use Flyweight pattern or Prototype pattern in the future
+            if (FlyweightPixel == null)
+            {
+                FlyweightPixel = new WindowPixel(0, 0, false);
+            }
+            
             foreach (var x in VisibleShapeBlocks)
             {
                 var absX = CenterPosX + x.OffsetX;
                 var absY = CenterPosY + x.OffsetY;
 
-                windowPixels.Add(new WindowPixel(absX, absY, isShape: true));
+                FlyweightPixel.X = absX;
+                FlyweightPixel.Y = absY;
+                FlyweightPixel.IsShape = true;
+                
+                yield return FlyweightPixel;
             }
-
-            return windowPixels;
         }
 
         public bool IsHit(int x, int y)

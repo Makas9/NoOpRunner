@@ -24,18 +24,19 @@ namespace NoOpRunner.Client.Rendering
 
         public void Display(Canvas canvas)
         {
+            int canvasChildIndex = 0;
+            int canvasChildCount = canvas.Children.Count; 
+            
             var rectangleWidth = canvas.ActualWidth / PlatformsContainer.SizeX;
             var rectangleHeight = canvas.ActualHeight / PlatformsContainer.SizeY;
 
-            var pixels = PlatformsContainer.GetShapesEnumerable().ToList();
-            if (canvas.Children.Count != pixels.Count)
+            //SAVE SPACE AND TIME EVEN MORE
+            foreach (var pixel in PlatformsContainer.GetShapesEnumerable())
             {
-                canvas.Children.Clear();
-
-                var imageBrush = new ImageBrush(new BitmapImage(ResourcesUriHandler.GetPlatformUri()));
-
-                foreach (var pixel in pixels)
+                if (canvasChildIndex >= canvasChildCount)
                 {
+                    var imageBrush = new ImageBrush(new BitmapImage(ResourcesUriHandler.GetPlatformUri()));
+
                     var rec = new Rectangle
                     {
                         Width = rectangleWidth,
@@ -47,17 +48,21 @@ namespace NoOpRunner.Client.Rendering
 
                     canvas.Children.Add(rec);
                 }
-            }
-            else
-            {
-                for (int i = 0; i < pixels.Count; i++)
+                else
                 {
-                    canvas.Children[i].SetValue(FrameworkElement.WidthProperty, rectangleWidth);
-                    canvas.Children[i].SetValue(FrameworkElement.HeightProperty, rectangleHeight);
+                    canvas.Children[canvasChildIndex].SetValue(FrameworkElement.WidthProperty, rectangleWidth);
+                    canvas.Children[canvasChildIndex].SetValue(FrameworkElement.HeightProperty, rectangleHeight);
 
-                    Canvas.SetLeft(canvas.Children[i], rectangleWidth * pixels[i].X);
-                    Canvas.SetBottom(canvas.Children[i], rectangleHeight * pixels[i].Y);
+                    Canvas.SetLeft(canvas.Children[canvasChildIndex], rectangleWidth * pixel.X);
+                    Canvas.SetBottom(canvas.Children[canvasChildIndex], rectangleHeight * pixel.Y);
+                    
+                    canvasChildIndex++;
                 }
+            }
+
+            if (canvasChildIndex < canvasChildCount)
+            {
+                canvas.Children.RemoveRange(canvasChildIndex, canvas.Children.Count-canvasChildIndex);
             }
         }
     }
