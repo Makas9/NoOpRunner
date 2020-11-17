@@ -1,9 +1,4 @@
-﻿using NoOpRunner.Core.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace NoOpRunner.Core.PlayerStates
 {
@@ -16,9 +11,6 @@ namespace NoOpRunner.Core.PlayerStates
             this.player = player;
         }
 
-        public abstract Uri doAnimation();
-        public abstract void doAction();
-
-        public abstract PlayerOneState getEnum();
+        public abstract Uri GetAnimationUri();
     }
 }

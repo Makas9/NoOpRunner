@@ -1,10 +1,10 @@
-﻿using NoOpRunner.Core.Enums;
+﻿using NoOpRunner.Core.PlayerStates;
 
 namespace NoOpRunner.Core.Dtos
 {
     public class PlayerStateDto
     {
-        public PlayerOneState State { get; set; }
+        public PlayerState State { get; set; }
         
         public bool IsLookingLeft { get; set; }
         

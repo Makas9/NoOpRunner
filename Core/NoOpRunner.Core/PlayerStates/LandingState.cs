@@ -1,32 +1,14 @@
-﻿using NoOpRunner.Core.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace NoOpRunner.Core.PlayerStates
 {
     class LandingState : PlayerState
     {
-        public override Uri doAnimation()
-        {
-            return ResourcesUriHandler.GetLandingAnimationUri();
-        }
-
-        public override void doAction()
-        {
-            sendMessage();
-        }
-
-        public override PlayerOneState getEnum()
-        {
-            return PlayerOneState.Landing;
-        }
-
-        public void sendMessage()
+        public override Uri GetAnimationUri()
         {
             Logging.Instance.Write("STATE: LANDING");
+
+            return ResourcesUriHandler.GetLandingAnimationUri();
         }
     }
 }
