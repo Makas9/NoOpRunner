@@ -209,7 +209,7 @@ namespace NoOpRunner.Core.Shapes
             private set => StateMachine.IsLookingLeft = value;
         }
 
-        public PlayerOneState State
+        public PlayerState State
         {
             get => StateMachine.State;
             private set => StateMachine.State = value;
