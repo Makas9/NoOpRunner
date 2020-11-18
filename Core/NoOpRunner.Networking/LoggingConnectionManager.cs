@@ -55,13 +55,13 @@ namespace NoOpRunner.Networking
 
         public async Task SendMessageToHost(MessageDto message)
         {
-            logger.Write("ConnectionManager: Message sent to Host", LoggingLevel.Trace);
+            //logger.Write("ConnectionManager: Message sent to Host", LoggingLevel.Trace);
             await proxy.Invoke("SendToHost", message);
         }
 
         public async Task SendMessageToClient(MessageDto message)
         {
-            logger.Write("ConnectionManager: Message sent to Client", LoggingLevel.Trace);
+            //logger.Write("ConnectionManager: Message sent to Client", LoggingLevel.Trace);
             var context = GlobalHost.ConnectionManager.GetHubContext<GameHub>();
 
             await context.Clients.All.SendMessage(JsonConvert.SerializeObject(message, new JsonSerializerSettings

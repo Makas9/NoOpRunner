@@ -75,6 +75,11 @@
     <Compile Include="Logging.cs" />
     <Compile Include="LoggingLevel.cs" />
     <Compile Include="PlatformsContainer.cs" />
+    <Compile Include="PlayerStates\RunningState.cs" />
+    <Compile Include="PlayerStates\LandingState.cs" />
+    <Compile Include="PlayerStates\JumpingState.cs" />
+    <Compile Include="PlayerStates\IdleState.cs" />
+    <Compile Include="PlayerStates\PlayerState.cs" />
     <Compile Include="PowerUpsContainer.cs" />
     <Compile Include="Shapes\EntityShapes\Rocket.cs" />
     <Compile Include="Shapes\EntityShapes\Saw.cs" />

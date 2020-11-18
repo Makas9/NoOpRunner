@@ -1,29 +1,34 @@
 ﻿using System;
-using NoOpRunner.Core.Enums;
 
 namespace NoOpRunner.Core.PlayerStates
 {
     public class PlayerOneStateMachine
     {
-        private PlayerOneState currentState = PlayerOneState.Idle;
-        
-        public PlayerOneState State
+        private PlayerState currentState = new IdleState();
+
+        private PlayerState LastState { get; set; }
+
+        public PlayerState State
         {
             get => currentState;
             set
             {
-                LastState = currentState;
-                currentState = value;
+                SetState(value);
             }
         }
-        
-        private PlayerOneState LastState { get; set; }
+
+        public void SetState(PlayerState state)
+        {
+            this.LastState = this.currentState;
+            this.currentState = state;
+            this.currentState.SetPlayer(this);
+        }
 
         private bool isLastDirectionLeft;
 
         public bool StateHasChanged => currentState != LastState;
 
-        private bool _isLookingLeft;
+        public bool _isLookingLeft;
 
         public bool IsLookingLeft
         {
@@ -37,45 +42,29 @@ namespace NoOpRunner.Core.PlayerStates
 
         public Uri GetStateUri()
         {
-            switch (currentState)
-            {
-                case PlayerOneState.Idle:
-                    return ResourcesUriHandler.GetIdleAnimationUri();
-                case PlayerOneState.Jumping:
-                    return ResourcesUriHandler.GetJumpingAnimationUri();
-                case PlayerOneState.Landing:
-                    return ResourcesUriHandler.GetLandingAnimationUri();
-                case PlayerOneState.Running:
-                    return ResourcesUriHandler.GetRunningAnimationUri();
-                default:
-                    return null;
-            }
+            return this.currentState.GetAnimationUri();
         }
 
         public bool IsTurning => isLastDirectionLeft != IsLookingLeft;
 
         public void Jump()
         {
-            LastState = currentState;
-            currentState = PlayerOneState.Jumping;
+            SetState(new JumpingState());
         }
 
         public void Land()
         {
-            LastState = currentState;
-            currentState = PlayerOneState.Landing;
+            SetState(new LandingState());
         }
 
         public void Run()
         {
-            LastState = currentState;
-            currentState = PlayerOneState.Running;
+            SetState(new RunningState());
         }
 
         public void Idle()
         {
-            LastState = currentState;
-            currentState = PlayerOneState.Idle;
+            SetState(new IdleState());
         }
 
         public void TurnRight()
