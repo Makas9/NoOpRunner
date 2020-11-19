@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NoOpRunner.Core.Iterators;
 using NoOpRunner.Core.Shapes;
 using System;
 using System.Collections.Generic;
@@ -7,8 +8,8 @@ namespace NoOpRunner.Core
 {
     public abstract class ShapesContainer
     {
-        [JsonProperty] 
-        protected List<BaseShape> Shapes { get; set; }
+        [JsonProperty]
+        protected ShapeCollection Shapes { get; set; }
 
         public int SizeX { get; set; }
 
@@ -19,7 +20,8 @@ namespace NoOpRunner.Core
             SizeX = sizeX;
             SizeY = sizeY;
 
-            Shapes = new List<BaseShape>();
+            Shapes = new ShapeCollection();
+            Shapes.Reverse(); // Start from beginning
         }
 
         public abstract void ShiftShapes();
@@ -33,7 +35,7 @@ namespace NoOpRunner.Core
         {
             var windowPixels = new WindowPixel[SizeX, SizeY];
 
-            foreach (var shape in Shapes)
+            foreach (BaseShape shape in Shapes)
             {
                 var shapePixels = shape.Render();
 
@@ -63,9 +65,10 @@ namespace NoOpRunner.Core
             return windowPixels;
         }
 
-        public IEnumerable<WindowPixel> GetShapesEnumerable()
+        public WindowPixelCollection GetWindowsPixelCollection()
         {
-            foreach (var shape in Shapes)
+            var pixels = new WindowPixelCollection();
+            foreach (BaseShape shape in Shapes)
             {
                 var shapePixels = shape.Render();
 
@@ -78,9 +81,12 @@ namespace NoOpRunner.Core
                     {
                         throw new Exception("Shape pixel outside the bounds of the game window");
                     }
-                    yield return pixel;
+
+                    pixels.Add(pixel);
                 }
             }
+
+            return pixels;
         }
     }
 }

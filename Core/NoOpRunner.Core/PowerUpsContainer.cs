@@ -19,25 +19,26 @@ namespace NoOpRunner.Core
 
         public IList<Tuple<WindowPixel, PowerUps>> GetPowerUpsEnumerable()
         {
-            var shapesPixels = GetShapesEnumerable().ToList();
-            var shapesPowerUps = Shapes.Select(x => ((PowerUp) x).PowerUpType).ToList();
+            var shapesPixels = GetWindowsPixelCollection().GetItems();
+            var shapesPowerUps = Shapes.GetItems().Select(x => ((PowerUp) x).PowerUpType);
 
             return shapesPixels.Zip(shapesPowerUps, (shapesPixel, shapesPowerUp)=> new Tuple<WindowPixel, PowerUps>(shapesPixel, shapesPowerUp)).ToList();
         }
         public void RemovePowerUp(int centerPosX, int centerPosY)
         {
-            Shapes.Remove(GetPowerUpAt(centerPosX, centerPosY));
+            Shapes.GetItems().Remove(GetPowerUpAt(centerPosX, centerPosY));
         }
         public PowerUp GetPowerUpAt(int centerPosX, int centerPosY)
         {
-            return Shapes.FirstOrDefault(x => x.CenterPosX == centerPosX && x.CenterPosY == centerPosY) as PowerUp;
+            return Shapes.GetItems().FirstOrDefault(x => x.CenterPosX == centerPosX && x.CenterPosY == centerPosY) as PowerUp;
         }
 
         public override void ShiftShapes()
         {
-            Shapes.ForEach(x => x.CenterPosX--); //Push cells
+            foreach (BaseShape shape in Shapes)
+                shape.CenterPosX--; //Push cells
 
-            Shapes.RemoveAll(x => x.CenterPosX < 0); //Remove out of bounds
+            Shapes.GetItems().RemoveAll(x => x.CenterPosX < 0); //Remove out of bounds
         }
 
         /// <summary>
@@ -48,14 +49,13 @@ namespace NoOpRunner.Core
         {
             if (message.MessageType != MessageType.PowerUpsUpdate) 
                 return;
-            
+
             Logging.Instance.Write("Observer: power ups got update", LoggingLevel.Pattern);
 
             ShiftShapes();
 
             if (message.Payload !=null)
-            
-                Shapes.AddRange(message.Payload as List<BaseShape>); //Append generated power ups    
+                Shapes.GetItems().AddRange(message.Payload as List<BaseShape>); //Append generated power ups    
         }
     }
 }
