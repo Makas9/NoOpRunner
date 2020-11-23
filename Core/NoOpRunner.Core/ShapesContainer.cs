@@ -1,14 +1,16 @@
 ﻿using Newtonsoft.Json;
+using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NoOpRunner.Core
 {
-    public abstract class ShapesContainer
+    public abstract class ShapesContainer : IMapPart
     {
         [JsonProperty] 
-        protected List<BaseShape> Shapes { get; set; }
+        protected List<IMapPart> Shapes { get; set; } = new List<IMapPart>();
 
         public int SizeX { get; set; }
 
@@ -18,8 +20,6 @@ namespace NoOpRunner.Core
         {
             SizeX = sizeX;
             SizeY = sizeY;
-
-            Shapes = new List<BaseShape>();
         }
 
         public abstract void ShiftShapes();
@@ -81,6 +81,48 @@ namespace NoOpRunner.Core
                     yield return pixel;
                 }
             }
+        }
+
+        public void AddMapPart(IMapPart mapPart)
+        {
+            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(AddMapPart)}", LoggingLevel.CompositePattern);
+
+            Shapes.Add(mapPart);
+        }
+
+        public bool IsAtPos(int centerPosX, int centerPosY)
+        {
+            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(IsAtPos)}", LoggingLevel.CompositePattern);
+
+            return Shapes.Any(x => x.IsAtPos(centerPosX, centerPosY));
+        }
+
+        public List<List<ShapeBlock>> GetNextBlocks()
+        {
+            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(GetNextBlocks)}", LoggingLevel.CompositePattern);
+
+            return Shapes.SelectMany(x => x.GetNextBlocks()).ToList();
+        }
+
+        public WindowPixel[,] RenderPixels(bool ignoreCollision = false) 
+        {
+            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(RenderPixels)}", LoggingLevel.CompositePattern);
+
+            return GetShapes(ignoreCollision);
+        }
+
+        public List<WindowPixel> Render() 
+        {
+            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(Render)}", LoggingLevel.CompositePattern);
+
+            return GetShapesEnumerable().ToList();
+        }
+
+        public List<T> GetOfType<T>() where T : IMapPart
+        {
+            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(GetOfType)}", LoggingLevel.CompositePattern);
+
+            return Shapes.OfType<T>().ToList();
         }
     }
 }

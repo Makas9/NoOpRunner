@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 
 namespace NoOpRunner.Core.Shapes
 {
-    public abstract class BaseShape
+    public abstract class BaseShape : IMapPart
     {
         public int CenterPosX { get; set; }
         public int CenterPosY { get; set; }
@@ -36,10 +37,12 @@ namespace NoOpRunner.Core.Shapes
             Strategy = strategy;
         }
 
-        public virtual List<ShapeBlock> GetNextBlocks() => throw new NotImplementedException();
+        public virtual List<List<ShapeBlock>> GetNextBlocks() => throw new NotImplementedException();
 
         public virtual void ShiftBlocks()
         {
+            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(ShiftBlocks)}", LoggingLevel.CompositePattern);
+
             CenterPosX -= 1;
 
             ShapeBlocks.RemoveAll(x => CenterPosX + x.OffsetX < 0);
@@ -71,6 +74,8 @@ namespace NoOpRunner.Core.Shapes
 
         public virtual List<WindowPixel> Render()
         {
+            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(Render)}", LoggingLevel.CompositePattern);
+
             var windowPixels = new List<WindowPixel>();
 
             //Could use Flyweight pattern or Prototype pattern in the future
@@ -110,9 +115,46 @@ namespace NoOpRunner.Core.Shapes
             return clone;
         }
 
-        public List<ShapeBlock> GetShapes()
+        public List<List<ShapeBlock>> GetShapes()
         {
-            return ShapeBlocks;
+            return new List<List<ShapeBlock>>() { ShapeBlocks };
+        }
+
+        public void AddMapPart(IMapPart mapPart)
+        {
+            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(AddMapPart)}", LoggingLevel.CompositePattern);
+
+            // Do nothing
+        }
+
+        public bool IsAtPos(int centerPosX, int centerPosY)
+        {
+            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(IsAtPos)}", LoggingLevel.CompositePattern);
+
+            return CenterPosX == centerPosX && CenterPosY == centerPosY;
+        }
+
+        public void ShiftShapes()
+        {
+            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(ShiftShapes)}", LoggingLevel.CompositePattern);
+
+            ShiftBlocks();
+        }
+
+        public WindowPixel[,] RenderPixels(bool ignoreCollision = false)
+        {
+            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(RenderPixels)}", LoggingLevel.CompositePattern);
+
+            // Do nothing
+
+            return null;
+        }
+
+        public List<T> GetOfType<T>() where T : IMapPart
+        {
+            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(GetOfType)}", LoggingLevel.CompositePattern);
+
+            return new List<T>();
         }
     }
 }

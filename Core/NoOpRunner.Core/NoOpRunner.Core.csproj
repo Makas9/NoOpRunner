@@ -59,6 +59,7 @@
     <Compile Include="Dtos\CoordinatesDto.cs" />
     <Compile Include="Dtos\PowerUpUseDto.cs" />
     <Compile Include="Enums\KeyPress.cs" />
+    <Compile Include="Interfaces\IMapPart.cs" />
     <Compile Include="PlayerOnePowerUps.cs" />
     <Compile Include="Dtos\PlayerStateDto.cs" />
     <Compile Include="Enums\Entity.cs" />

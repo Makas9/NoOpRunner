@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using NoOpRunner.Core;
+using System.Threading.Tasks;
 using System.Windows.Controls;
-using NoOpRunner.Core;
 
 namespace NoOpRunner.Client
 {
@@ -20,7 +20,7 @@ namespace NoOpRunner.Client
 
             CountBetweenFrames++;
 
-            game.Player.OnLoopFired((WindowPixel[,]) game.PlatformsContainer.GetShapes().Clone());
+            game.Player.OnLoopFired((WindowPixel[,]) game.PlatformsContainer.RenderPixels().Clone());
 
             await game.UpdateClientsGame();
 

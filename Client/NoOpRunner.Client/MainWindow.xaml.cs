@@ -2,7 +2,9 @@ using NoOpRunner.Client.Controls;
 using NoOpRunner.Client.Logic.ViewModels;
 using NoOpRunner.Core;
 using NoOpRunner.Core.Controls;
+using NoOpRunner.Core.Shapes;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -99,12 +101,12 @@ namespace NoOpRunner.Client
         {
             this.KeyDown += (s, e) =>
             {
-                inputHandler.HandleKeyDownEvent(e, (WindowPixel[,])Game.PlatformsContainer.GetShapes(!Game.IsHost).Clone());
+                inputHandler.HandleKeyDownEvent(e, (WindowPixel[,])Game.PlatformsContainer.RenderPixels(!Game.IsHost).Clone());
             };
 
             this.KeyUp += (s, e) =>
             {
-                inputHandler.HandleKeyUpEvent(e, (WindowPixel[,])Game.PlatformsContainer.GetShapes(!Game.IsHost).Clone());
+                inputHandler.HandleKeyUpEvent(e, (WindowPixel[,])Game.PlatformsContainer.RenderPixels(!Game.IsHost).Clone());
             };
         }
     }

@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.PlayerStates;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
 using NoOpRunner.Core.Shapes.StaticShapes;
+using System;
+using System.Collections.Generic;
 
 namespace NoOpRunner.Core.Shapes
 {
-    public class Player : MovingShape, IObserver
+    public class Player : MovingShape, IObserver, IMapPart
     {
         private const int MaxHealth = 3;
         private int currentHealth = 0;
@@ -266,6 +266,11 @@ namespace NoOpRunner.Core.Shapes
             {
                 CenterPosX--;
             }
+        }
+
+        public void AddMapPart(IMapPart mapPart)
+        {
+            // Do nothing
         }
     }
 }

@@ -1,11 +1,11 @@
-﻿using System.Linq;
+﻿using NoOpRunner.Core;
+using NoOpRunner.Core.Interfaces;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using NoOpRunner.Core;
-using NoOpRunner.Core.Interfaces;
 
 namespace NoOpRunner.Client.Rendering
 {
@@ -15,19 +15,19 @@ namespace NoOpRunner.Client.Rendering
     /// </summary>
     public class PlatformsRenderer : IVisualElement
     {
-        private PlatformsContainer PlatformsContainer { get; set; }
+        private IMapPart PlatformsContainer { get; set; }
 
-        public PlatformsRenderer(PlatformsContainer platformsContainer)
+        public PlatformsRenderer(IMapPart platformsContainer)
         {
             PlatformsContainer = platformsContainer;
         }
 
         public void Display(Canvas canvas)
         {
-            var rectangleWidth = canvas.ActualWidth / PlatformsContainer.SizeX;
-            var rectangleHeight = canvas.ActualHeight / PlatformsContainer.SizeY;
+            var rectangleWidth = canvas.ActualWidth / GameSettings.HorizontalCellCount;
+            var rectangleHeight = canvas.ActualHeight / GameSettings.VerticalCellCount;
 
-            var pixels = PlatformsContainer.GetShapesEnumerable().ToList();
+            var pixels = PlatformsContainer.Render().ToList();
             if (canvas.Children.Count != pixels.Count)
             {
                 canvas.Children.Clear();

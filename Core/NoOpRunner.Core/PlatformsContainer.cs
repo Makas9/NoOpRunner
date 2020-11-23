@@ -2,9 +2,7 @@
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace NoOpRunner.Core
 {
@@ -16,12 +14,9 @@ namespace NoOpRunner.Core
 
         public override void ShiftShapes()
         {
-            Shapes.ForEach(x => x.ShiftBlocks()); //Push and remove out of bounds
-        }
+            Logging.Instance.Write($"[Composite/{nameof(PlatformsContainer)}] {nameof(ShiftShapes)}", LoggingLevel.CompositePattern);
 
-        public List<List<ShapeBlock>> GetNextBlocks()
-        {
-            return Shapes.Select(x => x.GetNextBlocks()).ToList();
+            Shapes.ForEach(x => x.ShiftShapes()); //Push and remove out of bounds
         }
 
         /// <summary>

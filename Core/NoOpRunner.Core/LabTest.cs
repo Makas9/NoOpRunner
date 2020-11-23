@@ -16,9 +16,9 @@ namespace NoOpRunner.Core
             BaseShape shallow = shape.Clone(); // Shallow Copy
             BaseShape deep = shape.DeepCopy(); // Deep Copy
 
-            ShapeBlock ba = shape.GetShapes().First();
-            ShapeBlock sh = shallow.GetShapes().First();
-            ShapeBlock de = deep.GetShapes().First();
+            ShapeBlock ba = shape.GetShapes()[0].First();
+            ShapeBlock sh = shallow.GetShapes()[0].First();
+            ShapeBlock de = deep.GetShapes()[0].First();
 
             Logging.Instance.Write("Before");
             Logging.Instance.Write("Base: " + shape.GetShapes().GetHashCode().ToString() + "(OffsetX: " + ba.OffsetX + ")");

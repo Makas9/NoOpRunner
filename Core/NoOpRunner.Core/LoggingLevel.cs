@@ -7,6 +7,7 @@ namespace NoOpRunner.Core
         None = 0,
         Trace = 1,
         Pattern = 2,
-        Other = 4
+        Other = 4,
+        CompositePattern = 8
     }
 }
