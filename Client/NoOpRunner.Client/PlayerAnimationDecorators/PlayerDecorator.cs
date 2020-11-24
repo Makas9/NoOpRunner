@@ -1,12 +1,11 @@
-﻿using System;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
 
 namespace NoOpRunner.Client.PlayerAnimationDecorators
 {
-    public class PlayerDecorator : IVisualElement
+    public abstract class PlayerDecorator : IVisualElement
     {
         protected IVisualElement Player { get; set; }
 
@@ -20,10 +19,7 @@ namespace NoOpRunner.Client.PlayerAnimationDecorators
             Player.Display(canvas);
         }
 
-        public virtual IVisualElement RemoveLayer(VisualElementType visualElementType)
-        {
-            throw new NotImplementedException("Call concrete, not abstract");
-        }
+        public abstract IVisualElement RemoveLayer(VisualElementType visualElementType);
 
         protected void UpdatePlayerWhileRemoving(VisualElementType visualElementType)
         {

@@ -65,6 +65,7 @@
     <Compile Include="Controls\InputHandlerAbstractionWasd.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="RenderingFacade.cs" />
+    <Compile Include="Rendering\BaseRenderer.cs" />
     <Compile Include="Rendering\GifImage.cs" />
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>

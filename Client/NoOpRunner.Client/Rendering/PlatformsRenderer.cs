@@ -1,11 +1,9 @@
-﻿using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using NoOpRunner.Core;
-using NoOpRunner.Core.Interfaces;
 
 namespace NoOpRunner.Client.Rendering
 {
@@ -13,56 +11,63 @@ namespace NoOpRunner.Client.Rendering
     /// Why not one class for all rendering you ask,
     /// I say for VE canvas on player hit or smtg(shaking platforms or blinking power ups, etc.)
     /// </summary>
-    public class PlatformsRenderer : IVisualElement
+    public class PlatformsRenderer : BaseRenderer
     {
-        private PlatformsContainer PlatformsContainer { get; set; }
+        private ImageBrush PlatformsSprite { get; set; }
 
-        public PlatformsRenderer(PlatformsContainer platformsContainer)
+        public PlatformsRenderer(ShapesContainer shapesContainer) : base(shapesContainer)
         {
-            PlatformsContainer = platformsContainer;
         }
 
-        public void Display(Canvas canvas)
+        public override void RenderContainerElements(Canvas canvas, out int canvasChildIndex, out int canvasChildCount)
         {
-            int canvasChildIndex = 0;
-            int canvasChildCount = canvas.Children.Count; 
+            canvasChildIndex = 0;
             
-            var rectangleWidth = canvas.ActualWidth / PlatformsContainer.SizeX;
-            var rectangleHeight = canvas.ActualHeight / PlatformsContainer.SizeY;
+            canvasChildCount = canvas.Children.Count;
 
-            //SAVE SPACE AND TIME EVEN MORE
-            foreach (var pixel in PlatformsContainer.GetShapesEnumerable())
+            var rectangleWidth = canvas.ActualWidth / ShapesContainer.SizeX;
+            var rectangleHeight = canvas.ActualHeight / ShapesContainer.SizeY;
+            
+            foreach (var pixel in ShapesContainer.GetShapesEnumerable())
             {
                 if (canvasChildIndex >= canvasChildCount)
                 {
-                    var imageBrush = new ImageBrush(new BitmapImage(ResourcesUriHandler.GetPlatformUri()));
-
-                    var rec = new Rectangle
+                    Rectangle rec;
+                    
+                    if (!DisposedObjectsPool.Contains<Rectangle>())
                     {
-                        Width = rectangleWidth,
-                        Height = rectangleHeight,
-                        Fill = imageBrush
-                    };
+                        if (PlatformsSprite == null)
+                        
+                            PlatformsSprite = new ImageBrush(new BitmapImage(ResourcesUriHandler.GetPlatformUri()));
+                        
+                        rec = new Rectangle
+                        {
+                            Width = rectangleWidth,
+                            Height = rectangleHeight
+                        };
+                    }
+                    else
+                    {
+                        rec = DisposedObjectsPool.Pop<Rectangle>();
+                        
+                        rec.SetValue(FrameworkElement.WidthProperty, rectangleWidth);
+                        rec.SetValue(FrameworkElement.HeightProperty, rectangleHeight);
+                    }
+                    
+                    rec.SetValue(Shape.FillProperty, PlatformsSprite);
+                    
                     Canvas.SetLeft(rec, rectangleWidth * pixel.X);
                     Canvas.SetBottom(rec, rectangleHeight * pixel.Y);
-
+                    
                     canvas.Children.Add(rec);
                 }
                 else
                 {
-                    canvas.Children[canvasChildIndex].SetValue(FrameworkElement.WidthProperty, rectangleWidth);
-                    canvas.Children[canvasChildIndex].SetValue(FrameworkElement.HeightProperty, rectangleHeight);
-
                     Canvas.SetLeft(canvas.Children[canvasChildIndex], rectangleWidth * pixel.X);
                     Canvas.SetBottom(canvas.Children[canvasChildIndex], rectangleHeight * pixel.Y);
                     
                     canvasChildIndex++;
                 }
-            }
-
-            if (canvasChildIndex < canvasChildCount)
-            {
-                canvas.Children.RemoveRange(canvasChildIndex, canvas.Children.Count-canvasChildIndex);
             }
         }
     }

@@ -56,9 +56,11 @@
     <Compile Include="Controls\InputHandlerImplementor.cs" />
     <Compile Include="Controls\InputHandlerImplementorPlayerOne.cs" />
     <Compile Include="Controls\InputHandlerImplementorPlayerTwo.cs" />
+    <Compile Include="DisposedObjectsPool.cs" />
     <Compile Include="Dtos\CoordinatesDto.cs" />
     <Compile Include="Dtos\PowerUpUseDto.cs" />
     <Compile Include="Enums\KeyPress.cs" />
+    <Compile Include="GenerationConstants.cs" />
     <Compile Include="PlayerOnePowerUps.cs" />
     <Compile Include="Dtos\PlayerStateDto.cs" />
     <Compile Include="Enums\Entity.cs" />

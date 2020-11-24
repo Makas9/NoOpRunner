@@ -67,9 +67,7 @@ namespace NoOpRunner.Core
         {
             foreach (var shape in Shapes)
             {
-                var shapePixels = shape.Render();
-
-                foreach (var pixel in shapePixels)
+                foreach (var pixel in shape.Render())
                 {
                     if (pixel.X < 0 ||
                         pixel.Y < 0 ||

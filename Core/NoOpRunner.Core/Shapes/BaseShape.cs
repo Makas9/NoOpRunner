@@ -58,7 +58,7 @@ namespace NoOpRunner.Core.Shapes
         {
             if (FlyweightPixel == null)
             {
-                FlyweightPixel = new WindowPixel(0, 0, false);
+                FlyweightPixel = new WindowPixel(0, 0, true);
             }
             
             foreach (var x in VisibleShapeBlocks)
@@ -68,18 +68,17 @@ namespace NoOpRunner.Core.Shapes
 
                 FlyweightPixel.X = absX;
                 FlyweightPixel.Y = absY;
-                FlyweightPixel.IsShape = true;
                 
                 yield return FlyweightPixel;
             }
         }
 
-        public bool IsHit(int x, int y)
+        public bool IsHit(int x, int y)//meh?
         {
             return ShapeBlocks.Any(s => s.OffsetX + CenterPosX == x && s.OffsetY + CenterPosY == y);
         }
 
-        public virtual void OnClick()
+        public virtual void OnClick()//meh?
         {
             // Do nothing by default
         }

@@ -35,7 +35,7 @@
 
                 <TextBlock Grid.Column="5" Text="{Binding StatusMessage}" Background="White"/>
             </Grid>
-            <Grid Grid.Row="0" Visibility="{Binding IsPlaying, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid Name="CanvasGrid" Grid.Row="0" Visibility="{Binding IsPlaying, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Grid x:Name="background_panel"></Grid>
                 <Canvas x:Name="game_platforms"/>
                 <Canvas x:Name="player_window"/>

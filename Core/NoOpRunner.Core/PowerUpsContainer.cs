@@ -13,8 +13,21 @@ namespace NoOpRunner.Core
     /// </summary>
     public class PowerUpsContainer : ShapesContainer, IObserver
     {
+        private readonly Random random = new Random(DateTime.Now.Millisecond); 
         public PowerUpsContainer(int sizeX, int sizeY) : base(sizeX, sizeY)
         {
+        }
+
+        public PowerUps? GeneratePowerUpOnMove()
+        {
+            if (random.NextDouble() > GenerationConstants.PowerUpsSpawnPossibility)
+            
+                return null;
+
+            var powerUpGuess = random.NextDouble();
+
+            return GenerationConstants.PowerUpsPossibilities
+                .FirstOrDefault(x => x.Value > powerUpGuess).Key;
         }
 
         public IList<Tuple<WindowPixel, PowerUps>> GetPowerUpsEnumerable()
@@ -24,10 +37,12 @@ namespace NoOpRunner.Core
 
             return shapesPixels.Zip(shapesPowerUps, (shapesPixel, shapesPowerUp)=> new Tuple<WindowPixel, PowerUps>(shapesPixel, shapesPowerUp)).ToList();
         }
+        
         public void RemovePowerUp(int centerPosX, int centerPosY)
         {
             Shapes.Remove(GetPowerUpAt(centerPosX, centerPosY));
         }
+        
         public PowerUp GetPowerUpAt(int centerPosX, int centerPosY)
         {
             return Shapes.FirstOrDefault(x => x.CenterPosX == centerPosX && x.CenterPosY == centerPosY) as PowerUp;

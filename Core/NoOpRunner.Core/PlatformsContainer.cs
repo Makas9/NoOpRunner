@@ -24,6 +24,11 @@ namespace NoOpRunner.Core
             return Shapes.Select(x => x.GetNextBlocks()).ToList();
         }
 
+        public Tuple<int, int> GetPlatformCenterPositions(int platformLevel)
+        {
+            return new Tuple<int, int>(Shapes[platformLevel].CenterPosX, Shapes[platformLevel].CenterPosY);
+        }
+        
         /// <summary>
         /// For platforms update from client side, append generated cells
         /// </summary>
@@ -38,6 +43,11 @@ namespace NoOpRunner.Core
             ShiftShapes();
 
             var generatedBlocks = message.Payload as List<List<ShapeBlock>>;
+            
+            if (generatedBlocks == null)
+            
+                throw new NullReferenceException("Lost package");
+            
             for (int i = 0; i < Shapes.Count; ++i)
             {
                 if (Shapes[i] is StaticShape staticShape)

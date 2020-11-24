@@ -61,7 +61,7 @@ namespace NoOpRunner.Client.Rendering
                 RenderingHelper.AnimateUiElementMove(canvasChild, gifWidth * animationPixel.X,
                     gifHeight * animationPixel.Y);
 
-                //Resize
+                // //Resize
                 canvasChild.SetValue(FrameworkElement.WidthProperty, gifWidth * hitBoxX); // sketch for all hit box
                 canvasChild.SetValue(FrameworkElement.HeightProperty, gifHeight * hitBoxY); // sketch for all hit box
 

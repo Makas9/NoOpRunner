@@ -1,6 +1,6 @@
 ﻿namespace NoOpRunner.Core.Enums
 {
-    public enum KeyPress
+    public enum KeyPress//meh?
     {
         Up,
         Right,

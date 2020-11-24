@@ -3,6 +3,7 @@ using NoOpRunner.Client.Logic.ViewModels;
 using NoOpRunner.Core;
 using NoOpRunner.Core.Controls;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,6 +29,21 @@ namespace NoOpRunner.Client
         {
             InitializeComponent();
 
+            this.SizeChanged += (s, e) =>
+            {
+                foreach (var canvas in CanvasGrid.Children.OfType<Canvas>())
+                {
+                    foreach (UIElement child in canvas.Children)
+                    {
+                        child.SetValue(WidthProperty, 
+                            canvas.ActualWidth /GameSettings.HorizontalCellCount);
+                
+                        child.SetValue(HeightProperty, 
+                            canvas.ActualHeight /GameSettings.VerticalCellCount);
+                    }
+                }
+            };
+            
             play_button.Click += (s, e) =>
             {
                 SetUpBackground();

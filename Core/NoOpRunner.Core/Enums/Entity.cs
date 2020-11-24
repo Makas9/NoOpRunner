@@ -1,6 +1,6 @@
 ﻿namespace NoOpRunner.Core.Enums
 {
-    public enum Entity
+    public enum Entity//meh?
     {
         Platform,
         Player,
