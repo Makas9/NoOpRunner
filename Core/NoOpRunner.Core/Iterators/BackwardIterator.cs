@@ -6,19 +6,15 @@ using System.Threading.Tasks;
 
 namespace NoOpRunner.Core.Iterators
 {
-    class LatestOrderIterator : Iterator
+    class BackwardIterator : Iterator
     {
         private ShapeCollection collection;
         private int position = -1;
-        private bool reverse = true;
 
-        public LatestOrderIterator(ShapeCollection collection, bool reverse = true)
+        public BackwardIterator(ShapeCollection collection)
         {
             this.collection = collection;
-            this.reverse = reverse;
-
-            if (reverse)
-                this.position = Count();
+            this.position = Count();
         }
 
         public override object Current()
@@ -33,7 +29,7 @@ namespace NoOpRunner.Core.Iterators
 
         public override bool MoveNext()
         {
-            int updatedPosition = position + (reverse ? -1 : 1);
+            int updatedPosition = position + -1;
 
             if (updatedPosition >= 0 && updatedPosition < collection.GetItems().Count)
             {
@@ -51,7 +47,7 @@ namespace NoOpRunner.Core.Iterators
 
         public override void Reset()
         {
-            position = reverse ? Count() - 1 : 0;
+            position = Count() - 1;
         }
     }
 }

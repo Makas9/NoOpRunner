@@ -21,7 +21,6 @@ namespace NoOpRunner.Core
             SizeY = sizeY;
 
             Shapes = new ShapeCollection();
-            Shapes.Reverse(); // Start from beginning
         }
 
         public abstract void ShiftShapes();

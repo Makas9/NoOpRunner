@@ -15,12 +15,6 @@ namespace NoOpRunner.Core.Iterators
     {
         [JsonProperty]
         protected List<BaseShape> collection = new List<BaseShape>();
-        bool lastFirst = true;
-
-        public void Reverse()
-        {
-            lastFirst = !lastFirst;
-        }
 
         public List<BaseShape> GetItems()
         {
@@ -35,7 +29,8 @@ namespace NoOpRunner.Core.Iterators
         public override IEnumerator GetEnumerator()
         {
             Logging.Instance.Write("Iterator: ShapeCollection GetEnumerator()", LoggingLevel.Iterator);
-            return new LatestOrderIterator(this, lastFirst);
+
+            return new BackwardIterator(this);
         }
     }
 }
