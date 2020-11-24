@@ -29,6 +29,9 @@ namespace NoOpRunner.Client
         {
             InitializeComponent();
 
+            // var flyweightTest = new FlyweightTestOPP();
+            // flyweightTest.Show();
+            
             this.SizeChanged += (s, e) =>
             {
                 foreach (var canvas in CanvasGrid.Children.OfType<Canvas>())
