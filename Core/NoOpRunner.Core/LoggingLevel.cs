@@ -8,7 +8,7 @@ namespace NoOpRunner.Core
         Trace = 1,
         Pattern = 2,
         Other = 4,
-        State = 5,
-        Iterator = 6
+        State = 8,
+        Iterator = 16
     }
 }
