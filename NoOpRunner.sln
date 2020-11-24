@@ -15,9 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoOpRunner.Core", "Core\NoO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoOpRunner.Networking", "Core\NoOpRunner.Networking\NoOpRunner.Networking.csproj", "{9EA7426D-ED02-4112-AE00-6D22FB7E4C8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoOpRunner.Core.Tests", "NoOpRunner.Core.Tests\NoOpRunner.Core.Tests.csproj", "{5385A50B-F479-45AF-8006-E99C44332FDC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoOpRunner.Core.Tests", "Core\NoOpRunner.Core.Tests\NoOpRunner.Core.Tests.csproj", "{5385A50B-F479-45AF-8006-E99C44332FDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoOpRunner.Client.Tests", "NoOpRunner.Client.Tests\NoOpRunner.Client.Tests.csproj", "{EBDE6CDB-6BAD-4CEC-910A-35315D1E7B0C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoOpRunner.Client.Tests", "Client\NoOpRunner.Client.Tests\NoOpRunner.Client.Tests.csproj", "{EBDE6CDB-6BAD-4CEC-910A-35315D1E7B0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
