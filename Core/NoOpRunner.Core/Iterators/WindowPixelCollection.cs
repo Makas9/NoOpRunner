@@ -23,6 +23,7 @@ namespace NoOpRunner.Core.Iterators
 
         public override IEnumerator GetEnumerator()
         {
+            Logging.Instance.Write("Iterator: WindowPixelCollection GetEnumerator()", LoggingLevel.Iterator);
             return new SequentialOrderIterator(this);
         }
     }

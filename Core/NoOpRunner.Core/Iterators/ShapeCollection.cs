@@ -34,6 +34,7 @@ namespace NoOpRunner.Core.Iterators
 
         public override IEnumerator GetEnumerator()
         {
+            Logging.Instance.Write("Iterator: ShapeCollection GetEnumerator()", LoggingLevel.Iterator);
             return new LatestOrderIterator(this, lastFirst);
         }
     }

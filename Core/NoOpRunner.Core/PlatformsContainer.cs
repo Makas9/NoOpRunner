@@ -23,8 +23,13 @@ namespace NoOpRunner.Core
         public List<List<ShapeBlock>> GetNextBlocks()
         {
             List<List<ShapeBlock>> result = new List<List<ShapeBlock>>();
-            foreach (BaseShape shape in Shapes)
+
+            var iterator = Shapes.GetEnumerator();
+            while (iterator.MoveNext())
+            {
+                BaseShape shape = (BaseShape)iterator.Current;
                 result.Add(shape.GetNextBlocks());
+            }
 
             return result;
         }
