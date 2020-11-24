@@ -40,7 +40,7 @@ namespace NoOpRunner.Core.Tests
         [Theory] // testing by passing arguments diffrent sets of data
         [InlineData(4,3,7)]
         [InlineData(5,5,10)]
-        public void PassingArgumentsExample_IfNeededAnArgumentPassExample_ShouldReturnSum(double x, double y, double expected)
+        public void PassingArgumentsExample_WhenAnArgumentPassExampleNeeded_ShouldReturnSum(double x, double y, double expected)
         {
             // Arrange
 
