@@ -27,7 +27,7 @@ namespace NoOpRunner.Client.Rendering
             var rectangleWidth = canvas.ActualWidth / PlatformsContainer.SizeX;
             var rectangleHeight = canvas.ActualHeight / PlatformsContainer.SizeY;
 
-            var pixels = PlatformsContainer.GetShapesEnumerable().ToList();
+            var pixels = PlatformsContainer.GetWindowsPixelCollection().GetItems();
             if (canvas.Children.Count != pixels.Count)
             {
                 canvas.Children.Clear();

@@ -16,12 +16,22 @@ namespace NoOpRunner.Core
 
         public override void ShiftShapes()
         {
-            Shapes.ForEach(x => x.ShiftBlocks()); //Push and remove out of bounds
+            foreach (BaseShape shape in Shapes)
+                shape.ShiftBlocks(); //Push and remove out of bounds
         }
 
         public List<List<ShapeBlock>> GetNextBlocks()
         {
-            return Shapes.Select(x => x.GetNextBlocks()).ToList();
+            List<List<ShapeBlock>> result = new List<List<ShapeBlock>>();
+
+            var iterator = Shapes.GetEnumerator();
+            while (iterator.MoveNext())
+            {
+                BaseShape shape = (BaseShape)iterator.Current;
+                result.Add(shape.GetNextBlocks());
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -38,11 +48,11 @@ namespace NoOpRunner.Core
             ShiftShapes();
 
             var generatedBlocks = message.Payload as List<List<ShapeBlock>>;
-            for (int i = 0; i < Shapes.Count; ++i)
-            {
-                if (Shapes[i] is StaticShape staticShape)
+
+            var shapes = Shapes.GetItems();
+            for (int i = 0; i < shapes.Count; ++i)
+                if (shapes[i] is StaticShape staticShape)
                     staticShape.AddShapeBlocks(generatedBlocks[i]);
-            }    
         }
     }
 }
