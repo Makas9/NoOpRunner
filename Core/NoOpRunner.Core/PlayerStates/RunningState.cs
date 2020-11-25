@@ -2,7 +2,7 @@
 
 namespace NoOpRunner.Core.PlayerStates
 {
-    class RunningState : PlayerState
+    public class RunningState : PlayerState
     {
         public override Uri GetAnimationUri()
         {
