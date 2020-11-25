@@ -18,7 +18,7 @@ namespace NoOpRunner.Client.Rendering
             Player = player;
         }
 
-                public void Display(Canvas canvas)
+        public void Display(Canvas canvas)
         {
             var animationPixel = Player.GetAnimationPixel(out int hitBoxY, out int hitBoxX);
 

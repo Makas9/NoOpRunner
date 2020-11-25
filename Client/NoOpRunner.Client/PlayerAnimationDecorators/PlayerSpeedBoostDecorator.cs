@@ -17,15 +17,22 @@ namespace NoOpRunner.Client.PlayerAnimationDecorators
         {
             MediaPlayer = new MediaPlayer();
 
-            MediaPlayer.Open(ResourcesUriHandler.GetPowerUpSound(PowerUps.Speed_Boost));
-
+            try
+            {
+                MediaPlayer.Open(ResourcesUriHandler.GetPowerUpSound(PowerUps.Speed_Boost));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            
             MediaPlayer.MediaEnded += (o, a) =>
             {
                 MediaPlayer.Position = TimeSpan.Zero;
                 MediaPlayer.Play();
             };
 
-            MediaPlayer.Volume = 0.01;
+            MediaPlayer.Volume = 0.1;
             MediaPlayer.Play();
         }
 
