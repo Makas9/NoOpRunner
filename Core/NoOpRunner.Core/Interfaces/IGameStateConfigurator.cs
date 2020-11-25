@@ -2,7 +2,6 @@
 using NoOpRunner.Core.Shapes;
 using NoOpRunner.Core.Shapes.ShapeFactories;
 using System;
-using System.Collections.Generic;
 
 namespace NoOpRunner.Core.Interfaces
 {
@@ -24,6 +23,6 @@ namespace NoOpRunner.Core.Interfaces
 
         IGameStateConfigurator AddPowerUp(PowerUps type, Func<IMapPart, BaseShape> action);
 
-        GameState Build();
+        IMapPart Build();
     }
 }
