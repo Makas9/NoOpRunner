@@ -17,12 +17,17 @@ namespace NoOpRunner.Client.Tests
         [InlineData(VisualElementType.Player)]
         public void RemoveLayer_WhenLayerDoesntExist_ShouldReturnSameIVisual(VisualElementType visualElementType)
         {
+            //Arrange
             IVisualElement player = new PlayerRenderer(new Player(0, 0));
             
             player = new PlayerDoubleJumpDecorator(player);
-
-            IVisualElement afterLayerRemove = ((PlayerDecorator) player).RemoveLayer(visualElementType);
+            //
             
+            //Act
+            IVisualElement afterLayerRemove = ((PlayerDecorator) player).RemoveLayer(visualElementType);
+            //
+            
+            //Assert
             player.ShouldBe(afterLayerRemove);
         }
 
@@ -33,6 +38,7 @@ namespace NoOpRunner.Client.Tests
         public void RemoveLayer_WhenRemovingLayerExistsWithOneLayerOnRenderer_ShouldReturnRenderer(
             VisualElementType visualElementType)
         {
+            //Arrange
             PlayerRenderer playerRenderer = new PlayerRenderer(new Player(0, 0));
 
             IVisualElement decoratorLayerOnRenderer;
@@ -51,19 +57,23 @@ namespace NoOpRunner.Client.Tests
                 default:
                     throw new ArgumentOutOfRangeException(nameof(visualElementType), visualElementType, null);
             }
-
+            //
+            
+            //Act
             IVisualElement afterLayerRemove =
                 ((PlayerDecorator) decoratorLayerOnRenderer).RemoveLayer(visualElementType);
+            //
             
+            //Assert
             playerRenderer.ShouldBe(afterLayerRemove);
         }
 
         [Fact]
         public void RemoveLayer_WhenRemovingAllLayers_ShouldReturnRenderer()
         {
+            //Arrange
             PlayerRenderer root = new PlayerRenderer(new Player(0, 0));
             
-            //Prepare
             IVisualElement layer = new PlayerInvulnerabilityDecorator(root);
             
             layer = new PlayerDoubleJumpDecorator(layer);
@@ -71,7 +81,7 @@ namespace NoOpRunner.Client.Tests
             layer = new PlayerSpeedBoostDecorator(layer);
             //
             
-            //Remove layers
+            //Act
             layer = ((PlayerDecorator) layer).RemoveLayer(VisualElementType.Invulnerability);
             
             layer = ((PlayerDecorator) layer).RemoveLayer(VisualElementType.SpeedBoost);
@@ -79,7 +89,27 @@ namespace NoOpRunner.Client.Tests
             layer = ((PlayerDecorator) layer).RemoveLayer(VisualElementType.DoubleJump);
             //
             
-            layer.ShouldBe(root);//test
+            //Assert
+            layer.ShouldBe(root);
+        }
+        
+        [Fact]
+        public void RemoveLayer_WhenRemovingMiddleLayer_ShouldReturnTopLayer()
+        {
+            //Arrange
+            IVisualElement layer = new PlayerRenderer(new Player(0, 0));
+            
+            layer = new PlayerInvulnerabilityDecorator(layer);
+
+            layer = new PlayerSpeedBoostDecorator(layer);
+            //
+            
+            //Act
+            IVisualElement afterLayerRemoved = ((PlayerDecorator) layer).RemoveLayer(VisualElementType.Invulnerability);
+            //
+            
+            //Assert
+            layer.ShouldBe(afterLayerRemoved);
         }
     }
 }
