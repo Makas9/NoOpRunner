@@ -92,6 +92,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GenerationStrategyTests.cs" />
+    <Compile Include="LoggingTests.cs" />
     <Compile Include="PowerUpContainerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -47,5 +47,7 @@ namespace NoOpRunner.Core
         {
             enabledLevels |= level;
         }
+
+        public LoggingLevel GetLevels() => enabledLevels;
     }
 }
