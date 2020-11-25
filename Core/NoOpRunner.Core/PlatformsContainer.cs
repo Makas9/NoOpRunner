@@ -31,6 +31,8 @@ namespace NoOpRunner.Core
                 result.Add(shape.GetNextBlocks());
             }
 
+            result.Reverse(); // The enumerator is a backwards iterator for no good reason, so we need to reverse the list to maintain the original order.
+
             return result;
         }
 
