@@ -1,5 +1,4 @@
-﻿using System.Collections;
-
+using System.Collections;
 namespace NoOpRunner.Core.Iterators
 {
     public abstract class IteratorAggregate : IEnumerable

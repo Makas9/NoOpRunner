@@ -69,6 +69,7 @@ namespace NoOpRunner.Core
         public WindowPixelCollection GetWindowsPixelCollection()
         {
             var pixels = new WindowPixelCollection();
+
             foreach (IMapPart shape in Shapes)
             {
                 var shapePixels = shape.Render();
