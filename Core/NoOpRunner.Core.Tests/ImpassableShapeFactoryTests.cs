@@ -15,6 +15,8 @@ namespace NoOpRunner.Core.Tests
             ImpassableShapeFactory factory = new ImpassableShapeFactory();
             var actual = factory.CreateEntityShape(Enums.Shape.Saw, 1, 1);
 
+            // Act
+
             // Assert
             expected.ShouldBeEquivalentTo(actual);
         }
@@ -28,6 +30,8 @@ namespace NoOpRunner.Core.Tests
             var expected = new Saw(x, y).GetCoords();
             ImpassableShapeFactory factory = new ImpassableShapeFactory();
             var actual = factory.CreateEntityShape(Enums.Shape.Saw, x, y).GetCoords();
+
+            // Act
 
             // Assert
             expected.Item1.ShouldBe(actual.Item1);

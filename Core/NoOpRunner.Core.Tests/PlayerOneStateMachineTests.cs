@@ -18,6 +18,8 @@ namespace NoOpRunner.Core.Tests
             PlayerOneStateMachine player = new PlayerOneStateMachine();
             var actual = player.State;
 
+            // Act
+
             // Assert
             expected.ShouldBeEquivalentTo(actual);
         }
