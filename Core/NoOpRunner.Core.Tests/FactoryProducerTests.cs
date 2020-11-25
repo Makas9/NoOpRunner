@@ -10,10 +10,8 @@ namespace NoOpRunner.Core.Tests
         public void GetFactory_WhenValidBoolGiven_ShouldReturnAppropriateFactory()
         {
             // Arrange
-            var expected = FactoryProducer.GetFactory(passable: false);
-
-            // Act
-            var actual = new ImpassableShapeFactory();
+            var expected = new ImpassableShapeFactory();
+            var actual = FactoryProducer.GetFactory(passable: false);
 
             // Assert
             expected.ShouldBeEquivalentTo(actual);

@@ -11,12 +11,10 @@ namespace NoOpRunner.Core.Tests
         public void CreateEntityShape_WhenValidShapeAndCoordinatesGiven_ShouldReturnAppropriateEntityShape()
         {
             // Arrange
+            var actual = new Saw(1, 1);
             ImpassableShapeFactory factory = new ImpassableShapeFactory();
             var expected = factory.CreateEntityShape(Enums.Shape.Saw, 1, 1);
 
-            // Act
-            var actual = new Saw(1, 1);
-            
             // Assert
             expected.ShouldBeEquivalentTo(actual);
         }
@@ -27,11 +25,9 @@ namespace NoOpRunner.Core.Tests
         public void CreateEntityShape_WhenValidShapeAndCoordinatesGiven_ShouldReturnAppropriateCoordinates(int x, int y)
         {
             // Arrange
+            var actual = new Saw(x, y).GetCoords();
             ImpassableShapeFactory factory = new ImpassableShapeFactory();
             var expected = factory.CreateEntityShape(Enums.Shape.Saw, x, y).GetCoords();
-
-            // Act
-            var actual = new Saw(x, y).GetCoords();
 
             // Assert
             expected.Item1.ShouldBe(actual.Item1);
