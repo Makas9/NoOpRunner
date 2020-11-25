@@ -11,9 +11,9 @@ namespace NoOpRunner.Core.Tests
         {
             // Arrange
             var expected = new ImpassableShapeFactory();
-            var actual = FactoryProducer.GetFactory(passable: false);
 
             // Act
+            var actual = FactoryProducer.GetFactory(passable: false);
 
             // Assert
             expected.ShouldBeEquivalentTo(actual);

@@ -14,9 +14,9 @@ namespace NoOpRunner.Core.Tests
             // Arrange
             var expected = new DamageCrystal(5, 5);
             ShapeFactory shapeFactory = new ShapeFactory();
-            var actual = shapeFactory.GetShape(Shape.DamageCrystal, 5, 5);
 
             // Act
+            var actual = shapeFactory.GetShape(Shape.DamageCrystal, 5, 5);
 
             // Assert
             expected.ShouldBeEquivalentTo(actual);
@@ -30,9 +30,9 @@ namespace NoOpRunner.Core.Tests
             // Arrange
             var expected = new DamageCrystal(x, y).GetCoords();
             ShapeFactory shapeFactory = new ShapeFactory();
-            var actual = shapeFactory.GetShape(Shape.DamageCrystal, x, y).GetCoords();
 
             // Act
+            var actual = shapeFactory.GetShape(Shape.DamageCrystal, x, y).GetCoords();
 
             // Assert
             expected.Item1.ShouldBe(actual.Item1);

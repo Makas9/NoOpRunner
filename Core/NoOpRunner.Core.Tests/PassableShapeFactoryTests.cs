@@ -13,9 +13,9 @@ namespace NoOpRunner.Core.Tests
             // Arrange
             var expected = new HealthCrystal(1, 1);
             PassableShapeFactory factory = new PassableShapeFactory();
-            var actual = factory.CreateEntityShape(Enums.Shape.HealthCrystal, 1, 1);
 
             // Act
+            var actual = factory.CreateEntityShape(Enums.Shape.HealthCrystal, 1, 1);
 
             // Assert
             expected.ShouldBeEquivalentTo(actual);
@@ -29,9 +29,9 @@ namespace NoOpRunner.Core.Tests
             // Arrange
             var expected = new HealthCrystal(x, y).GetCoords();
             PassableShapeFactory factory = new PassableShapeFactory();
-            var actual = factory.CreateEntityShape(Enums.Shape.HealthCrystal, x, y).GetCoords();
 
             // Act
+            var actual = factory.CreateEntityShape(Enums.Shape.HealthCrystal, x, y).GetCoords();
 
             // Assert
             expected.Item1.ShouldBe(actual.Item1);

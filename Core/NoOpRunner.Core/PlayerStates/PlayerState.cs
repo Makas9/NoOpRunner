@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("NoOpRunner.Core.Tests")]
 namespace NoOpRunner.Core.PlayerStates
 {
     public abstract class PlayerState

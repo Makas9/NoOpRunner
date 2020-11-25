@@ -16,9 +16,9 @@ namespace NoOpRunner.Core.Tests
             // Arrange
             var expected = new IdleState();
             PlayerOneStateMachine player = new PlayerOneStateMachine();
-            var actual = player.State;
 
             // Act
+            var actual = player.State;
 
             // Assert
             expected.ShouldBeEquivalentTo(actual);
@@ -44,6 +44,8 @@ namespace NoOpRunner.Core.Tests
             // Arrange
             var expected = ResourcesUriHandler.GetIdleAnimationUri();
             PlayerOneStateMachine player = new PlayerOneStateMachine();
+
+            // Act
             var actual = player.GetStateUri();
 
             // Assert
