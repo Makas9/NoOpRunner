@@ -16,7 +16,8 @@ namespace NoOpRunner.Core
         {
             Logging.Instance.Write($"[Composite/{nameof(PlatformsContainer)}] {nameof(ShiftShapes)}", LoggingLevel.CompositePattern);
 
-            Shapes.ForEach(x => x.ShiftShapes()); //Push and remove out of bounds
+            foreach (IMapPart shape in Shapes)
+                shape.ShiftShapes(); //Push and remove out of bounds
         }
 
         /// <summary>
@@ -33,11 +34,11 @@ namespace NoOpRunner.Core
             ShiftShapes();
 
             var generatedBlocks = message.Payload as List<List<ShapeBlock>>;
-            for (int i = 0; i < Shapes.Count; ++i)
-            {
-                if (Shapes[i] is StaticShape staticShape)
+
+            var shapes = Shapes.GetItems();
+            for (int i = 0; i < shapes.Count; ++i)
+                if (shapes[i] is StaticShape staticShape)
                     staticShape.AddShapeBlocks(generatedBlocks[i]);
-            }    
         }
     }
 }

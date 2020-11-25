@@ -2,6 +2,7 @@
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
+using NoOpRunner.Core.Iterators;
 using NoOpRunner.Core.PlayerStates;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
 using NoOpRunner.Core.Shapes.StaticShapes;
@@ -91,11 +92,11 @@ namespace NoOpRunner.Core.Shapes
         /// Unused, will need for collision, rename who needs it
         /// </summary>
         /// <returns></returns>
-        public override List<WindowPixel> Render()
+        public override WindowPixelCollection Render()
         {
             var pixels = base.Render();
 
-            pixels.ForEach(x => x.IsShape = false);
+            pixels.GetItems().ForEach(x => x.IsShape = false);
 
             return pixels;
         }

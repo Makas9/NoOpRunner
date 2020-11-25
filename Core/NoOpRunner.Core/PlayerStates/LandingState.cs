@@ -6,7 +6,7 @@ namespace NoOpRunner.Core.PlayerStates
     {
         public override Uri GetAnimationUri()
         {
-            Logging.Instance.Write("STATE: LANDING");
+            Logging.Instance.Write("STATE: LANDING", LoggingLevel.State);
 
             return ResourcesUriHandler.GetLandingAnimationUri();
         }

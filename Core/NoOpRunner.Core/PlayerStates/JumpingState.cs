@@ -6,7 +6,7 @@ namespace NoOpRunner.Core.PlayerStates
     {
         public override Uri GetAnimationUri()
         {
-            Logging.Instance.Write("STATE: JUMPING");
+            Logging.Instance.Write("STATE: JUMPING", LoggingLevel.State);
 
             return ResourcesUriHandler.GetJumpingAnimationUri();
         }

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NoOpRunner.Core.Interfaces;
+using NoOpRunner.Core.Iterators;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
 using System;
 using System.Collections.Generic;
@@ -72,11 +73,11 @@ namespace NoOpRunner.Core.Shapes
 
         public virtual void OnLoopFired(WindowPixel[,] gameScreen) { }
 
-        public virtual List<WindowPixel> Render()
+        public virtual WindowPixelCollection Render()
         {
             Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(Render)}", LoggingLevel.CompositePattern);
 
-            var windowPixels = new List<WindowPixel>();
+            var windowPixelCollection = new WindowPixelCollection();
 
             //Could use Flyweight pattern or Prototype pattern in the future
             foreach (var x in VisibleShapeBlocks)
@@ -84,10 +85,10 @@ namespace NoOpRunner.Core.Shapes
                 var absX = CenterPosX + x.OffsetX;
                 var absY = CenterPosY + x.OffsetY;
 
-                windowPixels.Add(new WindowPixel(absX, absY, isShape: true));
+                windowPixelCollection.Add(new WindowPixel(absX, absY, isShape: true));
             }
 
-            return windowPixels;
+            return windowPixelCollection;
         }
 
         public bool IsHit(int x, int y)

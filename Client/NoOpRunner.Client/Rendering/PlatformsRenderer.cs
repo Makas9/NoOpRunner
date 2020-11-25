@@ -1,6 +1,5 @@
 ﻿using NoOpRunner.Core;
 using NoOpRunner.Core.Interfaces;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -27,7 +26,8 @@ namespace NoOpRunner.Client.Rendering
             var rectangleWidth = canvas.ActualWidth / GameSettings.HorizontalCellCount;
             var rectangleHeight = canvas.ActualHeight / GameSettings.VerticalCellCount;
 
-            var pixels = PlatformsContainer.Render().ToList();
+            var pixels = PlatformsContainer.Render().GetItems();
+
             if (canvas.Children.Count != pixels.Count)
             {
                 canvas.Children.Clear();

@@ -19,27 +19,28 @@ namespace NoOpRunner.Core
 
         public IList<Tuple<WindowPixel, PowerUps>> GetPowerUpsEnumerable()
         {
-            var shapesPixels = GetShapesEnumerable().ToList();
-            var shapesPowerUps = Shapes.Select(x => ((PowerUp) x).PowerUpType).ToList();
+            var shapesPixels = GetWindowsPixelCollection().GetItems();
+            var shapesPowerUps = Shapes.GetItems().Select(x => ((PowerUp) x).PowerUpType);
 
             return shapesPixels.Zip(shapesPowerUps, (shapesPixel, shapesPowerUp)=> new Tuple<WindowPixel, PowerUps>(shapesPixel, shapesPowerUp)).ToList();
         }
 
         public void RemovePowerUp(int centerPosX, int centerPosY)
         {
-            Shapes.Remove(GetPowerUpAt(centerPosX, centerPosY));
+            Shapes.GetItems().Remove(GetPowerUpAt(centerPosX, centerPosY));
         }
 
         public PowerUp GetPowerUpAt(int centerPosX, int centerPosY)
         {
-            return Shapes.FirstOrDefault(x => x.IsAtPos(centerPosX, centerPosY)) as PowerUp;
+            return Shapes.GetItems().FirstOrDefault(x => x.IsAtPos(centerPosX, centerPosY)) as PowerUp;
         }
 
         public override void ShiftShapes()
         {
             Logging.Instance.Write($"[Composite/{nameof(PowerUpsContainer)}] {nameof(ShiftShapes)}", LoggingLevel.CompositePattern);
 
-            Shapes.ForEach(x => x.ShiftShapes());
+            foreach (IMapPart shape in Shapes)
+                shape.ShiftShapes(); //Push cells
         }
 
         /// <summary>
@@ -50,14 +51,13 @@ namespace NoOpRunner.Core
         {
             if (message.MessageType != MessageType.PowerUpsUpdate) 
                 return;
-            
+
             Logging.Instance.Write("Observer: power ups got update", LoggingLevel.Pattern);
 
             ShiftShapes();
 
             if (message.Payload !=null)
-            
-                Shapes.AddRange(message.Payload as List<BaseShape>); //Append generated power ups    
+                Shapes.GetItems().AddRange(message.Payload as List<BaseShape>); //Append generated power ups    
         }
     }
 }

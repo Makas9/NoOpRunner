@@ -1,4 +1,5 @@
 ﻿using NoOpRunner.Core.Interfaces;
+using NoOpRunner.Core.Iterators;
 using NoOpRunner.Core.Shapes;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,15 +73,18 @@ namespace NoOpRunner.Core
                 PowerUpsContainer.IsAtPos(centerPosX, centerPosY);
         }
 
-        public List<WindowPixel> Render()
+        public WindowPixelCollection Render()
         {
             Logging.Instance.Write($"[Composite/{nameof(GameState)}] {nameof(Render)}", LoggingLevel.CompositePattern);
 
-            var pixels = new List<WindowPixel>();
+            var pixelCollection = new WindowPixelCollection();
 
-            pixels = pixels.Union(Platforms.Render()).ToList();
+            foreach (WindowPixel pixel in Platforms.Render())
+            {
+                pixelCollection.Add(pixel);
+            }
 
-            return pixels;
+            return pixelCollection;
         }
 
         public WindowPixel[,] RenderPixels(bool ignoreCollision = false)

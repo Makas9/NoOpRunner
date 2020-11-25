@@ -1,4 +1,5 @@
-﻿using NoOpRunner.Core.Shapes;
+﻿using NoOpRunner.Core.Iterators;
+using NoOpRunner.Core.Shapes;
 using System.Collections.Generic;
 
 namespace NoOpRunner.Core.Interfaces
@@ -9,7 +10,7 @@ namespace NoOpRunner.Core.Interfaces
 
         WindowPixel[,] RenderPixels(bool ignoreCollision = false);
 
-        List<WindowPixel> Render();
+        WindowPixelCollection Render();
 
         bool IsAtPos(int centerPosX, int centerPosY);
 

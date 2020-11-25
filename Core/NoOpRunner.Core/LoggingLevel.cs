@@ -8,6 +8,8 @@ namespace NoOpRunner.Core
         Trace = 1,
         Pattern = 2,
         Other = 4,
-        CompositePattern = 8
+        State = 8,
+        Iterator = 16,
+        CompositePattern = 32
     }
 }
