@@ -12,9 +12,9 @@ namespace NoOpRunner.Core.Tests
         public void GetShape_WhenValidShapeAndCoordinatesGiven_ShouldReturnAppropriateShape()
         {
             // Arrange
-            var actual = new DamageCrystal(5, 5);
+            var expected = new DamageCrystal(5, 5);
             ShapeFactory shapeFactory = new ShapeFactory();
-            var expected = shapeFactory.GetShape(Shape.DamageCrystal, 5, 5);
+            var actual = shapeFactory.GetShape(Shape.DamageCrystal, 5, 5);
 
             // Assert
             expected.ShouldBeEquivalentTo(actual);
@@ -26,9 +26,9 @@ namespace NoOpRunner.Core.Tests
         public void GetShape_WhenValidShapeAndCoordinatesGiven_ShouldReturnAppropriateCoordinates(int x, int y)
         {
             // Arrange
-            var actual = new DamageCrystal(x, y).GetCoords();
+            var expected = new DamageCrystal(x, y).GetCoords();
             ShapeFactory shapeFactory = new ShapeFactory();
-            var expected = shapeFactory.GetShape(Shape.DamageCrystal, x, y).GetCoords();
+            var actual = shapeFactory.GetShape(Shape.DamageCrystal, x, y).GetCoords();
 
             // Assert
             expected.Item1.ShouldBe(actual.Item1);

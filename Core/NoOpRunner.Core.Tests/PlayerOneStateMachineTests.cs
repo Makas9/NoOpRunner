@@ -14,9 +14,9 @@ namespace NoOpRunner.Core.Tests
         public void Initial_WhenNothingGiven_ShouldHaveIdleState()
         {
             // Arrange
-            var actual = new IdleState();
+            var expected = new IdleState();
             PlayerOneStateMachine player = new PlayerOneStateMachine();
-            var expected = player.State;
+            var actual = player.State;
 
             // Assert
             expected.ShouldBeEquivalentTo(actual);
@@ -26,23 +26,23 @@ namespace NoOpRunner.Core.Tests
         public void SetState_WhenValidStateGiven_ShouldSetCurrentState()
         {
             // Arrange
-            var actual = new JumpingState();
+            var expected = new JumpingState();
             PlayerOneStateMachine player = new PlayerOneStateMachine();
 
             // Act
             player.SetState(new JumpingState());
 
             // Assert
-            player.State.ShouldBeEquivalentTo(actual);
+            expected.ShouldBeEquivalentTo(player.State);
         }
 
         [Fact]
         public void GetStateUri_WhenNothingGiven_ShouldReturnAnimationUri()
         {
             // Arrange
-            var actual = ResourcesUriHandler.GetIdleAnimationUri();
+            var expected = ResourcesUriHandler.GetIdleAnimationUri();
             PlayerOneStateMachine player = new PlayerOneStateMachine();
-            var expected = player.GetStateUri();
+            var actual = player.GetStateUri();
 
             // Assert
             expected.ShouldBe(actual);
@@ -52,28 +52,28 @@ namespace NoOpRunner.Core.Tests
         public void Run_WhenNothingGiven_ShouldSetRunningState()
         {
             // Arrange
-            var actual = new RunningState();
+            var expected = new RunningState();
             PlayerOneStateMachine player = new PlayerOneStateMachine();
 
             // Act
             player.Run();
 
             // Assert
-            player.State.ShouldBeEquivalentTo(actual);
+            expected.ShouldBeEquivalentTo(player.State);
         }
 
         [Fact]
         public void TurnLeft_WhenNothingGiven_ShouldSetIsLookingLeft()
         {
             // Arrange
-            var actual = true;
+            var expected = true;
             PlayerOneStateMachine player = new PlayerOneStateMachine();
 
             // Act
             player.TurnLeft();
 
             // Assert
-            player.IsLookingLeft.ShouldBe(actual);
+            expected.ShouldBe(player.IsLookingLeft);
         }
     }
 }
