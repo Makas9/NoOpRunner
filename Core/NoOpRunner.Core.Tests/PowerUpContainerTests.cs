@@ -59,10 +59,12 @@ namespace NoOpRunner.Core.Tests
             actualLength.ShouldBe(expectedLength);
             Shapes.GetItems().Last().ShouldNotBe(expectedShape);
         }
+
         [Theory]
         [InlineData(10, 10, 9, 10)]
         [InlineData(1, 1, 0, 1)]
         [InlineData(2, 2, 1, 2)]
+        [InlineData(5, 5, 4, 5)]
         public void ShiftShapes_WhenCalled_ShouldShiftObjectsHorizontallyToLeft(int x, int y, int expectedX, int expectedY)
         {
             // Arrange
