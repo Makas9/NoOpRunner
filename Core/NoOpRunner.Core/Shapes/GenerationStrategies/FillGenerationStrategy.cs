@@ -2,7 +2,7 @@
 
 namespace NoOpRunner.Core.Shapes.GenerationStrategies
 {
-    public class FillGenerationStrategy : GenerationStrategy
+    class FillGenerationStrategy : GenerationStrategy
     {
         public override List<ShapeBlock> GenerateShapeBlocks(int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY, int? startY = null)
         {
