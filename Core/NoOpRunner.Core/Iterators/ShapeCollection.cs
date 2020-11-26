@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using NoOpRunner.Core.Interfaces;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -27,11 +26,6 @@ namespace NoOpRunner.Core.Iterators
             Logging.Instance.Write("Iterator: ShapeCollection GetEnumerator()", LoggingLevel.Iterator);
 
             return new BackwardIterator(this);
-        }
-
-        internal bool Any(Func<object, object> p)
-        {
-            throw new NotImplementedException();
         }
     }
 }
