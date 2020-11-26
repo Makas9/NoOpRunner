@@ -102,6 +102,13 @@
     <Compile Include="NoOpRunnerTests.cs" />
     <Compile Include="ShapeBuilderTests.cs" />
     <Compile Include="GameStateBuilderTests.cs" />
+    <Compile Include="GenerationStrategyTests.cs" />
+    <Compile Include="LoggingTests.cs" />
+    <Compile Include="PassableShapeFactoryTests.cs" />
+    <Compile Include="ImpassableShapeFactoryTests.cs" />
+    <Compile Include="FactoryProducerTests.cs" />
+    <Compile Include="PlayerOneStateMachineTests.cs" />
+    <Compile Include="ShapeFactoryTests.cs" />
     <Compile Include="PowerUpContainerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
