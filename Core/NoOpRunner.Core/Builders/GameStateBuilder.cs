@@ -13,7 +13,7 @@ namespace NoOpRunner.Core.Builders
             return configurator = new GameStateConfigurator();
         }
 
-        public GameState Build()
+        public IMapPart Build()
         {
             if (configurator == null) throw new Exception("Configurator uninitialized");
 

@@ -71,7 +71,7 @@ namespace NoOpRunner.Core.Configurators
             return this;
         }
 
-        public GameState Build()
+        public IMapPart Build()
         {
             if (!mapInitialized) throw new Exception("Map uninitialized");
 
