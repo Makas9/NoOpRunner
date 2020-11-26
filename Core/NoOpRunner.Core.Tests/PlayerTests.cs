@@ -20,7 +20,6 @@ namespace NoOpRunner.Core.Tests
         {
             // Arrange
             var shape1 = new ImpassablePlatform(new PlatformerGenerationStrategy(), 0, 0, 1, 1);
-            CanPassPlatforms = false;
 
             // Act
             bool actualValue = CanOverlap(shape1);
@@ -29,18 +28,20 @@ namespace NoOpRunner.Core.Tests
             actualValue.ShouldBeFalse();
         }
 
-        [Fact]
-        public void CanOverlap_WhenPassedPassablePlatform_ShouldReturnTrueDependingOnPlayerState()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void CanOverlap_WhenPassedPassablePlatform_ShouldReturnTrueDependingOnPlayerState(bool canPassPlatforms)
         {
             // Arrange
             var shape1 = new PassablePlatform(new PlatformerGenerationStrategy(), 0, 0, 1, 1);
-            CanPassPlatforms = true;
+            CanPassPlatforms = canPassPlatforms;
 
             // Act
             bool actualValue = CanOverlap(shape1);
 
             // Assert
-            actualValue.ShouldBeTrue();
+            actualValue.ShouldBe(canPassPlatforms);
         }
 
         [Fact]

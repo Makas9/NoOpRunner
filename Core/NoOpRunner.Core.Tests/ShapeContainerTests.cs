@@ -14,7 +14,6 @@ namespace NoOpRunner.Core.Tests
             
         }
 
-        //[Fact(Skip ="Is not testable")]
         public override void ShiftShapes()
         {
             throw new NotImplementedException();
@@ -24,7 +23,6 @@ namespace NoOpRunner.Core.Tests
         {
             // Arrange
             int expectedLength = Shapes.GetItems().Count + 1;
-            //int expectedLength = 1;
 
             // Act
             var shape = new PowerUp(0,0, PowerUps.Double_Jump);
@@ -36,6 +34,7 @@ namespace NoOpRunner.Core.Tests
             Shapes.GetItems().Last().ShouldBe(shape);
 
         }
+
         [Theory]
         [InlineData(1, 1, 1, 1)]
         [InlineData(2, 2, 2, 2)]
@@ -52,6 +51,7 @@ namespace NoOpRunner.Core.Tests
             // Assert
             actualValue.ShouldBeTrue();
         }
+
         [Theory]
         [InlineData(1, 1, 0, 0)]
         [InlineData(1, 1, 0, 1)]
