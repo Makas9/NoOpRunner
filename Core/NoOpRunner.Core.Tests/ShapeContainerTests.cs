@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NoOpRunner.Core;
-using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
-using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
 using Xunit;
 using Shouldly;
@@ -49,7 +43,6 @@ namespace NoOpRunner.Core.Tests
         public void IsAtPos_WhenCalledExistingShape_ShouldReturnTrue(int x, int y, int expectedX, int expectedY)
         {
             // Arrange
-            var expectedValue = true;
             var shape = new PowerUp(x, y, PowerUps.Double_Jump);
             AddShape(shape);
 
@@ -57,7 +50,7 @@ namespace NoOpRunner.Core.Tests
             var actualValue = IsAtPos(expectedX, expectedY);
 
             // Assert
-            actualValue.ShouldBe(expectedValue);
+            actualValue.ShouldBeTrue();
         }
         [Theory]
         [InlineData(1, 1, 0, 0)]
@@ -66,7 +59,6 @@ namespace NoOpRunner.Core.Tests
         public void IsAtPos_WhenCalledNonExistantShape_ShouldReturnFalse(int x, int y, int expectedX, int expectedY)
         {
             // Arrange
-            var expectedValue = false;
             var shape = new PowerUp(x, y, PowerUps.Double_Jump);
             AddShape(shape);
 
@@ -74,7 +66,7 @@ namespace NoOpRunner.Core.Tests
             var actualValue = IsAtPos(expectedX, expectedY);
 
             // Assert
-            actualValue.ShouldBe(expectedValue);
+            actualValue.ShouldBeFalse();
         }
     }
 }

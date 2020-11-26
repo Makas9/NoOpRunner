@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NoOpRunner.Core;
-using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
-using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
 using NoOpRunner.Core.Shapes.StaticShapes;
 using Xunit;
@@ -23,30 +16,31 @@ namespace NoOpRunner.Core.Tests
         }
 
         [Fact]
-        public void CanOverlap_WhenPassedImpassablePlatform_ShouldReturnFalse()
+        public void CanOverlap_WhenPassedImpassablePlatform_ShouldReturnFalseDependingOnPlayerState()
         {
             // Arrange
-            var expectedValue = false;
             var shape1 = new ImpassablePlatform(new PlatformerGenerationStrategy(), 0, 0, 1, 1);
+            CanPassPlatforms = false;
 
             // Act
             bool actualValue = CanOverlap(shape1);
 
             // Assert
-            actualValue.ShouldBe(expectedValue);
+            actualValue.ShouldBeFalse();
         }
+
         [Fact]
-        public void CanOverlap_WhenPassedPassablePlatform_ShouldReturnFalse()
+        public void CanOverlap_WhenPassedPassablePlatform_ShouldReturnTrueDependingOnPlayerState()
         {
             // Arrange
-            var expectedValue = false;
             var shape1 = new PassablePlatform(new PlatformerGenerationStrategy(), 0, 0, 1, 1);
+            CanPassPlatforms = true;
 
             // Act
             bool actualValue = CanOverlap(shape1);
 
             // Assert
-            actualValue.ShouldBe(expectedValue);
+            actualValue.ShouldBeTrue();
         }
 
         [Fact]

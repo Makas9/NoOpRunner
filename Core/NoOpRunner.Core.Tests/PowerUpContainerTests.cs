@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NoOpRunner.Core;
-using NoOpRunner.Core.Dtos;
+﻿using System.Linq;
 using NoOpRunner.Core.Enums;
-using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
 using Xunit;
 using Shouldly;
@@ -19,12 +12,6 @@ namespace NoOpRunner.Core.Tests
         {
 
         }
-        /**
-         * Copy these comments to seperate testing parts
-        // Arrange
-        // Act
-        // Assert
-         */
 
         [Fact]
         public void GetPowerUpAt_WhenValidCoordinatesProvided_ShouldReturnAppropriatePowerup()
@@ -44,13 +31,12 @@ namespace NoOpRunner.Core.Tests
         public void GetPowerUpAt_WhenInValidCoordinatesProvided_ShouldReturnNull()
         {
             // Arrange
-            PowerUp expectedValue = null;
 
             // Act
             var actualShape = GetPowerUpAt(1, 1);
         
             // Assert
-            actualShape.ShouldBe(expectedValue);
+            actualShape.ShouldBeNull();
         }
 
         [Fact]
@@ -75,10 +61,11 @@ namespace NoOpRunner.Core.Tests
         }
         [Theory]
         [InlineData(10, 10, 9, 10)]
+        [InlineData(1, 1, 0, 1)]
+        [InlineData(2, 2, 1, 2)]
         public void ShiftShapes_WhenCalled_ShouldShiftObjectsHorizontallyToLeft(int x, int y, int expectedX, int expectedY)
         {
             // Arrange
-            var expectedValue = true;
             var shape2 = new PowerUp(1, 1, PowerUps.Double_Jump);
             var shape3 = new PowerUp(2, 2, PowerUps.Double_Jump);
             var expectedShape = new PowerUp(x, y, PowerUps.Double_Jump);
@@ -90,7 +77,7 @@ namespace NoOpRunner.Core.Tests
             ShiftShapes();
 
             // Assert
-            Shapes.GetItems().Exists(o => o.IsAtPos(expectedX, expectedY)).ShouldBe(expectedValue);
+            Shapes.GetItems().Exists(o => o.IsAtPos(expectedX, expectedY)).ShouldBeTrue();
         }
     }
 }
