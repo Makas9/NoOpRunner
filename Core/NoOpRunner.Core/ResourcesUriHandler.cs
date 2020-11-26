@@ -13,9 +13,9 @@ namespace NoOpRunner.Core
 
         static ResourcesUriHandler()
         {
-            spritesReader = new ResourceReader(@"..\..\Resources\SpritesList.resources");
+            spritesReader = new ResourceReader(@"..\..\..\..\Client\NoOpRunner.Client\Resources\SpritesList.resources");
 
-            soundsReader = new ResourceReader(@"..\..\Resources\SoundsList.resources");
+            soundsReader = new ResourceReader(@"..\..\..\..\Client\NoOpRunner.Client\Resources\SoundsList.resources");
         }
 
         public static Uri GetPowerUpSound(PowerUps powerUpType)
