@@ -15,7 +15,7 @@ namespace NoOpRunner.Core.Tests
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void GameStateBuilder_WhenMapIsUninitialized_AndShapeIsAdded_ShouldThrowException(bool initializeMap)
+        public void GameStateBuilder_WhenMapIsUninitializedAndShapeIsAdded_ShouldThrowException(bool initializeMap)
         {
             // Arrange
             var gameStateConfigurator = new GameStateBuilder().Configure();
@@ -38,7 +38,7 @@ namespace NoOpRunner.Core.Tests
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void GameStateBuilder_WhenPowerUpsAndMapAreUninitialized_AndPowerUpIsAdded_ShouldThrowException(bool initialize)
+        public void GameStateBuilder_WhenPowerUpsAndMapAreUninitializedAndPowerUpIsAdded_ShouldThrowException(bool initialize)
         {
             // Arrange
             var gameStateConfigurator = new GameStateBuilder().Configure();
@@ -62,7 +62,7 @@ namespace NoOpRunner.Core.Tests
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void GameStateBuilder_WhenMapIsUninitialized_AndPlayerIsAdded_ShouldThrowException(bool initializeMap)
+        public void GameStateBuilder_WhenMapIsUninitializedAndPlayerIsAdded_ShouldThrowException(bool initializeMap)
         {
             // Arrange
             var gameStateConfigurator = new GameStateBuilder().Configure();
