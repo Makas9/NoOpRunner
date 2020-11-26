@@ -1,10 +1,10 @@
-﻿using System;
+﻿using NoOpRunner.Core;
+using NoOpRunner.Core.Interfaces;
+using System;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using NoOpRunner.Core;
-using NoOpRunner.Core.Interfaces;
 
 namespace NoOpRunner.Client.Rendering
 {
@@ -25,7 +25,6 @@ namespace NoOpRunner.Client.Rendering
         {
             var rectangleWidth = canvas.ActualWidth / PowerUpsContainer.SizeX;
             var rectangleHeight = canvas.ActualHeight / PowerUpsContainer.SizeY;
-
 
             var pixels = PowerUpsContainer.GetPowerUpsEnumerable();
             

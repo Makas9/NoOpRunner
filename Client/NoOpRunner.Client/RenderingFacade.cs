@@ -1,12 +1,13 @@
-﻿using System;
+﻿using NoOpRunner.Client.PlayerAnimationDecorators;
+using NoOpRunner.Client.Rendering;
+using NoOpRunner.Core;
+using NoOpRunner.Core.Enums;
+using NoOpRunner.Core.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using NoOpRunner.Client.PlayerAnimationDecorators;
-using NoOpRunner.Client.Rendering;
-using NoOpRunner.Core.Enums;
-using NoOpRunner.Core.Interfaces;
 
 namespace NoOpRunner.Client
 {

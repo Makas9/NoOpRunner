@@ -1,12 +1,7 @@
 ﻿using Newtonsoft.Json;
-using NoOpRunner.Core.Enums;
-using NoOpRunner.Core.Shapes;
-using System;
+using NoOpRunner.Core.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NoOpRunner.Core.Iterators
 {
@@ -14,14 +9,14 @@ namespace NoOpRunner.Core.Iterators
     public class ShapeCollection : IteratorAggregate
     {
         [JsonProperty]
-        protected List<BaseShape> collection = new List<BaseShape>();
+        protected List<IMapPart> collection = new List<IMapPart>();
 
-        public List<BaseShape> GetItems()
+        public List<IMapPart> GetItems()
         {
             return collection;
         }
 
-        public void Add(BaseShape item)
+        public void Add(IMapPart item)
         {
             collection.Add(item);
         }

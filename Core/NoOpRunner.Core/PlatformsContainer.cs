@@ -2,9 +2,7 @@
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace NoOpRunner.Core
 {
@@ -16,24 +14,10 @@ namespace NoOpRunner.Core
 
         public override void ShiftShapes()
         {
-            foreach (BaseShape shape in Shapes)
-                shape.ShiftBlocks(); //Push and remove out of bounds
-        }
+            Logging.Instance.Write($"[Composite/{nameof(PlatformsContainer)}] {nameof(ShiftShapes)}", LoggingLevel.CompositePattern);
 
-        public List<List<ShapeBlock>> GetNextBlocks()
-        {
-            List<List<ShapeBlock>> result = new List<List<ShapeBlock>>();
-
-            var iterator = Shapes.GetEnumerator();
-            while (iterator.MoveNext())
-            {
-                BaseShape shape = (BaseShape)iterator.Current;
-                result.Add(shape.GetNextBlocks());
-            }
-
-            result.Reverse(); // The enumerator is a backwards iterator for no good reason, so we need to reverse the list to maintain the original order.
-
-            return result;
+            foreach (IMapPart shape in Shapes)
+                shape.ShiftShapes(); //Push and remove out of bounds
         }
 
         /// <summary>
