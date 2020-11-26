@@ -92,9 +92,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlayerDecoratorsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\NoOpRunner.Core\NoOpRunner.Core.csproj">
+      <Project>{a7f441a4-15e3-4c01-92f9-5ac2d65ff43f}</Project>
+      <Name>NoOpRunner.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NoOpRunner.Client.Logic\NoOpRunner.Client.Logic.csproj">
       <Project>{274b7a8c-2c33-4650-817b-7930c5a2422f}</Project>
       <Name>NoOpRunner.Client.Logic</Name>
