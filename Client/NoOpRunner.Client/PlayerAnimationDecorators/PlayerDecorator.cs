@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using NoOpRunner.Client.Rendering;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;

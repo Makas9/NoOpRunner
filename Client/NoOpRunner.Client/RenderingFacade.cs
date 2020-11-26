@@ -1,6 +1,5 @@
 ﻿using NoOpRunner.Client.PlayerAnimationDecorators;
 using NoOpRunner.Client.Rendering;
-using NoOpRunner.Core;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using System;

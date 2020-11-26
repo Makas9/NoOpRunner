@@ -1,5 +1,4 @@
 ﻿using NoOpRunner.Core.Shapes;
-using System;
 using NoOpRunner.Core.Enums;
 
 namespace NoOpRunner.Core.Controls
