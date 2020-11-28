@@ -53,7 +53,7 @@ namespace NoOpRunner.Core.Configurators
 
             var shape = action(shapeFactory);
 
-            gameState.Platforms.AddShape(shape);
+            gameState.Platforms.AddMapPart(shape);
 
             Logging.Instance.Write("[GameStateBuilder] Added shape", LoggingLevel.Pattern);
 
@@ -64,14 +64,14 @@ namespace NoOpRunner.Core.Configurators
         {
             if (!mapInitialized) throw new Exception("Map uninitialized");
 
-            gameState.Platforms.AddShape(shape);
+            gameState.Platforms.AddMapPart(shape);
 
             Logging.Instance.Write("[GameStateBuilder] Added shape", LoggingLevel.Pattern);
 
             return this;
         }
 
-        public GameState Build()
+        public IMapPart Build()
         {
             if (!mapInitialized) throw new Exception("Map uninitialized");
 
@@ -91,7 +91,7 @@ namespace NoOpRunner.Core.Configurators
                 Platforms.Add(shape);
             }
 
-            gameState.Platforms.AddShape(shape);
+            gameState.Platforms.AddMapPart(shape);
 
             Logging.Instance.Write("[GameStateBuilder] Add impassable shape", LoggingLevel.Pattern);
 
@@ -111,31 +111,31 @@ namespace NoOpRunner.Core.Configurators
                 Platforms.Add(shape);
             }
 
-            gameState.Platforms.AddShape(shape);
+            gameState.Platforms.AddMapPart(shape);
 
             Logging.Instance.Write("[GameStateBuilder] Added passable shape", LoggingLevel.Pattern);
 
             return this;
         }
 
-        public IGameStateConfigurator AddPowerUp(PowerUps type, Func<IReadOnlyList<BaseShape>, BaseShape> action)
+        public IGameStateConfigurator AddPowerUp(PowerUps type, Func<IMapPart, BaseShape> action)
         {
             if (!powerUpsInitialized) throw new Exception("PowerUps uninitialized");
 
-            var shape = action(Platforms.AsReadOnly());
+            var shape = action(gameState);
 
-            gameState.PowerUpsContainer.AddShape(new PowerUp(shape.CenterPosX, shape.CenterPosY + 1, type));//Center position????
+            gameState.PowerUpsContainer.AddMapPart(new PowerUp(shape.CenterPosX, shape.CenterPosY + 1, type));
 
             Logging.Instance.Write("[GameStateBuilder] Added power up", LoggingLevel.Pattern);
 
             return this;
         }
 
-        public IGameStateConfigurator AddPlayer(Func<IReadOnlyList<BaseShape>, BaseShape> action)
+        public IGameStateConfigurator AddPlayer(Func<IMapPart, BaseShape> action)
         {
             if (!mapInitialized) throw new Exception("Map uninitialized");
 
-            var shape = action(Platforms.AsReadOnly());
+            var shape = action(gameState);
 
             gameState.Player = new Player(shape.CenterPosX, shape.CenterPosY + 1);
 

@@ -61,6 +61,13 @@
     <Compile Include="Dtos\PowerUpUseDto.cs" />
     <Compile Include="Enums\KeyPress.cs" />
     <Compile Include="GenerationConstants.cs" />
+    <Compile Include="Interfaces\IMapPart.cs" />
+    <Compile Include="Iterators\Iterator.cs" />
+    <Compile Include="Iterators\IteratorAggregate.cs" />
+    <Compile Include="Iterators\SequentialOrderIterator.cs" />
+    <Compile Include="Iterators\BackwardIterator.cs" />
+    <Compile Include="Iterators\ShapeCollection.cs" />
+    <Compile Include="Iterators\WindowPixelCollection.cs" />
     <Compile Include="PlayerOnePowerUps.cs" />
     <Compile Include="Dtos\PlayerStateDto.cs" />
     <Compile Include="Enums\Entity.cs" />

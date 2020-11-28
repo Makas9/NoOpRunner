@@ -1,10 +1,9 @@
-﻿using NoOpRunner.Core.Dtos;
+﻿using System;
+using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace NoOpRunner.Core
 {
@@ -16,17 +15,16 @@ namespace NoOpRunner.Core
 
         public override void ShiftShapes()
         {
-            Shapes.ForEach(x => x.ShiftBlocks()); //Push and remove out of bounds
-        }
+            Logging.Instance.Write($"[Composite/{nameof(PlatformsContainer)}] {nameof(ShiftShapes)}", LoggingLevel.CompositePattern);
 
-        public List<List<ShapeBlock>> GetNextBlocks()
-        {
-            return Shapes.Select(x => x.GetNextBlocks()).ToList();
+            foreach (IMapPart shape in Shapes)
+                shape.ShiftShapes(); //Push and remove out of bounds
         }
 
         public Tuple<int, int> GetPlatformCenterPositions(int platformLevel)
         {
-            return new Tuple<int, int>(Shapes[platformLevel].CenterPosX, Shapes[platformLevel].CenterPosY);
+            var shapes = Shapes.GetItems();
+            return new Tuple<int, int>(((BaseShape)shapes[platformLevel]).CenterPosX, ((BaseShape)shapes[platformLevel]).CenterPosY);
         }
         
         /// <summary>
@@ -47,12 +45,11 @@ namespace NoOpRunner.Core
             if (generatedBlocks == null)
             
                 throw new NullReferenceException("Lost package");
-            
-            for (int i = 0; i < Shapes.Count; ++i)
-            {
-                if (Shapes[i] is StaticShape staticShape)
+
+            var shapes = Shapes.GetItems();
+            for (int i = 0; i < shapes.Count; ++i)
+                if (shapes[i] is StaticShape staticShape)
                     staticShape.AddShapeBlocks(generatedBlocks[i]);
-            }    
         }
     }
 }

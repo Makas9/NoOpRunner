@@ -28,7 +28,8 @@ namespace NoOpRunner.Core.Shapes
             CenterPosX += HorizontalSpeed;
             CenterPosY += VerticalSpeed;
 
-            foreach (var pixel in Render())
+            var shapePixels = this.Render();
+            foreach (WindowPixel pixel in shapePixels)
             {
                 if (!IsShapeHit(gameScreen, pixel.X, pixel.Y)) 
                     continue;

@@ -1,9 +1,10 @@
-﻿using System.Windows;
+﻿using NoOpRunner.Core;
+using NoOpRunner.Core.Interfaces;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using NoOpRunner.Core;
 
 namespace NoOpRunner.Client.Rendering
 {
@@ -14,7 +15,6 @@ namespace NoOpRunner.Client.Rendering
     public class PlatformsRenderer : BaseRenderer
     {
         private ImageBrush PlatformsSprite { get; set; }
-
         public PlatformsRenderer(ShapesContainer shapesContainer) : base(shapesContainer)
         {
         }
@@ -28,7 +28,7 @@ namespace NoOpRunner.Client.Rendering
             var rectangleWidth = canvas.ActualWidth / ShapesContainer.SizeX;
             var rectangleHeight = canvas.ActualHeight / ShapesContainer.SizeY;
             
-            foreach (var pixel in ShapesContainer.GetShapesEnumerable())
+            foreach (var pixel in ShapesContainer.Render().GetItems())
             {
                 if (canvasChildIndex >= canvasChildCount)
                 {

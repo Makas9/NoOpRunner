@@ -1,14 +1,17 @@
 ﻿using Newtonsoft.Json;
+using NoOpRunner.Core.Interfaces;
+using NoOpRunner.Core.Iterators;
 using NoOpRunner.Core.Shapes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NoOpRunner.Core
 {
-    public abstract class ShapesContainer
+    public abstract class ShapesContainer : IMapPart
     {
-        [JsonProperty] 
-        protected List<BaseShape> Shapes { get; set; }
+        [JsonProperty]
+        protected ShapeCollection Shapes { get; set; }
 
         public int SizeX { get; set; }
 
@@ -19,7 +22,7 @@ namespace NoOpRunner.Core
             SizeX = sizeX;
             SizeY = sizeY;
 
-            Shapes = new List<BaseShape>();
+            Shapes = new ShapeCollection();
         }
 
         public abstract void ShiftShapes();
@@ -33,11 +36,10 @@ namespace NoOpRunner.Core
         {
             var windowPixels = new WindowPixel[SizeX, SizeY];
 
-            foreach (var shape in Shapes)
+            foreach (IMapPart shape in Shapes)
             {
-                // var shapePixels = shape.Render();
 
-                foreach (var pixel in shape.Render())
+                foreach (WindowPixel pixel in shape.Render())
                 {
                     if (pixel.X < 0 ||
                         pixel.Y < 0 ||
@@ -63,11 +65,15 @@ namespace NoOpRunner.Core
             return windowPixels;
         }
 
-        public IEnumerable<WindowPixel> GetShapesEnumerable()
+        public WindowPixelCollection GetWindowsPixelCollection()
         {
-            foreach (var shape in Shapes)
+            var pixels = new WindowPixelCollection();
+
+            foreach (IMapPart shape in Shapes)
             {
-                foreach (var pixel in shape.Render())
+                var shapePixels = shape.Render();
+
+                foreach (WindowPixel pixel in shapePixels)
                 {
                     if (pixel.X < 0 ||
                         pixel.Y < 0 ||
@@ -76,9 +82,65 @@ namespace NoOpRunner.Core
                     {
                         throw new Exception("Shape pixel outside the bounds of the game window");
                     }
-                    yield return pixel;
+
+                    pixels.Add(pixel);
                 }
             }
+
+            return pixels;
+        }
+
+        public void AddMapPart(IMapPart mapPart)
+        {
+            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(AddMapPart)}", LoggingLevel.CompositePattern);
+
+            Shapes.Add(mapPart);
+        }
+
+        public bool IsAtPos(int centerPosX, int centerPosY)
+        {
+            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(IsAtPos)}", LoggingLevel.CompositePattern);
+
+            return Shapes.GetItems().Any(x => x.IsAtPos(centerPosX, centerPosY));
+        }
+
+        public List<List<ShapeBlock>> GetNextBlocks()
+        {
+            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(GetNextBlocks)}", LoggingLevel.CompositePattern);
+
+            List<List<ShapeBlock>> result = new List<List<ShapeBlock>>();
+
+            var iterator = Shapes.GetEnumerator();
+            while (iterator.MoveNext())
+            {
+                IMapPart shape = (IMapPart)iterator.Current;
+                result.Add(shape.GetNextBlocks().First());
+            }
+
+            result.Reverse(); // The enumerator is a backwards iterator for no good reason, so we need to reverse the list to maintain the original order.
+
+            return result;
+        }
+
+        public WindowPixel[,] RenderPixels(bool ignoreCollision = false) 
+        {
+            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(RenderPixels)}", LoggingLevel.CompositePattern);
+
+            return GetShapes(ignoreCollision);
+        }
+
+        public WindowPixelCollection Render() 
+        {
+            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(Render)}", LoggingLevel.CompositePattern);
+
+            return GetWindowsPixelCollection();
+        }
+
+        public List<T> GetOfType<T>() where T : IMapPart
+        {
+            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(GetOfType)}", LoggingLevel.CompositePattern);
+
+            return Shapes.OfType<T>().ToList();
         }
     }
 }

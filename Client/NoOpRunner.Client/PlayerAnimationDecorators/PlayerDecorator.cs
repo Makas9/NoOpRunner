@@ -1,7 +1,8 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
+using NoOpRunner.Client.Rendering;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
-using NoOpRunner.Core.Shapes;
 
 namespace NoOpRunner.Client.PlayerAnimationDecorators
 {
@@ -23,7 +24,7 @@ namespace NoOpRunner.Client.PlayerAnimationDecorators
 
         protected void UpdatePlayerWhileRemoving(VisualElementType visualElementType)
         {
-            if (Player.GetType() != typeof(Player))
+            if (Player.GetType() != typeof(PlayerRenderer))
             {
                 Player = ((PlayerDecorator) Player).RemoveLayer(visualElementType);
             }

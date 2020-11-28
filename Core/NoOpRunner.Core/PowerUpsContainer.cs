@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using NoOpRunner.Core.Dtos;
+﻿using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NoOpRunner.Core
 {
@@ -32,27 +32,28 @@ namespace NoOpRunner.Core
 
         public IList<Tuple<WindowPixel, PowerUps>> GetPowerUpsEnumerable()
         {
-            var shapesPixels = GetShapesEnumerable().ToList();
-            var shapesPowerUps = Shapes.Select(x => ((PowerUp) x).PowerUpType).ToList();
+            var shapesPixels = GetWindowsPixelCollection().GetItems();//WHY RETURN REVERSE???? OH MY GOD
+            shapesPixels.Reverse();
+            
+            var shapesPowerUps = Shapes.GetItems().Select(x => ((PowerUp) x).PowerUpType).ToList();
 
             return shapesPixels.Zip(shapesPowerUps, (shapesPixel, shapesPowerUp)=> new Tuple<WindowPixel, PowerUps>(shapesPixel, shapesPowerUp)).ToList();
         }
-        
         public void RemovePowerUp(int centerPosX, int centerPosY)
         {
-            Shapes.Remove(GetPowerUpAt(centerPosX, centerPosY));
+            Shapes.GetItems().Remove(GetPowerUpAt(centerPosX, centerPosY));
         }
-        
         public PowerUp GetPowerUpAt(int centerPosX, int centerPosY)
         {
-            return Shapes.FirstOrDefault(x => x.CenterPosX == centerPosX && x.CenterPosY == centerPosY) as PowerUp;
+            return Shapes.GetItems().FirstOrDefault(x => x.IsAtPos(centerPosX, centerPosY)) as PowerUp;
         }
 
         public override void ShiftShapes()
         {
-            Shapes.ForEach(x => x.CenterPosX--); //Push cells
+            Logging.Instance.Write($"[Composite/{nameof(PowerUpsContainer)}] {nameof(ShiftShapes)}", LoggingLevel.CompositePattern);
 
-            Shapes.RemoveAll(x => x.CenterPosX < 0); //Remove out of bounds
+            foreach (IMapPart shape in Shapes)
+                shape.ShiftShapes(); //Push cells
         }
 
         /// <summary>
@@ -63,14 +64,13 @@ namespace NoOpRunner.Core
         {
             if (message.MessageType != MessageType.PowerUpsUpdate) 
                 return;
-            
+
             Logging.Instance.Write("Observer: power ups got update", LoggingLevel.Pattern);
 
             ShiftShapes();
 
             if (message.Payload !=null)
-            
-                Shapes.AddRange(message.Payload as List<BaseShape>); //Append generated power ups    
+                Shapes.GetItems().AddRange(message.Payload as List<BaseShape>); //Append generated power ups    
         }
     }
 }

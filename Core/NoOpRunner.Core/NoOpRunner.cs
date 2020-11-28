@@ -27,24 +27,11 @@ namespace NoOpRunner.Core
 
         public event EventHandler<MessageDto> OnMessageReceived;
 
-        public PlatformsContainer PlatformsContainer
-        {
-            get => GameState?.Platforms;
-            set => GameState.Platforms = value;
-        }
+        public Player Player => Map.GetOfType<Player>().FirstOrDefault();
+        public PowerUpsContainer PowerUpsContainer => Map.GetOfType<PowerUpsContainer>().FirstOrDefault();
+        public PlatformsContainer PlatformsContainer => Map.GetOfType<PlatformsContainer>().FirstOrDefault();
 
-        public Player Player
-        {
-            get => GameState?.Player;
-            set => GameState.Player = value;
-        }
-        public PowerUpsContainer PowerUpsContainer
-        {
-            get => GameState?.PowerUpsContainer;
-            set => GameState.PowerUpsContainer = value;
-        }
-
-        private GameState GameState { get; set; }
+        public IMapPart Map { get; set; }
 
         public bool IsHost { get; private set; }
 
@@ -54,12 +41,14 @@ namespace NoOpRunner.Core
         {
             this.connectionManager = connectionManager;
             Observers = new List<IObserver>();
+
+            //Logging.Instance.EnableLevel(LoggingLevel.CompositePattern); - prevent spam
         }
 
         public async Task OnMapMoveLoopFired()
         {
             PowerUpsContainer.ShiftShapes();
-            
+
             PlatformsContainer.ShiftShapes();
 
             var platformsBlocks = PlatformsContainer.GetNextBlocks();
@@ -104,15 +93,14 @@ namespace NoOpRunner.Core
                     MessageType = MessageType.PowerUpsUpdate
                 });
             }
+            
+            Player.OnMapMoveLoopFired((WindowPixel[,])PlatformsContainer.RenderPixels().Clone());
 
             await connectionManager.SendMessageToClient(new MessageDto()
             {
                 MessageType = MessageType.PlatformsUpdate,
                 Payload = platformsBlocks
             });
-
-            Player.OnMapMoveLoopFired((WindowPixel[,])PlatformsContainer.GetShapes().Clone());
-            
         }
 
         public async Task SendMessage()
@@ -142,7 +130,7 @@ namespace NoOpRunner.Core
             {
                 case MessageType.InitialConnection:
                 case MessageType.InitialGame:
-                    messageDto.Payload = GameState;
+                    messageDto.Payload = Map;
 
                     break;
                 case MessageType.PlayerTwoPowerUp:
@@ -187,11 +175,11 @@ namespace NoOpRunner.Core
                 case MessageType.InitialConnection:
                 case MessageType.InitialGame:
 
-                    GameState = message.Payload as GameState;
+                    Map = message.Payload as GameState;
 
-                    AddObserver(GameState.Player);
-                    AddObserver(GameState.Platforms);
-                    AddObserver(GameState.PowerUpsContainer);
+                    AddObserver(Player);
+                    AddObserver(PlatformsContainer);
+                    AddObserver(PowerUpsContainer);
 
                     break;
                 default:
@@ -233,7 +221,8 @@ namespace NoOpRunner.Core
                 case PowerUps.Saw:
                     var impassableShapeFactory = new ImpassableShapeFactory();
                     var saw = impassableShapeFactory.CreateEntityShape(Shape.Saw, dto.X, dto.Y);
-                    PlatformsContainer.AddShape(saw);
+
+                    PlatformsContainer.AddMapPart(saw);
                     break;
                 default:
                     break;
@@ -269,25 +258,24 @@ namespace NoOpRunner.Core
                 .AddImpassableShape(f => f.CreateStaticShape(Shape.Platform, new RandomlySegmentedGenerationStrategy(), 0, 0, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount / 3))
                 .AddPassableShape(f => f.CreateStaticShape(Shape.Platform, new PlatformerGenerationStrategy(), 0, GameSettings.VerticalCellCount / 3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount * 2 / 3))
                 .AddPassableShape(f => f.CreateStaticShape(Shape.Platform, new RandomlySegmentedGenerationStrategy(), 0, GameSettings.VerticalCellCount * 2 / 3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount - 3))
-                .AddPlayer(platforms => platforms.Skip(1).First(p => p.GetType() == typeof(PassablePlatform)))
-                //-------------------------------------------------------------------------------
-                .AddPowerUp(PowerUps.Speed_Boost, platforms =>
+                .AddPlayer(map => map.GetOfType<StaticShape>().Skip(1).First(p => p.GetType() == typeof(PassablePlatform)))
+                .AddPowerUp(PowerUps.Speed_Boost, map =>
                 {
-                    var plat = platforms.First(p => p.GetType() == typeof(ImpassablePlatform));
+                    var plat = map.GetOfType<StaticShape>().First(p => p.GetType() == typeof(ImpassablePlatform));
                     int xCoord = plat.CenterPosX + 10;
                     int yCoord = plat.getClosestY(xCoord) + 1;
                     return new PowerUp(xCoord, yCoord, PowerUps.Speed_Boost);
                 })
-                .AddPowerUp(PowerUps.Double_Jump, platforms  =>
+                .AddPowerUp(PowerUps.Double_Jump, map =>
                 {
-                    var plat = platforms.First(p => p.GetType() == typeof(ImpassablePlatform));
+                    var plat = map.GetOfType<StaticShape>().First(p => p.GetType() == typeof(ImpassablePlatform));
                     int xCoord = plat.CenterPosX + 20;
                     int yCoord = plat.getClosestY(xCoord) + 1;
                     return new PowerUp(xCoord, yCoord, PowerUps.Double_Jump);
                 })
-                .AddPowerUp(PowerUps.Invulnerability, platforms  =>
+                .AddPowerUp(PowerUps.Invulnerability, map =>
                 {
-                    var plat = platforms.First(p => p.GetType() == typeof(ImpassablePlatform));
+                    var plat = map.GetOfType<StaticShape>().First(p => p.GetType() == typeof(ImpassablePlatform));
                     int xCoord = plat.CenterPosX + 25;
                     int yCoord = plat.getClosestY(xCoord) + 1;
                     return new PowerUp(xCoord, yCoord, PowerUps.Invulnerability);
@@ -295,8 +283,8 @@ namespace NoOpRunner.Core
                 //.AddShape(f => f.GetShape(Shape.Saw, 2, 5)) // DEMO: Factory Pattern
                 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^WTF^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                 .Build();
-                
-            GameState = initialGameState;
+
+            Map = initialGameState;
 
             //LabTest.TestPrototype(); // DEMO: Prototype Pattern
         }

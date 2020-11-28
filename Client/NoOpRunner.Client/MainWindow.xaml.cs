@@ -118,12 +118,12 @@ namespace NoOpRunner.Client
         {
             this.KeyDown += (s, e) =>
             {
-                inputHandler.HandleKeyDownEvent(e, (WindowPixel[,])Game.PlatformsContainer.GetShapes(!Game.IsHost).Clone());
+                inputHandler.HandleKeyDownEvent(e, (WindowPixel[,])Game.PlatformsContainer.RenderPixels(!Game.IsHost).Clone());
             };
 
             this.KeyUp += (s, e) =>
             {
-                inputHandler.HandleKeyUpEvent(e, (WindowPixel[,])Game.PlatformsContainer.GetShapes(!Game.IsHost).Clone());
+                inputHandler.HandleKeyUpEvent(e, (WindowPixel[,])Game.PlatformsContainer.RenderPixels(!Game.IsHost).Clone());
             };
         }
     }

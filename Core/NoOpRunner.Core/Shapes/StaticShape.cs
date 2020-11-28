@@ -23,7 +23,7 @@ namespace NoOpRunner.Core.Shapes
         /// <summary>
         /// Get the first out-of-bounds ShapeBlocks, which should be sent to client. Called by host.
         /// </summary>
-        public override List<ShapeBlock> GetNextBlocks()
+        public override List<List<ShapeBlock>> GetNextBlocks()
         {
             var nextBlock = ShapeBlocks.FirstOrDefault(x => x.OffsetX >= GameSettings.HorizontalCellCount);
             if (nextBlock is null)
@@ -34,7 +34,7 @@ namespace NoOpRunner.Core.Shapes
                 nextBlock = blocks.First();
                 ShapeBlocks.AddRange(GenerationStrategy.MakeRelative(blocks, CenterPosX, CenterPosY));
             }
-            return ShapeBlocks.Where(x => x.OffsetX == nextBlock.OffsetX).ToList();
+            return new List<List<ShapeBlock>> { ShapeBlocks.Where(x => x.OffsetX == nextBlock.OffsetX).ToList() };
         }
 
         /// <summary>
