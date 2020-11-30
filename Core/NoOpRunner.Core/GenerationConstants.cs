@@ -11,14 +11,14 @@ namespace NoOpRunner.Core
         public static readonly Dictionary<PowerUps, double> PowerUpsPossibilities = new Dictionary<PowerUps, double>()
         {
             // {PowerUps.Invisibility, 0.25},
-            {PowerUps.Invulnerability, 0.5},
-            {PowerUps.Double_Jump, 0.75},
+            {PowerUps.Invulnerability, 0.1},
+            {PowerUps.Double_Jump, 0.8},
             {PowerUps.Speed_Boost, 1}
         };
 
         public static readonly Dictionary<int, double> PlatformsLevelPossibilities = new Dictionary<int, double>()
         {
-            {0, 0.33},//
+            {0, 0.75},//
             {1, 0.80},
             {2, 1}
         };

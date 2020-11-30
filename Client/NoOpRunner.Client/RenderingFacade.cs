@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using NoOpRunner.Core.Shapes;
 
 namespace NoOpRunner.Client
 {
@@ -46,7 +47,17 @@ namespace NoOpRunner.Client
 
             game.Player.LoopPowerUps();
 
-            var powerUp = game.PowerUpsContainer.GetPowerUpAt(game.Player.CenterPosX, game.Player.CenterPosY);
+            PowerUp powerUp = null;
+            
+            for (int i = 0; i < 2; i++)//All height of character
+            {
+                powerUp = game.PowerUpsContainer.GetPowerUpAt(game.Player.CenterPosX, game.Player.CenterPosY+i);
+                
+                if (powerUp!= null)
+                
+                    break;
+            }
+            
 
             if (powerUp != null)
             {
@@ -55,15 +66,14 @@ namespace NoOpRunner.Client
                     game.Player.TakePowerUp(powerUp.PowerUpType); //Player pick up power up    
                 }
                 
-                if (powerUp.PowerUpType == PowerUps.Double_Jump && !DisplayingPlayerOnePowerUps.Contains(PowerUps.Double_Jump))
+                if (powerUp.PowerUpType == PowerUps.Double_Jump && !DisplayingPlayerOnePowerUps.Contains(powerUp.PowerUpType))
                 {
                     AddDecoratorLayer(powerUp.PowerUpType); //Add decorator layer   
                     
-                    DisplayingPlayerOnePowerUps.Add(PowerUps.Double_Jump);
+                    DisplayingPlayerOnePowerUps.Add(powerUp.PowerUpType);
                 }
 
-                game.PowerUpsContainer.RemovePowerUp(game.Player.CenterPosX,
-                    game.Player.CenterPosY); //Remove power up from display
+                game.PowerUpsContainer.RemovePowerUp(powerUp.CenterPosX, powerUp.CenterPosY); //Remove power up from display
             }
 
             foreach (var usingPowerUp in game.Player.ActivePowerUps)
@@ -82,42 +92,47 @@ namespace NoOpRunner.Client
             if (playerUsedPowerUp != null)
             {
                 DisplayingPlayerOnePowerUps.Remove((PowerUps) playerUsedPowerUp);
-
+                
                 GifImage animation;
                 //Remove layer
-                switch (playerUsedPowerUp)
+                if (PlayerRenderer.GetType()!=typeof(PlayerRenderer))
                 {
-                    case PowerUps.Speed_Boost:
-                        PlayerRenderer = ((PlayerDecorator) PlayerRenderer).RemoveLayer(VisualElementType.SpeedBoost);
+                    switch (playerUsedPowerUp)
+                    {
+                        case PowerUps.Speed_Boost:
+                            PlayerRenderer = ((PlayerDecorator) PlayerRenderer).RemoveLayer(VisualElementType.SpeedBoost);
 
-                        animation = playerCanvas.Children.OfType<GifImage>()
-                            .FirstOrDefault(x => x.VisualType == VisualElementType.SpeedBoost);
+                            animation = playerCanvas.Children.OfType<GifImage>()
+                                .FirstOrDefault(x => x.VisualType == VisualElementType.SpeedBoost);
 
-                        playerCanvas.Children.Remove(animation);
-                        break;
-                    case PowerUps.Invisibility:
+                            playerCanvas.Children.Remove(animation);
+                            break;
+                        case PowerUps.Invisibility:
 
-                        break;
-                    case PowerUps.Invulnerability:
-                        PlayerRenderer =
-                            ((PlayerDecorator) PlayerRenderer).RemoveLayer(VisualElementType.Invulnerability);
+                            break;
+                        case PowerUps.Invulnerability:
+                            PlayerRenderer =
+                                ((PlayerDecorator) PlayerRenderer).RemoveLayer(VisualElementType.Invulnerability);
 
-                        animation = playerCanvas.Children.OfType<GifImage>()
-                            .FirstOrDefault(x => x.VisualType == VisualElementType.Invulnerability);
+                            animation = playerCanvas.Children.OfType<GifImage>()
+                                .FirstOrDefault(x => x.VisualType == VisualElementType.Invulnerability);
 
-                        playerCanvas.Children.Remove(animation);
-                        break;
-                    case PowerUps.Double_Jump:
-                        PlayerRenderer = ((PlayerDecorator) PlayerRenderer).RemoveLayer(VisualElementType.DoubleJump);
+                            playerCanvas.Children.Remove(animation);
+                            break;
+                        case PowerUps.Double_Jump:
+                            if (!game.Player.PlayerOnePowerUps.IsAvailable(PowerUps.Double_Jump))
+                            {
+                                PlayerRenderer = ((PlayerDecorator) PlayerRenderer).RemoveLayer(VisualElementType.DoubleJump);
 
-                        animation = playerCanvas.Children.OfType<GifImage>()
-                            .FirstOrDefault(x => x.VisualType == VisualElementType.DoubleJump);
+                                animation = playerCanvas.Children.OfType<GifImage>()
+                                    .FirstOrDefault(x => x.VisualType == VisualElementType.DoubleJump);
 
-                        playerCanvas.Children.Remove(animation);
-
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                                playerCanvas.Children.Remove(animation);    
+                            }
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
                 }
             }
 

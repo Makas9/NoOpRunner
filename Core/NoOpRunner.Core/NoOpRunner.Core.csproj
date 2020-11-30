@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivePowerUp.cs" />
     <Compile Include="Builders\GameStateBuilder.cs" />
     <Compile Include="Builders\ShapeBuilder.cs" />
     <Compile Include="Configurators\GameStateConfigurator.cs" />
