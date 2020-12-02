@@ -17,3 +17,5 @@ DoubleJump=/Resources/Sprites/PowerUps/PlayerOne/DoubleJump.png
 
 PlayerSpeedBoostVisual=/Resources/Sprites/PlayerOne/PowerUps/SpeedBoost.gif
 SpeedBoost=/Resources/Sprites/PowerUps/PlayerOne/SpeedBoost.png
+
+Saw=/Resources/Sprites/Traps/Saw.gif

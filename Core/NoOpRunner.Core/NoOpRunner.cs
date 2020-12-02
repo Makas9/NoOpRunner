@@ -30,6 +30,8 @@ namespace NoOpRunner.Core
         public Player Player => Map.GetOfType<Player>().FirstOrDefault();
         public PowerUpsContainer PowerUpsContainer => Map.GetOfType<PowerUpsContainer>().FirstOrDefault();
         public PlatformsContainer PlatformsContainer => Map.GetOfType<PlatformsContainer>().FirstOrDefault();
+        
+        public PlayerTwo PlayerTwo { get; set; }
 
         public IMapPart Map { get; set; }
 
@@ -41,6 +43,8 @@ namespace NoOpRunner.Core
         {
             this.connectionManager = connectionManager;
             Observers = new List<IObserver>();
+            
+            PlayerTwo = new PlayerTwo();
 
             //Logging.Instance.EnableLevel(LoggingLevel.CompositePattern); - prevent spam
         }
@@ -216,36 +220,23 @@ namespace NoOpRunner.Core
 
         private void HandlePlayerTwoPowerUp(PowerUpUseDto dto)
         {
-            switch (dto.Type)
-            {
-                case PowerUps.Saw:
-                    var impassableShapeFactory = new ImpassableShapeFactory();
-                    var saw = impassableShapeFactory.CreateEntityShape(Shape.Saw, dto.X, dto.Y);
-
-                    PlatformsContainer.AddMapPart(saw);
-                    break;
-                default:
-                    break;
-            }
+            PowerUpsContainer.AddShape(new PowerUp(dto.X, dto.Y, dto.Type));
         }
 
-        public void HandleMouseClick(int x, int y)
+        public void SendHostActivePowerUp(int x, int y, PowerUps powerUps)
         {
             if (IsHost)
                 return;
 
-            var dto = new PowerUpUseDto
-            {
-                Type = PowerUps.Saw, // TODO: different types
-                X = x,
-                Y = y
-            };
-            HandlePlayerTwoPowerUp(dto);
-
             connectionManager.SendMessageToHost(new MessageDto
             {
                 MessageType = MessageType.PlayerTwoPowerUp,
-                Payload = dto
+                Payload = new PowerUpUseDto
+                {
+                    Type = powerUps, // TODO: different types
+                    X = x,
+                    Y = y
+                }
             });
         }
 

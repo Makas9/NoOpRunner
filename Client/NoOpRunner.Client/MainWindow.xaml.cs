@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using NoOpRunner.Client.MouseClickHandlers;
 
 namespace NoOpRunner.Client
 {
@@ -24,6 +25,8 @@ namespace NoOpRunner.Client
 
         private RenderingFacade renderingFacade;
         private IInputHandlerAbstraction inputHandler;
+
+        private MouseClickHandler playerTwoMouseClickHandler;
 
         public MainWindow()
         {
@@ -67,7 +70,19 @@ namespace NoOpRunner.Client
                 {
                     renderingFacade = new ClientRenderingFacade();
                     
-                    inputHandlerImpl = new InputHandlerImplementorPlayerTwo();
+                    inputHandlerImpl = new InputHandlerImplementorPlayerTwo(Game.PlayerTwo);
+                    
+                    playerTwoMouseClickHandler = new PowerUpHandler(Game);
+                    
+                    var chain = new ClickEffectHandler(Game);
+                    
+                    var chain1 = new StaticShapeHandler(Game);
+                    
+                    chain1.SetNextChainItem(new PlayerHandler(Game));
+                    
+                    chain.SetNextChainItem(chain1);
+                    
+                    playerTwoMouseClickHandler.SetNextChainItem(chain);
                 }
 
 
@@ -83,14 +98,18 @@ namespace NoOpRunner.Client
                 timer.Start();
                 Game.IsGameStarted = true;
 
-                background_panel.MouseLeftButtonDown += (o, a) =>
+                if (!Game.IsHost)
                 {
-                    var pos = a.GetPosition(background_panel);
-                    var cellWidth = (int)background_panel.ActualWidth / GameSettings.HorizontalCellCount;
-                    var cellHeight = (int)background_panel.ActualHeight / GameSettings.VerticalCellCount;
+                    GameGrid.MouseLeftButtonDown += (o, a) =>
+                    {
+                        var pos = a.GetPosition(background_panel);
+                        var cellWidth = (int)background_panel.ActualWidth / GameSettings.HorizontalCellCount;
+                        var cellHeight = (int)background_panel.ActualHeight / GameSettings.VerticalCellCount;
 
-                    Game.HandleMouseClick((int)pos.X / cellWidth, (int)(background_panel.ActualHeight - pos.Y) / cellHeight);
-                };
+                       playerTwoMouseClickHandler.Handle((int)pos.X / cellWidth, (int)(background_panel.ActualHeight - pos.Y) / cellHeight);
+                    };
+                }
+                
             };
         }
 

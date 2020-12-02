@@ -67,6 +67,11 @@
     <Compile Include="FlyweightTestOPP.xaml.cs">
       <DependentUpon>FlyweightTestOPP.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MouseClickHandlers\ClickEffectHandler.cs" />
+    <Compile Include="MouseClickHandlers\MouseClickHandler.cs" />
+    <Compile Include="MouseClickHandlers\PlayerHandler.cs" />
+    <Compile Include="MouseClickHandlers\PowerUpHandler.cs" />
+    <Compile Include="MouseClickHandlers\StaticShapeHandler.cs" />
     <Compile Include="RenderingFacade.cs" />
     <Compile Include="Rendering\BaseRenderer.cs" />
     <Compile Include="Rendering\GifImage.cs" />

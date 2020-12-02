@@ -81,7 +81,6 @@ namespace NoOpRunner.Core.Shapes
 
             var windowPixelCollection = new WindowPixelCollection();
 
-            //Could use Flyweight pattern or Prototype pattern in the future
             foreach (var x in VisibleShapeBlocks)
             {
                 var absX = CenterPosX + x.OffsetX;

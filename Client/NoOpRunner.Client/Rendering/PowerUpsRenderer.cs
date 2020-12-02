@@ -1,11 +1,12 @@
 ﻿using NoOpRunner.Core;
-using NoOpRunner.Core.Interfaces;
 using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using NoOpRunner.Core.Enums;
+using Shape = System.Windows.Shapes.Shape;
 
 namespace NoOpRunner.Client.Rendering
 {
@@ -34,27 +35,52 @@ namespace NoOpRunner.Client.Rendering
             {
                 if (canvasChildIndex >= canvasChildCount)
                 {
-                    Rectangle rec;
-                    
-                    if (!DisposedObjectsPool.Contains<Rectangle>())
+                    FrameworkElement rec;
+
+                    if (powerUp == PowerUps.Saw)
                     {
-                        rec = new Rectangle
+                        if (!DisposedObjectsPool.Contains<GifImage>())
                         {
-                            Width = rectangleWidth,
-                            Height = rectangleHeight
-                        };
+                            rec = new GifImage
+                            {
+                                Width = rectangleWidth,
+                                Height = rectangleHeight,
+                                GifSource = ResourcesUriHandler.GetPowerUp(powerUp),
+                                Stretch = Stretch.Fill
+                            };
+                        }
+                        else
+                        {
+                            rec = DisposedObjectsPool.Pop<GifImage>();
+
+                            rec.SetValue(FrameworkElement.WidthProperty, rectangleWidth);
+                            rec.SetValue(FrameworkElement.HeightProperty, rectangleHeight);
+                        }
+                        
                     }
                     else
                     {
-                        rec = DisposedObjectsPool.Pop<Rectangle>();
 
-                        rec.SetValue(FrameworkElement.WidthProperty, rectangleWidth);
-                        rec.SetValue(FrameworkElement.HeightProperty, rectangleHeight);
+                        if (!DisposedObjectsPool.Contains<Rectangle>())
+                        {
+                            rec = new Rectangle
+                            {
+                                Width = rectangleWidth,
+                                Height = rectangleHeight
+                            };
+                        }
+                        else
+                        {
+                            rec = DisposedObjectsPool.Pop<Rectangle>();
+
+                            rec.SetValue(FrameworkElement.WidthProperty, rectangleWidth);
+                            rec.SetValue(FrameworkElement.HeightProperty, rectangleHeight);
+                        }
+                        
+                        rec.SetValue(Shape.FillProperty,
+                            new ImageBrush(new BitmapImage(ResourcesUriHandler.GetPowerUp(powerUp))));
                     }
 
-                    rec.SetValue(Shape.FillProperty,
-                        new ImageBrush(new BitmapImage(ResourcesUriHandler.GetPowerUp(powerUp))));
-                    
                     Canvas.SetLeft(rec, rectangleWidth * windowPixel.X);
                     Canvas.SetBottom(rec, rectangleHeight * windowPixel.Y);
                     
@@ -67,9 +93,18 @@ namespace NoOpRunner.Client.Rendering
                     
                     Canvas.SetBottom(canvas.Children[canvasChildIndex], 
                         rectangleHeight * pixels[canvasChildIndex].Item1.Y);
+
+                    if (powerUp == PowerUps.Saw)
+                    {
+                        canvas.Children[canvasChildIndex].SetValue(GifImage.GifSourceProperty,
+                            ResourcesUriHandler.GetPowerUp(powerUp));
+                    }
+                    else
+                    {
+                        canvas.Children[canvasChildIndex].SetValue(Shape.FillProperty,
+                            new ImageBrush(new BitmapImage(ResourcesUriHandler.GetPowerUp(powerUp))));
+                    }
                     
-                    canvas.Children[canvasChildIndex].SetValue(Shape.FillProperty,
-                        new ImageBrush(new BitmapImage(ResourcesUriHandler.GetPowerUp(powerUp))));
                     
                     canvasChildIndex++;
                 }
