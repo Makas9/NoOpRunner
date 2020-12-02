@@ -7,7 +7,7 @@ namespace NoOpRunner.Core.Configurators
     {
         public override BaseShape Build()
         {
-            Logging.Instance.Write("[ShapeBuilder/PassablePlatform] Created passable platform", LoggingLevel.Pattern);
+            Logging.Instance.Write("[ShapeBuilder/PassablePlatform] Created passable platform", LoggingLevel.Builder);
             
             return new PassablePlatform(GenerationStrategy, LowerBoundX, LowerBoundY, UpperBoundX, UpperBoundY);
         }

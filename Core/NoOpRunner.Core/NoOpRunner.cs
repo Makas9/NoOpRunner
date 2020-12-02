@@ -7,6 +7,7 @@ using NoOpRunner.Core.Shapes;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
 using NoOpRunner.Core.Shapes.ShapeFactories;
 using NoOpRunner.Core.Shapes.StaticShapes;
+using NoOpRunner.Core.Visitors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -249,6 +250,18 @@ namespace NoOpRunner.Core
             Map = initialGameState;
 
             //LabTest.TestPrototype(); // DEMO: Prototype Pattern
+
+            // Visitor demo
+            var entityVisitor = new EntityCalculatingVisitor();
+            var unrenderedCountVisitor = new UnrenderedBlockCalculatingVisitor();
+            var visibleCountVisitor = new VisibleBlockCalculatingVisitor();
+            Map.Accept(entityVisitor);
+            Map.Accept(unrenderedCountVisitor);
+            Map.Accept(visibleCountVisitor);
+
+            Logging.Instance.Write($"[Visitor] Entity visitor counted {entityVisitor.EntityCount} entities.", LoggingLevel.Visitor);
+            Logging.Instance.Write($"[Visitor] Unrendered shape block counting visitor counted {unrenderedCountVisitor.UnrenderedShapeBlockCount} unrendered shape blocks.", LoggingLevel.Visitor);
+            Logging.Instance.Write($"[Visitor] Visible shape block counting visitor counted {visibleCountVisitor.VisibleShapeBlockCount} visible shape blocks.", LoggingLevel.Visitor);
         }
 
         public void Notify(MessageDto message)

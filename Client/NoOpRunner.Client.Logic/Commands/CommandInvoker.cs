@@ -15,7 +15,7 @@ namespace NoOpRunner.Client.Logic.Commands
 
         public void InvokeCommand<TRequest>(ICommand<TRequest> command, TRequest request)
         {
-            Logging.Instance.Write($"[Command] Command invoked: {command.GetType().Name}", LoggingLevel.Pattern);
+            Logging.Instance.Write($"[Command] Command invoked: {command.GetType().Name}", LoggingLevel.Command);
 
             var result = command.Execute(request);
 
@@ -35,7 +35,7 @@ namespace NoOpRunner.Client.Logic.Commands
             {
                 command = command.Next;
 
-                Logging.Instance.Write($"[Command] Undoing command: {command.Value.GetType().Name}", LoggingLevel.Pattern);
+                Logging.Instance.Write($"[Command] Undoing command: {command.Value.GetType().Name}", LoggingLevel.Command);
 
                 command.Value.Undo();
             }
@@ -49,7 +49,7 @@ namespace NoOpRunner.Client.Logic.Commands
 
             var command = commandQueue.First;
 
-            Logging.Instance.Write($"[Command] Undoing command: {command.Value.GetType().Name}", LoggingLevel.Pattern);
+            Logging.Instance.Write($"[Command] Undoing command: {command.Value.GetType().Name}", LoggingLevel.Command);
 
             command.Value.Undo();
 
@@ -58,7 +58,7 @@ namespace NoOpRunner.Client.Logic.Commands
 
         public void Reset()
         {
-            Logging.Instance.Write("[Command] Clearing queue", LoggingLevel.Pattern);
+            Logging.Instance.Write("[Command] Clearing queue", LoggingLevel.Command);
 
             commandQueue.Clear();
         }

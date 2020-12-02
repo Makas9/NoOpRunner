@@ -9,7 +9,7 @@ namespace NoOpRunner.Core.Controls
 
         public InputHandlerImplementorPlayerOne(Player player)
         {
-            Logging.Instance.Write("[InputHandlerImplementorPlayerOne]: initialized", LoggingLevel.Pattern);
+            Logging.Instance.Write("[InputHandlerImplementorPlayerOne]: initialized", LoggingLevel.Bridge);
             this.player = player;
         }
 

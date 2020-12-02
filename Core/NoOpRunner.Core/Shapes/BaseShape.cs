@@ -2,6 +2,7 @@
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Iterators;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
+using NoOpRunner.Core.Visitors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace NoOpRunner.Core.Shapes
 
         public virtual void ShiftBlocks()
         {
-            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(ShiftBlocks)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(ShiftBlocks)}", LoggingLevel.Composite);
 
             CenterPosX -= 1;
 
@@ -75,7 +76,7 @@ namespace NoOpRunner.Core.Shapes
 
         public virtual WindowPixelCollection Render()
         {
-            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(Render)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(Render)}", LoggingLevel.Composite);
 
             var windowPixelCollection = new WindowPixelCollection();
 
@@ -123,28 +124,28 @@ namespace NoOpRunner.Core.Shapes
 
         public void AddMapPart(IMapPart mapPart)
         {
-            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(AddMapPart)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(AddMapPart)}", LoggingLevel.Composite);
 
             // Do nothing
         }
 
         public bool IsAtPos(int centerPosX, int centerPosY)
         {
-            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(IsAtPos)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(IsAtPos)}", LoggingLevel.Composite);
 
             return CenterPosX == centerPosX && CenterPosY == centerPosY;
         }
 
         public void ShiftShapes()
         {
-            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(ShiftShapes)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(ShiftShapes)}", LoggingLevel.Composite);
 
             ShiftBlocks();
         }
 
         public WindowPixel[,] RenderPixels(bool ignoreCollision = false)
         {
-            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(RenderPixels)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(RenderPixels)}", LoggingLevel.Composite);
 
             // Do nothing
 
@@ -153,9 +154,14 @@ namespace NoOpRunner.Core.Shapes
 
         public List<T> GetOfType<T>() where T : IMapPart
         {
-            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(GetOfType)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(GetOfType)}", LoggingLevel.Composite);
 
             return new List<T>();
+        }
+
+        public virtual void Accept(INodeVisitor visitor)
+        {
+            throw new NotImplementedException("Visitor does not know how to handle the provided type");
         }
     }
 }

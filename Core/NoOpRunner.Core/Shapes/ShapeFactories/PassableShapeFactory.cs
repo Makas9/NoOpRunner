@@ -18,7 +18,7 @@ namespace NoOpRunner.Core.Shapes.ShapeFactories
 
         public override EntityShape CreateEntityShape(Shape shape, int x, int y)
         {
-            Logging.Instance.Write("Abstract Factory -> PassableShapeFactory used (" + shape + ")");
+            Logging.Instance.Write("Abstract Factory -> PassableShapeFactory used (" + shape + ")", LoggingLevel.Pattern);
 
             switch (shape)
             {
@@ -29,7 +29,7 @@ namespace NoOpRunner.Core.Shapes.ShapeFactories
         }
         public override BaseShape CreateStaticShape(Shape shape, GenerationStrategy strategy, int lowerBoundX, int lowerBoundY, int upperBoundX, int upperBoundY)
         {
-            Logging.Instance.Write("Abstract Factory -> PassableShapeFactory used (" + shape + ")");
+            Logging.Instance.Write("Abstract Factory -> PassableShapeFactory used (" + shape + ")", LoggingLevel.Pattern);
 
             switch (shape)
             {

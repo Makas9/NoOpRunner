@@ -1,6 +1,7 @@
 ﻿using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Iterators;
 using NoOpRunner.Core.Shapes;
+using NoOpRunner.Core.Visitors;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,9 +15,16 @@ namespace NoOpRunner.Core
 
         public IMapPart PowerUpsContainer { get; set; }
 
+        public void Accept(INodeVisitor visitor)
+        {
+            Platforms.Accept(visitor);
+            Player.Accept(visitor);
+            PowerUpsContainer.Accept(visitor);
+        }
+
         public void AddMapPart(IMapPart mapPart)
         {
-            Logging.Instance.Write($"[Composite/{nameof(GameState)}] {nameof(AddMapPart)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(GameState)}] {nameof(AddMapPart)}", LoggingLevel.Composite);
 
             if (mapPart is StaticShape)
             {
@@ -34,14 +42,14 @@ namespace NoOpRunner.Core
 
         public List<List<ShapeBlock>> GetNextBlocks()
         {
-            Logging.Instance.Write($"[Composite/{nameof(GameState)}] {nameof(GetNextBlocks)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(GameState)}] {nameof(GetNextBlocks)}", LoggingLevel.Composite);
 
             return Platforms.GetNextBlocks();
         }
 
         public List<T> GetOfType<T>() where T : IMapPart
         {
-            Logging.Instance.Write($"[Composite/{nameof(GameState)}] {nameof(GetOfType)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(GameState)}] {nameof(GetOfType)}", LoggingLevel.Composite);
 
             if (Platforms?.GetType() == typeof(T))
             {
@@ -66,7 +74,7 @@ namespace NoOpRunner.Core
 
         public bool IsAtPos(int centerPosX, int centerPosY)
         {
-            Logging.Instance.Write($"[Composite/{nameof(GameState)}] {nameof(IsAtPos)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(GameState)}] {nameof(IsAtPos)}", LoggingLevel.Composite);
 
             return Platforms.IsAtPos(centerPosX, centerPosY) ||
                 Player.IsAtPos(centerPosX, centerPosY) ||
@@ -75,7 +83,7 @@ namespace NoOpRunner.Core
 
         public WindowPixelCollection Render()
         {
-            Logging.Instance.Write($"[Composite/{nameof(GameState)}] {nameof(Render)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(GameState)}] {nameof(Render)}", LoggingLevel.Composite);
 
             var pixelCollection = new WindowPixelCollection();
 
@@ -89,7 +97,7 @@ namespace NoOpRunner.Core
 
         public WindowPixel[,] RenderPixels(bool ignoreCollision = false)
         {
-            Logging.Instance.Write($"[Composite/{nameof(GameState)}] {nameof(RenderPixels)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(GameState)}] {nameof(RenderPixels)}", LoggingLevel.Composite);
 
             // Do nothing
             return null;
@@ -97,7 +105,7 @@ namespace NoOpRunner.Core
 
         public void ShiftShapes()
         {
-            Logging.Instance.Write($"[Composite/{nameof(GameState)}] {nameof(ShiftShapes)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(GameState)}] {nameof(ShiftShapes)}", LoggingLevel.Composite);
 
             Platforms.ShiftShapes();
             PowerUpsContainer.ShiftShapes();
