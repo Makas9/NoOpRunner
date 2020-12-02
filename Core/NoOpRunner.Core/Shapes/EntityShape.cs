@@ -1,4 +1,5 @@
 ﻿using NoOpRunner.Core.Shapes.GenerationStrategies;
+using NoOpRunner.Core.Visitors;
 using System.Collections.Generic;
 
 namespace NoOpRunner.Core.Shapes
@@ -16,6 +17,11 @@ namespace NoOpRunner.Core.Shapes
         public override List<List<ShapeBlock>> GetNextBlocks()
         {
             return GetShapes();
+        }
+
+        public override void Accept(INodeVisitor visitor)
+        {
+            visitor.VisitEntityShape(this);
         }
     }
 }

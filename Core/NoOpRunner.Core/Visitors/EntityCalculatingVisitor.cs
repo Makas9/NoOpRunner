@@ -21,7 +21,6 @@ namespace NoOpRunner.Core.Visitors
         public void VisitStaticShape(StaticShape shape)
         {
             Logging.Instance.Write($"[Visitor] Entity calculating visitor visited a static shape with center coords {shape.CenterPosX}, {shape.CenterPosY}", LoggingLevel.Visitor);
-            return;
         }
     }
 }

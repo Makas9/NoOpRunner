@@ -9,12 +9,11 @@ namespace NoOpRunner.Core.Visitors
 
         public void VisitEntityShape(EntityShape shape)
         {
-            return; // Entity shapes do not calculate towards visible blocks
+            // Entity shapes do not calculate towards visible blocks
         }
 
         public void VisitMovingShape(MovingShape shape)
         {
-            return;
         }
 
         public void VisitStaticShape(StaticShape shape)
