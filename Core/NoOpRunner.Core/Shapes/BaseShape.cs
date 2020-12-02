@@ -159,15 +159,9 @@ namespace NoOpRunner.Core.Shapes
             return new List<T>();
         }
 
-        public void Accept(INodeVisitor visitor)
+        public virtual void Accept(INodeVisitor visitor)
         {
-            if (this is StaticShape shape)
-                visitor.VisitStaticShape(shape);
-            else if (this is EntityShape entity)
-                visitor.VisitEntityShape(entity);
-            else if (this is MovingShape movingShape)
-                visitor.VisitMovingShape(movingShape);
-            else throw new NotImplementedException("Visitor does not know how to handle the provided type");
+            throw new NotImplementedException("Visitor does not know how to handle the provided type");
         }
     }
 }
