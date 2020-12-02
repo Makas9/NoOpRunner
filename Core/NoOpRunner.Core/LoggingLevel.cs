@@ -10,6 +10,7 @@ namespace NoOpRunner.Core
         Other = 4,
         State = 8,
         Iterator = 16,
-        CompositePattern = 32
+        CompositePattern = 32,
+        TemplateMethod = 64
     }
 }
