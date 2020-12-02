@@ -51,6 +51,12 @@
     <Compile Include="Dto\ResolutionOptionDto.cs" />
     <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Interfaces\IMemento.cs" />
+    <Compile Include="Interpreter\AbstractExpression.cs" />
+    <Compile Include="Interpreter\ExpressionTreeBuilder.cs" />
+    <Compile Include="Interpreter\InterpreterContext.cs" />
+    <Compile Include="Interpreter\KeyValueExpression.cs" />
+    <Compile Include="Interpreter\LiteralExpression.cs" />
+    <Compile Include="Interpreter\SequenceExpression.cs" />
     <Compile Include="MementoCaretaker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
