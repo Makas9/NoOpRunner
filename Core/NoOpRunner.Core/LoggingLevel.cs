@@ -16,6 +16,7 @@ namespace NoOpRunner.Core
         Decorator = 512,
         Command = 1024,
         Builder = 2048,
-        Bridge = 4096
+        Bridge = 4096,
+        Memento = 8192
     }
 }

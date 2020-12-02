@@ -1,5 +1,4 @@
 ﻿using NoOpRunner.Core.Shapes;
-using System.Linq;
 
 namespace NoOpRunner.Core.Visitors
 {

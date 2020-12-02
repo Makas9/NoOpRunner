@@ -1,5 +1,7 @@
 ﻿using NoOpRunner.Client.Logic.Commands;
 using NoOpRunner.Client.Logic.Dto;
+using NoOpRunner.Client.Logic.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace NoOpRunner.Client.Logic.ViewModels
@@ -8,11 +10,13 @@ namespace NoOpRunner.Client.Logic.ViewModels
     {
         private readonly CommandInvoker<BaseCommand> commandInvoker;
         private readonly MainViewModel mainViewModel;
+        private readonly MementoCaretaker mementoCaretaker;
 
         public SettingsViewModel(MainViewModel viewModel)
         {
             commandInvoker = new CommandInvoker<BaseCommand>();
             mainViewModel = viewModel;
+            mementoCaretaker = new MementoCaretaker();
         }
 
         private int volumeLevel = 0;
@@ -93,6 +97,48 @@ namespace NoOpRunner.Client.Logic.ViewModels
             commandInvoker.UndoCommands();
 
             mainViewModel.IsSettingsViewOpen = false;
+        }
+
+        public IMemento CreateMemento()
+        {
+            return new Memento(this);
+        }
+
+        public void SetMemento(IMemento m)
+        {
+            if (!(m is Memento mem))
+                throw new ArgumentException("The provided memento did not originate this originator");
+
+            VolumeLevel = mem.VolumeLevel;
+            SelectedResolutionIndex = mem.SelectedResolutionIndex;
+        }
+
+        public void SaveSnapshot()
+        {
+            mementoCaretaker.AddMemento(CreateMemento());
+        }
+
+        public void RestoreSnapshot()
+        {
+            var lastMemento = mementoCaretaker.GetLastMemento();
+            if (lastMemento != null)
+                SetMemento(lastMemento);
+        }
+
+        private class Memento : IMemento
+        {
+            public int VolumeLevel { get; }
+            public int SelectedResolutionIndex { get; }
+
+            public DateTime CreationTime { get; } // Just to have some public metadata
+
+            public Memento(SettingsViewModel settings)
+            {
+                // Private fields are accessed here instead of the public properties to showcase that the memento has access to the settings' internal state
+                VolumeLevel = settings.volumeLevel;
+                SelectedResolutionIndex = settings.selectedResolutionIndex;
+                CreationTime = DateTime.Now;
+            }
         }
     }
 }
