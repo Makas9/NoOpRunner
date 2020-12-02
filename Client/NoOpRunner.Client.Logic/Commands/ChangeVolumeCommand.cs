@@ -1,8 +1,9 @@
 ﻿using NoOpRunner.Client.Logic.ViewModels;
+using NoOpRunner.Core;
 
 namespace NoOpRunner.Client.Logic.Commands
 {
-    public class ChangeVolumeCommand : BaseCommand<int>
+    public sealed class ChangeVolumeCommand : BaseCommand<int>
     {
         private readonly SettingsViewModel settingsViewModel;
 
@@ -15,6 +16,7 @@ namespace NoOpRunner.Client.Logic.Commands
 
         protected override bool ExecuteInternal(int newVolume)
         {
+            Logging.Instance.Write($"Template method step ExecuteInternal called from type {this.GetType()}", LoggingLevel.TemplateMethod);
             previousVolume = settingsViewModel.VolumeLevel;
             settingsViewModel.VolumeLevel = newVolume;
 
@@ -23,6 +25,7 @@ namespace NoOpRunner.Client.Logic.Commands
 
         protected override bool PreExecute(int newVolume)
         {
+            Logging.Instance.Write($"Template method step PreExecute called from type {this.GetType()}", LoggingLevel.TemplateMethod);
             if (settingsViewModel == null)
                 return false;
 
