@@ -1,7 +1,9 @@
 ﻿using NoOpRunner.Client.Logic.Base;
+using NoOpRunner.Client.Logic.Interpreter;
 using NoOpRunner.Core;
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Networking;
+using System;
 using System.Windows.Input;
 
 namespace NoOpRunner.Client.Logic.ViewModels
@@ -22,6 +24,7 @@ namespace NoOpRunner.Client.Logic.ViewModels
             SettingsViewModel = new SettingsViewModel(this);
 
             Game.OnMessageReceived += HandleMessageReceived;
+            IsPlaying = false;
         }
 
         public void HandleMessageReceived(object sender, MessageDto message)
@@ -46,6 +49,13 @@ namespace NoOpRunner.Client.Logic.ViewModels
             set => SetField(ref _StatusMessage, value);
         }
 
+        private string _userCommand = "";
+        public string UserCommand
+        {
+            get => _userCommand;
+            set => SetField(ref _userCommand, value);
+        }
+
         private bool _HostConnectButtonsEnabled = true;
         public bool HostConnectButtonsEnabled
         {
@@ -66,8 +76,14 @@ namespace NoOpRunner.Client.Logic.ViewModels
         public bool IsPlaying
         {
             get => _IsPlaying;
-            set => SetField(ref _IsPlaying, value);
+            set
+            {
+                SetField(ref _IsPlaying, value);
+                RaisePropertyChanged(nameof(IsNotPlaying));
+            }
         }
+
+        public bool IsNotPlaying => !IsPlaying;
 
         private bool _IsSettingsViewOpen = false;
         public bool IsSettingsViewOpen
@@ -140,6 +156,24 @@ namespace NoOpRunner.Client.Logic.ViewModels
             _OpenSettingsViewCommand ?? (_OpenSettingsViewCommand = new RelayCommand(() =>
             {
                 IsSettingsViewOpen = true;
+            }));
+
+        private ICommand _ExecuteUserQueryCommand;
+        public ICommand ExecuteUserQueryCommand =>
+            _ExecuteUserQueryCommand ?? (_ExecuteUserQueryCommand = new RelayCommand(() =>
+            {
+                var query = UserCommand;
+                UserCommand = "";
+
+                try
+                {
+                    var resultExpression = ExpressionTreeBuilder.Build(query);
+                    resultExpression.Interpret(new InterpreterContext(this));
+                }
+                catch (Exception e)
+                {
+                    Logging.Instance.Write($"The parsing of the user query failed. Exception: {e}", LoggingLevel.Trace);
+                }
             }));
     }
 }

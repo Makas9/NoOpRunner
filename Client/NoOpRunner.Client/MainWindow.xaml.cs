@@ -33,6 +33,8 @@ namespace NoOpRunner.Client
                 SetUpBackground();
 
                 var viewModel = (MainViewModel) DataContext;
+                // I'm not sure why this part wasn't done properly with commands in the first place
+                viewModel.StartPlayingCommand.Execute(null);
 
                 Game = viewModel.Game;
 
