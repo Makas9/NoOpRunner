@@ -21,16 +21,16 @@ namespace NoOpRunner.Client.Logic.Interpreter
             switch(Literal)
             {
                 case "host":
-                    context.ViewModel.StartHostCommand.Execute(new object()); // TODO: What do I pass here? Checks?
+                    context.ViewModel.StartHostCommand.Execute(null); // TODO: What do I pass here? Checks?
                     break;
                 case "connect":
-                    context.ViewModel.ConnectToHostCommand.Execute(new object());
+                    context.ViewModel.ConnectToHostCommand.Execute(null);
                     break;
                 case "settings":
-                    context.ViewModel.OpenSettingsViewCommand.Execute(new object());
+                    context.ViewModel.OpenSettingsViewCommand.Execute(null);
                     break;
                 case "send-message":
-                    context.ViewModel.SendMessageCommand.Execute(new object());
+                    context.ViewModel.SendMessageCommand.Execute(null);
                     break;
                 default:
                     throw new ArgumentException("User query contained a literal that cannot be interpreted");
