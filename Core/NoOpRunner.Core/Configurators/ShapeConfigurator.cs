@@ -20,7 +20,7 @@ namespace NoOpRunner.Core.Configurators
             UpperBoundX = upperBoundX;
             UpperBoundY = upperBoundY;
 
-            Logging.Instance.Write("[ShapeBuilder] Configured Bounds", LoggingLevel.Pattern);
+            Logging.Instance.Write("[ShapeBuilder] Configured Bounds", LoggingLevel.Builder);
 
             return this;
         }
@@ -29,7 +29,7 @@ namespace NoOpRunner.Core.Configurators
         {
             GenerationStrategy = strategy;
 
-            Logging.Instance.Write("[ShapeBuilder] Configured Generation Strategy", LoggingLevel.Pattern);
+            Logging.Instance.Write("[ShapeBuilder] Configured Generation Strategy", LoggingLevel.Builder);
 
             return this;
         }

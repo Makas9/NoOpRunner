@@ -259,9 +259,9 @@ namespace NoOpRunner.Core
             Map.Accept(unrenderedCountVisitor);
             Map.Accept(visibleCountVisitor);
 
-            Logging.Instance.Write($"[Visitor] Entity visitor counted {entityVisitor.EntityCount} entities.");
-            Logging.Instance.Write($"[Visitor] Unrendered shape block counting visitor counted {unrenderedCountVisitor.UnrenderedShapeBlockCount} unrendered shape blocks.");
-            Logging.Instance.Write($"[Visitor] Visible shape block counting visitor counted {visibleCountVisitor.VisibleShapeBlockCount} visible shape blocks.");
+            Logging.Instance.Write($"[Visitor] Entity visitor counted {entityVisitor.EntityCount} entities.", LoggingLevel.Visitor);
+            Logging.Instance.Write($"[Visitor] Unrendered shape block counting visitor counted {unrenderedCountVisitor.UnrenderedShapeBlockCount} unrendered shape blocks.", LoggingLevel.Visitor);
+            Logging.Instance.Write($"[Visitor] Visible shape block counting visitor counted {visibleCountVisitor.VisibleShapeBlockCount} visible shape blocks.", LoggingLevel.Visitor);
         }
 
         public void Notify(MessageDto message)

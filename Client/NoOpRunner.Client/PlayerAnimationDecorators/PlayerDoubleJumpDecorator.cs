@@ -16,7 +16,7 @@ namespace NoOpRunner.Client.PlayerAnimationDecorators
 
         public override void Display(Canvas canvas)
         {
-            Logging.Instance.Write("Player decorator: Displaying Double jump animation", LoggingLevel.Pattern);
+            Logging.Instance.Write("Player decorator: Displaying Double jump animation", LoggingLevel.Decorator);
 
             var doubleJumpAnimation = canvas.Children.OfType<GifImage>().FirstOrDefault(x=> x.VisualType == VisualElementType.DoubleJump);
 
