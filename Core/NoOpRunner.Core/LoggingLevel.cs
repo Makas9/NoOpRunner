@@ -11,6 +11,7 @@ namespace NoOpRunner.Core
         State = 8,
         Iterator = 16,
         Composite = 32,
+        TemplateMethod = 64,
         Visitor = 128,
         Facade = 256,
         Decorator = 512,

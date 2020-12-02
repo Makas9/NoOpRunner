@@ -1,4 +1,5 @@
 ﻿using NoOpRunner.Client.Logic.Interfaces;
+using NoOpRunner.Core;
 using System;
 
 namespace NoOpRunner.Client.Logic.Commands
@@ -28,6 +29,7 @@ namespace NoOpRunner.Client.Logic.Commands
 
         public bool Execute(TRequest request)
         {
+            Logging.Instance.Write($"Template method Execute called from type {this.GetType()}.", LoggingLevel.TemplateMethod);
             if (PreExecute(request))
                 return ExecuteInternal(request);
 
