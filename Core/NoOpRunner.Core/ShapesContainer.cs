@@ -2,6 +2,7 @@
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Iterators;
 using NoOpRunner.Core.Shapes;
+using NoOpRunner.Core.Visitors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -142,6 +143,14 @@ namespace NoOpRunner.Core
             Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(GetOfType)}", LoggingLevel.CompositePattern);
 
             return Shapes.OfType<T>().ToList();
+        }
+
+        public void Accept(INodeVisitor visitor)
+        {
+            foreach(var shape in Shapes.GetItems())
+            {
+                shape.Accept(visitor);
+            }
         }
     }
 }

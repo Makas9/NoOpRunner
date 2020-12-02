@@ -2,6 +2,7 @@
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Iterators;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
+using NoOpRunner.Core.Visitors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -156,6 +157,17 @@ namespace NoOpRunner.Core.Shapes
             Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(GetOfType)}", LoggingLevel.CompositePattern);
 
             return new List<T>();
+        }
+
+        public void Accept(INodeVisitor visitor)
+        {
+            if (this is StaticShape shape)
+                visitor.VisitStaticShape(shape);
+            else if (this is EntityShape entity)
+                visitor.VisitEntityShape(entity);
+            else if (this is MovingShape movingShape)
+                visitor.VisitMovingShape(movingShape);
+            else throw new NotImplementedException("Visitor does not know how to handle the provided type");
         }
     }
 }

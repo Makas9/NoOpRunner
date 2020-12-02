@@ -1,6 +1,7 @@
 ﻿using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Iterators;
 using NoOpRunner.Core.Shapes;
+using NoOpRunner.Core.Visitors;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,6 +14,13 @@ namespace NoOpRunner.Core
         public IMapPart Player { get; set; }
 
         public IMapPart PowerUpsContainer { get; set; }
+
+        public void Accept(INodeVisitor visitor)
+        {
+            Platforms.Accept(visitor);
+            Player.Accept(visitor);
+            PowerUpsContainer.Accept(visitor);
+        }
 
         public void AddMapPart(IMapPart mapPart)
         {
