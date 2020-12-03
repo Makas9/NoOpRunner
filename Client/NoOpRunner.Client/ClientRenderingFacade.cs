@@ -6,13 +6,11 @@ namespace NoOpRunner.Client
 {
     public class ClientRenderingFacade : RenderingFacade
     {
-        public override Task CycleGameFrames(Core.NoOpRunner game, Canvas playerCanvas, Canvas powerUpsCanvas, Canvas platformsCanvas)
+        public override async Task CycleGameFrames(Core.NoOpRunner game, Canvas playerCanvas, Canvas powerUpsCanvas, Canvas platformsCanvas)
         {
             Logging.Instance.Write("Facade pattern: Client", LoggingLevel.Pattern);
             
             BaseCycle(game, playerCanvas, platformsCanvas, powerUpsCanvas);
-
-            return null;
         }
     }
 }

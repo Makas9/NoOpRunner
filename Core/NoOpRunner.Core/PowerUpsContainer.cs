@@ -13,7 +13,7 @@ namespace NoOpRunner.Core
     /// </summary>
     public class PowerUpsContainer : ShapesContainer, IObserver
     {
-        private readonly Random random = new Random(DateTime.Now.Millisecond); 
+        private readonly Random random = RandomNumber.GetInstance(); 
         public PowerUpsContainer(int sizeX, int sizeY) : base(sizeX, sizeY)
         {
         }
