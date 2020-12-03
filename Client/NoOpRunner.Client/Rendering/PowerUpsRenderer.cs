@@ -1,6 +1,7 @@
 ﻿using NoOpRunner.Core;
 using NoOpRunner.Core.Interfaces;
 using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -12,50 +13,65 @@ namespace NoOpRunner.Client.Rendering
     /// Why not one class for all rendering you ask,
     /// I say for VE canvas on player hit or smtg(shaking platforms or blinking power ups, etc.)
     /// </summary>
-    public class PowerUpsRenderer : IVisualElement
+    public class PowerUpsRenderer : BaseRenderer
     {
-        private PowerUpsContainer PowerUpsContainer { get; set; }
-
-        public PowerUpsRenderer(PowerUpsContainer powerUpsContainer)
+        public PowerUpsRenderer(PowerUpsContainer shapesContainer) : base(shapesContainer)
         {
-            PowerUpsContainer = powerUpsContainer;
         }
 
-        public void Display(Canvas canvas)
+        public override void RenderContainerElements(Canvas canvas, out int canvasChildIndex, out int canvasChildCount)
         {
-            var rectangleWidth = canvas.ActualWidth / PowerUpsContainer.SizeX;
-            var rectangleHeight = canvas.ActualHeight / PowerUpsContainer.SizeY;
+            canvasChildIndex = 0;
+            canvasChildCount = canvas.Children.Count;
 
-            var pixels = PowerUpsContainer.GetPowerUpsEnumerable();
-            
-            if (canvas.Children.Count != pixels.Count)
+            var rectangleWidth = canvas.ActualWidth / ShapesContainer.SizeX;
+            var rectangleHeight = canvas.ActualHeight / ShapesContainer.SizeY;
+
+
+            var pixels = ((PowerUpsContainer) ShapesContainer).GetPowerUpsEnumerable();
+
+            foreach (var (windowPixel, powerUp) in pixels)
             {
-                canvas.Children.Clear();
-
-                foreach (var (windowPixel, powerUp) in pixels)
+                if (canvasChildIndex >= canvasChildCount)
                 {
-                    var rec = new Rectangle
+                    Rectangle rec;
+                    
+                    if (!DisposedObjectsPool.Contains<Rectangle>())
                     {
-                        Width = rectangleWidth,
-                        Height = rectangleHeight,
-                        Fill = new ImageBrush(new BitmapImage(ResourcesUriHandler.GetPowerUp(powerUp))),
-                        Stretch = Stretch.Fill
-                    };
+                        rec = new Rectangle
+                        {
+                            Width = rectangleWidth,
+                            Height = rectangleHeight
+                        };
+                    }
+                    else
+                    {
+                        rec = DisposedObjectsPool.Pop<Rectangle>();
+
+                        rec.SetValue(FrameworkElement.WidthProperty, rectangleWidth);
+                        rec.SetValue(FrameworkElement.HeightProperty, rectangleHeight);
+                    }
+
+                    rec.SetValue(Shape.FillProperty,
+                        new ImageBrush(new BitmapImage(ResourcesUriHandler.GetPowerUp(powerUp))));
+                    
                     Canvas.SetLeft(rec, rectangleWidth * windowPixel.X);
                     Canvas.SetBottom(rec, rectangleHeight * windowPixel.Y);
-
+                    
                     canvas.Children.Add(rec);
                 }
-            }
-            else
-            {
-                for (int i = 0; i < pixels.Count; i++)
+                else
                 {
-                    canvas.Children[i].SetValue(Canvas.WidthProperty, rectangleWidth);
-                    canvas.Children[i].SetValue(Canvas.HeightProperty, rectangleHeight);
-
-                    Canvas.SetLeft(canvas.Children[i], rectangleWidth * pixels[i].Item1.X);
-                    Canvas.SetBottom(canvas.Children[i], rectangleHeight * pixels[i].Item1.Y);
+                    Canvas.SetLeft(canvas.Children[canvasChildIndex], 
+                        rectangleWidth * pixels[canvasChildIndex].Item1.X);
+                    
+                    Canvas.SetBottom(canvas.Children[canvasChildIndex], 
+                        rectangleHeight * pixels[canvasChildIndex].Item1.Y);
+                    
+                    canvas.Children[canvasChildIndex].SetValue(Shape.FillProperty,
+                        new ImageBrush(new BitmapImage(ResourcesUriHandler.GetPowerUp(powerUp))));
+                    
+                    canvasChildIndex++;
                 }
             }
         }

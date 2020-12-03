@@ -82,7 +82,7 @@ namespace NoOpRunner.Core
 
             if (powerUp == PowerUps.Double_Jump)
             {
-                ExhaustedPowerUp = powerUp;
+                activePowerUps[powerUp] = 1;
             }
             else
             {

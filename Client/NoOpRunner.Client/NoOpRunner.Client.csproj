@@ -64,7 +64,11 @@
     <Compile Include="Controls\InputHandlerAbstractionArrows.cs" />
     <Compile Include="Controls\InputHandlerAbstractionWasd.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="FlyweightTestOPP.xaml.cs">
+      <DependentUpon>FlyweightTestOPP.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RenderingFacade.cs" />
+    <Compile Include="Rendering\BaseRenderer.cs" />
     <Compile Include="Rendering\GifImage.cs" />
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
@@ -73,6 +77,7 @@
     <Compile Include="Rendering\PlayerRenderer.cs" />
     <Compile Include="Rendering\PowerUpsRenderer.cs" />
     <Compile Include="Rendering\RenderingHelper.cs" />
+    <Page Include="FlyweightTestOPP.xaml" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

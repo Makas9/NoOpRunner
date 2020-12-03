@@ -1,4 +1,5 @@
-﻿using NoOpRunner.Core.Dtos;
+﻿using System;
+using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
@@ -20,6 +21,12 @@ namespace NoOpRunner.Core
                 shape.ShiftShapes(); //Push and remove out of bounds
         }
 
+        public Tuple<int, int> GetPlatformCenterPositions(int platformLevel)
+        {
+            var shapes = Shapes.GetItems();
+            return new Tuple<int, int>(((BaseShape)shapes[platformLevel]).CenterPosX, ((BaseShape)shapes[platformLevel]).CenterPosY);
+        }
+        
         /// <summary>
         /// For platforms update from client side, append generated cells
         /// </summary>
@@ -34,6 +41,10 @@ namespace NoOpRunner.Core
             ShiftShapes();
 
             var generatedBlocks = message.Payload as List<List<ShapeBlock>>;
+            
+            if (generatedBlocks == null)
+            
+                throw new NullReferenceException("Lost package");
 
             var shapes = Shapes.GetItems();
             for (int i = 0; i < shapes.Count; ++i)

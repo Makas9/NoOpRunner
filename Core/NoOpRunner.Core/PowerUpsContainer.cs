@@ -13,23 +13,36 @@ namespace NoOpRunner.Core
     /// </summary>
     public class PowerUpsContainer : ShapesContainer, IObserver
     {
+        private readonly Random random = RandomNumber.GetInstance(); 
         public PowerUpsContainer(int sizeX, int sizeY) : base(sizeX, sizeY)
         {
         }
 
+        public PowerUps? GeneratePowerUpOnMove()
+        {
+            if (random.NextDouble() > GenerationConstants.PowerUpsSpawnPossibility)
+            
+                return null;
+
+            var powerUpGuess = random.NextDouble();
+
+            return GenerationConstants.PowerUpsPossibilities
+                .FirstOrDefault(x => x.Value > powerUpGuess).Key;
+        }
+
         public IList<Tuple<WindowPixel, PowerUps>> GetPowerUpsEnumerable()
         {
-            var shapesPixels = GetWindowsPixelCollection().GetItems();
-            var shapesPowerUps = Shapes.GetItems().Select(x => ((PowerUp) x).PowerUpType);
+            var shapesPixels = GetWindowsPixelCollection().GetItems();//WHY RETURN REVERSE???? OH MY GOD
+            shapesPixels.Reverse();
+            
+            var shapesPowerUps = Shapes.GetItems().Select(x => ((PowerUp) x).PowerUpType).ToList();
 
             return shapesPixels.Zip(shapesPowerUps, (shapesPixel, shapesPowerUp)=> new Tuple<WindowPixel, PowerUps>(shapesPixel, shapesPowerUp)).ToList();
         }
-
         public void RemovePowerUp(int centerPosX, int centerPosY)
         {
             Shapes.GetItems().Remove(GetPowerUpAt(centerPosX, centerPosY));
         }
-
         public PowerUp GetPowerUpAt(int centerPosX, int centerPosY)
         {
             return Shapes.GetItems().FirstOrDefault(x => x.IsAtPos(centerPosX, centerPosY)) as PowerUp;

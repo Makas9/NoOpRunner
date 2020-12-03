@@ -92,14 +92,15 @@ namespace NoOpRunner.Core.Shapes
         /// Unused, will need for collision, rename who needs it
         /// </summary>
         /// <returns></returns>
-        public override WindowPixelCollection Render()
-        {
-            var pixels = base.Render();
-
-            pixels.GetItems().ForEach(x => x.IsShape = false);
-
-            return pixels;
-        }
+        // public override WindowPixelCollection Render()
+        // {
+        //     var pixels = base.Render();
+        //
+        //     pixels.GetItems().ForEach(x => x.IsShape = false);
+        //
+        //         yield return flyweightPixel;
+        //     }
+        // }
 
         public WindowPixel GetAnimationPixel(out int hitBoxY, out int hitBoxX)
         {

@@ -32,13 +32,13 @@ namespace NoOpRunner.Core.Shapes
             var shapePixels = this.Render();
             foreach (WindowPixel pixel in shapePixels)
             {
-                if (IsShapeHit(gameScreen, pixel.X, pixel.Y))
-                {
-                    // TODO: Add a way for different shapes to handle collisions differently
-                    CenterPosX = oldCenterPosX;
-                    CenterPosY = oldCenterPosY;
-                    return;
-                }
+                if (!IsShapeHit(gameScreen, pixel.X, pixel.Y)) 
+                    continue;
+                
+                // TODO: Add a way for different shapes to handle collisions differently
+                CenterPosX = oldCenterPosX;
+                CenterPosY = oldCenterPosY;
+                return;
             }
         }
 

@@ -39,9 +39,8 @@ namespace NoOpRunner.Core
 
             foreach (IMapPart shape in Shapes)
             {
-                var shapePixels = shape.Render();
 
-                foreach (WindowPixel pixel in shapePixels)
+                foreach (WindowPixel pixel in shape.Render())
                 {
                     if (pixel.X < 0 ||
                         pixel.Y < 0 ||

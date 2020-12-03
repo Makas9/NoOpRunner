@@ -9,10 +9,10 @@
             IsShape = isShape;
         }
 
-        public readonly int X;
+        public int X { get; set; }
 
-        public readonly int Y;
+        public int Y { get; set; }
 
-        public bool IsShape;
+        public bool IsShape { get; set; }
     }
 }

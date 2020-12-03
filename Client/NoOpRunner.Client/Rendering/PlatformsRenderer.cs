@@ -12,51 +12,61 @@ namespace NoOpRunner.Client.Rendering
     /// Why not one class for all rendering you ask,
     /// I say for VE canvas on player hit or smtg(shaking platforms or blinking power ups, etc.)
     /// </summary>
-    public class PlatformsRenderer : IVisualElement
+    public class PlatformsRenderer : BaseRenderer
     {
-        private IMapPart PlatformsContainer { get; set; }
-
-        public PlatformsRenderer(IMapPart platformsContainer)
+        private ImageBrush PlatformsSprite { get; set; }
+        public PlatformsRenderer(ShapesContainer shapesContainer) : base(shapesContainer)
         {
-            PlatformsContainer = platformsContainer;
         }
 
-        public void Display(Canvas canvas)
+        public override void RenderContainerElements(Canvas canvas, out int canvasChildIndex, out int canvasChildCount)
         {
-            var rectangleWidth = canvas.ActualWidth / GameSettings.HorizontalCellCount;
-            var rectangleHeight = canvas.ActualHeight / GameSettings.VerticalCellCount;
+            canvasChildIndex = 0;
+            
+            canvasChildCount = canvas.Children.Count;
 
-            var pixels = PlatformsContainer.Render().GetItems();
-
-            if (canvas.Children.Count != pixels.Count)
+            var rectangleWidth = canvas.ActualWidth / ShapesContainer.SizeX;
+            var rectangleHeight = canvas.ActualHeight / ShapesContainer.SizeY;
+            
+            foreach (var pixel in ShapesContainer.Render().GetItems())
             {
-                canvas.Children.Clear();
-
-                var imageBrush = new ImageBrush(new BitmapImage(ResourcesUriHandler.GetPlatformUri()));
-
-                foreach (var pixel in pixels)
+                if (canvasChildIndex >= canvasChildCount)
                 {
-                    var rec = new Rectangle
+                    Rectangle rec;
+                    
+                    if (!DisposedObjectsPool.Contains<Rectangle>())
                     {
-                        Width = rectangleWidth,
-                        Height = rectangleHeight,
-                        Fill = imageBrush
-                    };
+                        if (PlatformsSprite == null)
+                        
+                            PlatformsSprite = new ImageBrush(new BitmapImage(ResourcesUriHandler.GetPlatformUri()));
+                        
+                        rec = new Rectangle
+                        {
+                            Width = rectangleWidth,
+                            Height = rectangleHeight
+                        };
+                    }
+                    else
+                    {
+                        rec = DisposedObjectsPool.Pop<Rectangle>();
+                        
+                        rec.SetValue(FrameworkElement.WidthProperty, rectangleWidth);
+                        rec.SetValue(FrameworkElement.HeightProperty, rectangleHeight);
+                    }
+                    
+                    rec.SetValue(Shape.FillProperty, PlatformsSprite);
+                    
                     Canvas.SetLeft(rec, rectangleWidth * pixel.X);
                     Canvas.SetBottom(rec, rectangleHeight * pixel.Y);
-
+                    
                     canvas.Children.Add(rec);
                 }
-            }
-            else
-            {
-                for (int i = 0; i < pixels.Count; i++)
+                else
                 {
-                    canvas.Children[i].SetValue(FrameworkElement.WidthProperty, rectangleWidth);
-                    canvas.Children[i].SetValue(FrameworkElement.HeightProperty, rectangleHeight);
-
-                    Canvas.SetLeft(canvas.Children[i], rectangleWidth * pixels[i].X);
-                    Canvas.SetBottom(canvas.Children[i], rectangleHeight * pixels[i].Y);
+                    Canvas.SetLeft(canvas.Children[canvasChildIndex], rectangleWidth * pixel.X);
+                    Canvas.SetBottom(canvas.Children[canvasChildIndex], rectangleHeight * pixel.Y);
+                    
+                    canvasChildIndex++;
                 }
             }
         }

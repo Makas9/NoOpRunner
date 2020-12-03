@@ -51,19 +51,56 @@ namespace NoOpRunner.Core
             PowerUpsContainer.ShiftShapes();
 
             PlatformsContainer.ShiftShapes();
+
+            var platformsBlocks = PlatformsContainer.GetNextBlocks();
+
+            var powerUp = PowerUpsContainer.GeneratePowerUpOnMove();
             
+            if (powerUp != null)
+            {
+                var random = new Random(DateTime.Now.Millisecond).NextDouble();
+
+                var platformLevel = GenerationConstants.PlatformsLevelPossibilities
+                    .FirstOrDefault(x => x.Value > random).Key;
+
+                var platformCenterPositions = PlatformsContainer.GetPlatformCenterPositions(platformLevel);
+
+                var block = platformsBlocks[platformLevel]
+                    .OrderByDescending(x => x.OffsetY)
+                    .First();
+
+                var generatedPowerUp = new PowerUp(
+                    PlatformsContainer.SizeX-1,
+                    platformCenterPositions.Item2 + block.OffsetY + 1,
+                    (PowerUps) powerUp);
+                
+                PowerUpsContainer.AddShape(generatedPowerUp);
+                
+                await connectionManager.SendMessageToClient(new MessageDto()
+                {
+                    MessageType = MessageType.PowerUpsUpdate,
+                    Payload = new List<BaseShape>()
+                    {
+                        generatedPowerUp
+                    }
+                });
+
+            }
+            else
+            {
+                //Send null for now, because make client push power ups by himself will make a lot of sync problems
+                await connectionManager.SendMessageToClient(new MessageDto()
+                {
+                    MessageType = MessageType.PowerUpsUpdate
+                });
+            }
+            
+            Player.OnMapMoveLoopFired((WindowPixel[,])PlatformsContainer.RenderPixels().Clone());
+
             await connectionManager.SendMessageToClient(new MessageDto()
             {
                 MessageType = MessageType.PlatformsUpdate,
-                Payload = PlatformsContainer.GetNextBlocks()
-            });
-
-            Player.OnMapMoveLoopFired((WindowPixel[,])PlatformsContainer.RenderPixels().Clone());
-
-            //Send null for now, because make client push power ups by himself will make a lot of sync problems
-            await connectionManager.SendMessageToClient(new MessageDto()
-            {
-                MessageType = MessageType.PowerUpsUpdate
+                Payload = platformsBlocks
             });
         }
 
@@ -245,6 +282,7 @@ namespace NoOpRunner.Core
                     return new PowerUp(xCoord, yCoord, PowerUps.Invulnerability);
                 })
                 //.AddShape(f => f.GetShape(Shape.Saw, 2, 5)) // DEMO: Factory Pattern
+                //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^WTF^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                 .Build();
 
             Map = initialGameState;

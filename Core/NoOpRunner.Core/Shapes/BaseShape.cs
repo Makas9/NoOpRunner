@@ -21,6 +21,8 @@ namespace NoOpRunner.Core.Shapes
         protected GenerationStrategy Strategy { get; set; }
         protected int lowerBoundY;
         protected int upperBoundY;
+        
+        private WindowPixel FlyweightPixel { get; set; }
 
         protected BaseShape() { } // Needed for JSON deserialization
 
@@ -71,7 +73,7 @@ namespace NoOpRunner.Core.Shapes
 
             return (xCoords.ToArray(), yCoords.ToArray());
         }
-
+        
         public virtual void OnLoopFired(WindowPixel[,] gameScreen) { }
 
         public virtual WindowPixelCollection Render()
@@ -92,12 +94,12 @@ namespace NoOpRunner.Core.Shapes
             return windowPixelCollection;
         }
 
-        public bool IsHit(int x, int y)
+        public bool IsHit(int x, int y)//meh?
         {
             return ShapeBlocks.Any(s => s.OffsetX + CenterPosX == x && s.OffsetY + CenterPosY == y);
         }
 
-        public virtual void OnClick()
+        public virtual void OnClick()//meh?
         {
             // Do nothing by default
         }

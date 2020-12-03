@@ -2,9 +2,9 @@
 {
     public enum Shape
     {
-        Square,
-        Circle,
-        Rectangle,
+        Square,//meh??
+        Circle,//meh??
+        Rectangle,//meh??
         HealthCrystal,
         DamageCrystal,
         Saw,

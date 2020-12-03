@@ -49,14 +49,16 @@ namespace NoOpRunner.Client
 
             if (powerUp != null)
             {
-                if (powerUp.PowerUpType == PowerUps.Double_Jump)
-                {
-                    AddDecoratorLayer(powerUp.PowerUpType); //Add decorator layer    
-                }
-
                 if (game.IsHost)
                 {
                     game.Player.TakePowerUp(powerUp.PowerUpType); //Player pick up power up    
+                }
+                
+                if (powerUp.PowerUpType == PowerUps.Double_Jump && !DisplayingPlayerOnePowerUps.Contains(PowerUps.Double_Jump))
+                {
+                    AddDecoratorLayer(powerUp.PowerUpType); //Add decorator layer   
+                    
+                    DisplayingPlayerOnePowerUps.Add(PowerUps.Double_Jump);
                 }
 
                 game.PowerUpsContainer.RemovePowerUp(game.Player.CenterPosX,
