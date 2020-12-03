@@ -1,5 +1,6 @@
 ﻿using NoOpRunner.Core.Iterators;
 using NoOpRunner.Core.Shapes;
+using NoOpRunner.Core.Visitors;
 using System.Collections.Generic;
 
 namespace NoOpRunner.Core.Interfaces
@@ -19,5 +20,7 @@ namespace NoOpRunner.Core.Interfaces
         List<List<ShapeBlock>> GetNextBlocks();
 
         List<T> GetOfType<T>() where T : IMapPart;
+
+        void Accept(INodeVisitor visitor);
     }
 }

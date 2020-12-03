@@ -11,7 +11,7 @@ namespace NoOpRunner.Client.MouseClickHandlers
 
         protected override void HandleMouseClick(int positionX, int positionY)
         {
-            if ((Game.Player.CenterPosX == positionX && Game.Player.CenterPosY == positionY) || (Game.Player.CenterPosX == positionX && Game.Player.CenterPosY+1 == positionY))
+            if (Game.Player.CenterPosX == positionX && Game.Player.CenterPosY == positionY)
                 
                 return;
                 

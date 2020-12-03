@@ -15,7 +15,7 @@ namespace NoOpRunner.Core
 
         public override void ShiftShapes()
         {
-            Logging.Instance.Write($"[Composite/{nameof(PlatformsContainer)}] {nameof(ShiftShapes)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(PlatformsContainer)}] {nameof(ShiftShapes)}", LoggingLevel.Composite);
 
             foreach (IMapPart shape in Shapes)
                 shape.ShiftShapes(); //Push and remove out of bounds

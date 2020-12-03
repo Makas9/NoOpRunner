@@ -1,4 +1,5 @@
 ﻿using NoOpRunner.Core.Shapes.GenerationStrategies;
+using NoOpRunner.Core.Visitors;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -44,6 +45,11 @@ namespace NoOpRunner.Core.Shapes
         public void AddShapeBlocks(List<ShapeBlock> shapeBlocks)
         {
             ShapeBlocks.AddRange(shapeBlocks);
+        }
+
+        public override void Accept(INodeVisitor visitor)
+        {
+            visitor.VisitStaticShape(this);
         }
     }
 }

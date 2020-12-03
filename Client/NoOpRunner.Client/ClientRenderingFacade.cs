@@ -8,7 +8,7 @@ namespace NoOpRunner.Client
     {
         public override async Task CycleGameFrames(Core.NoOpRunner game, Canvas playerCanvas, Canvas powerUpsCanvas, Canvas platformsCanvas)
         {
-            Logging.Instance.Write("Facade pattern: Client", LoggingLevel.Pattern);
+            Logging.Instance.Write("Facade pattern: Client", LoggingLevel.Facade);
             
             BaseCycle(game, playerCanvas, platformsCanvas, powerUpsCanvas);
         }

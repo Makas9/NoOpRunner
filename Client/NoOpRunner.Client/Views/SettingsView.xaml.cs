@@ -45,6 +45,16 @@ namespace NoOpRunner.Client.Views
                 {
                     dataContext.CloseSettings();
                 };
+
+                this.saveSnapshotButton.Click += (o, a) =>
+                {
+                    dataContext.SaveSnapshot();
+                };
+
+                this.restoreSnapshotButton.Click += (o, a) =>
+                {
+                    dataContext.RestoreSnapshot();
+                };
             };
         }
     }

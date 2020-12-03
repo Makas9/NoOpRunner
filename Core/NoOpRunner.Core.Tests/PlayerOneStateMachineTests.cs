@@ -1,10 +1,6 @@
-﻿using NoOpRunner.Core.Enums;
-using Xunit;
+﻿using Xunit;
 using Shouldly;
-using NoOpRunner.Core.Shapes.ShapeFactories;
-using NoOpRunner.Core.Shapes.EntityShapes;
 using NoOpRunner.Core.PlayerStates;
-using System;
 
 namespace NoOpRunner.Core.Tests
 {

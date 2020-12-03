@@ -1,0 +1,32 @@
+﻿using NoOpRunner.Core.Enums;
+
+namespace NoOpRunner.Core.Controls
+{
+    public class InputHandlerImplementorPlayerTwo : InputHandlerImplementor
+    {
+        private PlayerTwo playerTwo;
+        
+        public InputHandlerImplementorPlayerTwo(PlayerTwo playerTwo)
+        {
+<<<<<<< HEAD
+            Logging.Instance.Write("[InputHandlerImplementorPlayerTwo]: initialized", LoggingLevel.Pattern);
+            
+            this.playerTwo = playerTwo;
+
+=======
+            Logging.Instance.Write("[InputHandlerImplementorPlayerTwo]: initialized", LoggingLevel.Bridge);
+>>>>>>> 2913d3e5124ae2f304c467773c6fda5e41e7ccde
+        }
+
+        public override void HandlePower1(WindowPixel[,] gameScreen)
+        {
+<<<<<<< HEAD
+            Logging.Instance.Write("Input Handler Bridge: P2 would trigger a powerup here", LoggingLevel.Pattern);
+
+            playerTwo.SetPowerUp(PowerUps.Saw);
+=======
+            Logging.Instance.Write("Input Handler Bridge: P2 would trigger a powerup here", LoggingLevel.Bridge);
+>>>>>>> 2913d3e5124ae2f304c467773c6fda5e41e7ccde
+        }
+    }
+}

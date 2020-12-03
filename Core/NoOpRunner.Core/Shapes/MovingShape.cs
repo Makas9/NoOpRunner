@@ -1,5 +1,6 @@
 using System;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
+using NoOpRunner.Core.Visitors;
 
 namespace NoOpRunner.Core.Shapes
 {
@@ -48,6 +49,11 @@ namespace NoOpRunner.Core.Shapes
                 x < 0 ||
                 y < 0 ||
                 (gameScreen[x, y] != default && gameScreen[x, y].IsShape);
+        }
+
+        public override void Accept(INodeVisitor visitor)
+        {
+            visitor.VisitMovingShape(this);
         }
     }
 }

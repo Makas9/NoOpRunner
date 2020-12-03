@@ -7,18 +7,17 @@ namespace NoOpRunner.Core.Controls
         private PlayerTwo playerTwo;
         
         public InputHandlerImplementorPlayerTwo(PlayerTwo playerTwo)
-        {
-            Logging.Instance.Write("[InputHandlerImplementorPlayerTwo]: initialized", LoggingLevel.Pattern);
-            
+        {            
             this.playerTwo = playerTwo;
 
+            Logging.Instance.Write("[InputHandlerImplementorPlayerTwo]: initialized", LoggingLevel.Bridge);
         }
 
         public override void HandlePower1(WindowPixel[,] gameScreen)
         {
-            Logging.Instance.Write("Input Handler Bridge: P2 would trigger a powerup here", LoggingLevel.Pattern);
-
             playerTwo.SetPowerUp(PowerUps.Saw);
+            
+            Logging.Instance.Write("Input Handler Bridge: P2 would trigger a powerup here", LoggingLevel.Bridge);
         }
     }
 }

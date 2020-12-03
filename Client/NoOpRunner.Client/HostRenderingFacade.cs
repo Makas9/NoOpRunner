@@ -9,7 +9,7 @@ namespace NoOpRunner.Client
         public override async Task CycleGameFrames(Core.NoOpRunner game, Canvas playerCanvas, Canvas powerUpsCanvas,
             Canvas platformsCanvas)
         {
-            Logging.Instance.Write("Facade pattern: Host", LoggingLevel.Pattern);
+            Logging.Instance.Write("Facade pattern: Host", LoggingLevel.Facade);
             
             if (CountBetweenFrames == GameSettings.TimeBetweenMapStep)
             {

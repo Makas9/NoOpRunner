@@ -4,7 +4,7 @@ namespace NoOpRunner.Core
 {
     public sealed class Logging : ILogger
     {
-        private LoggingLevel enabledLevels = LoggingLevel.Other | LoggingLevel.Pattern | LoggingLevel.Trace;
+        private LoggingLevel enabledLevels = LoggingLevel.Other | LoggingLevel.Trace | LoggingLevel.State | LoggingLevel.TemplateMethod | LoggingLevel.Visitor | LoggingLevel.Memento;
         private Logging() { }
 
         private static readonly object bolt = new object();

@@ -41,6 +41,8 @@
             <Button Width="50" Margin="10, 0" x:Name="undoButton">Undo</Button>
             <Button Width="50" Margin="10, 0" x:Name="resetButton">Reset</Button>
             <Button Width="50" Margin="10, 0" x:Name="applyButton">Apply</Button>
+            <Button Width="100" Margin="10, 0" x:Name="saveSnapshotButton">Save snapshot</Button>
+            <Button Width="100" Margin="10, 0" x:Name="restoreSnapshotButton">Restore snapshot</Button>
         </StackPanel>
     </DockPanel>
 </UserControl>

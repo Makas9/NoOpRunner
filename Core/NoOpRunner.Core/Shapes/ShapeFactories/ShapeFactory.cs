@@ -8,7 +8,7 @@ namespace NoOpRunner.Core.Shapes.ShapeFactories
     {
         public override BaseShape GetShape(Shape shape, int x, int y)
         {
-            Logging.Instance.Write("Factory used (" + shape + ")");
+            Logging.Instance.Write("Factory used (" + shape + ")", LoggingLevel.Pattern);
 
             switch (shape)
             {

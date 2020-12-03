@@ -2,6 +2,7 @@
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Iterators;
 using NoOpRunner.Core.Shapes;
+using NoOpRunner.Core.Visitors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -92,21 +93,21 @@ namespace NoOpRunner.Core
 
         public void AddMapPart(IMapPart mapPart)
         {
-            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(AddMapPart)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(AddMapPart)}", LoggingLevel.Composite);
 
             Shapes.Add(mapPart);
         }
 
         public bool IsAtPos(int centerPosX, int centerPosY)
         {
-            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(IsAtPos)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(IsAtPos)}", LoggingLevel.Composite);
 
             return Shapes.GetItems().Any(x => x.IsAtPos(centerPosX, centerPosY));
         }
 
         public List<List<ShapeBlock>> GetNextBlocks()
         {
-            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(GetNextBlocks)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(GetNextBlocks)}", LoggingLevel.Composite);
 
             List<List<ShapeBlock>> result = new List<List<ShapeBlock>>();
 
@@ -124,23 +125,31 @@ namespace NoOpRunner.Core
 
         public WindowPixel[,] RenderPixels(bool ignoreCollision = false) 
         {
-            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(RenderPixels)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(RenderPixels)}", LoggingLevel.Composite);
 
             return GetShapes(ignoreCollision);
         }
 
         public WindowPixelCollection Render() 
         {
-            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(Render)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(Render)}", LoggingLevel.Composite);
 
             return GetWindowsPixelCollection();
         }
 
         public List<T> GetOfType<T>() where T : IMapPart
         {
-            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(GetOfType)}", LoggingLevel.CompositePattern);
+            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(GetOfType)}", LoggingLevel.Composite);
 
             return Shapes.OfType<T>().ToList();
+        }
+
+        public void Accept(INodeVisitor visitor)
+        {
+            foreach(var shape in Shapes.GetItems())
+            {
+                shape.Accept(visitor);
+            }
         }
     }
 }
