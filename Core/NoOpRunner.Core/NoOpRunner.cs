@@ -43,6 +43,8 @@ namespace NoOpRunner.Core
             this.connectionManager = connectionManager;
             Observers = new List<IObserver>();
 
+            Logging.Instance.DisableAllLevels();
+            Logging.Instance.EnableLevel(LoggingLevel.Mediator);
             //Logging.Instance.EnableLevel(LoggingLevel.CompositePattern); - prevent spam
         }
 

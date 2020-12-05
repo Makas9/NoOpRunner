@@ -48,6 +48,11 @@ namespace NoOpRunner.Core
             enabledLevels |= level;
         }
 
+        public void DisableAllLevels()
+        {
+            enabledLevels = LoggingLevel.None;
+        }
+
         public LoggingLevel GetLevels() => enabledLevels;
     }
 }

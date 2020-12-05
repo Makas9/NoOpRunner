@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NoOpRunner.Core.Constants;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Iterators;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
@@ -13,6 +14,8 @@ namespace NoOpRunner.Core.Shapes
     {
         public int CenterPosX { get; set; }
         public int CenterPosY { get; set; }
+
+        private IMapMediator MapMediator { get; set; }
 
         [JsonProperty]
         protected List<ShapeBlock> ShapeBlocks = new List<ShapeBlock>();
@@ -101,7 +104,10 @@ namespace NoOpRunner.Core.Shapes
 
         public virtual void OnClick()//meh?
         {
-            // Do nothing by default
+            MapMediator?.Notify(this, new Dtos.MediatorMessageDto
+            {
+                Event = MediatorEvents.BaseShapeClicked
+            });
         }
 
         public abstract bool CanOverlap(BaseShape other);
@@ -164,6 +170,11 @@ namespace NoOpRunner.Core.Shapes
         public virtual void Accept(INodeVisitor visitor)
         {
             throw new NotImplementedException("Visitor does not know how to handle the provided type");
+        }
+
+        public void SetMapMediator(IMapMediator mediator)
+        {
+            MapMediator = mediator;
         }
     }
 }

@@ -49,13 +49,6 @@ namespace NoOpRunner.Client.Logic.ViewModels
             set => SetField(ref _StatusMessage, value);
         }
 
-        private string _userCommand = "";
-        public string UserCommand
-        {
-            get => _userCommand;
-            set => SetField(ref _userCommand, value);
-        }
-
         private bool _HostConnectButtonsEnabled = true;
         public bool HostConnectButtonsEnabled
         {
@@ -144,13 +137,6 @@ namespace NoOpRunner.Client.Logic.ViewModels
                 StatusMessage = "Message sent";
             }));
 
-        private ICommand _StartPlayingCommand;
-        public ICommand StartPlayingCommand =>
-            _StartPlayingCommand ?? (_StartPlayingCommand = new RelayCommand(() =>
-            {
-                IsPlaying = true;
-            }));
-
         private ICommand _OpenSettingsViewCommand;
         public ICommand OpenSettingsViewCommand =>
             _OpenSettingsViewCommand ?? (_OpenSettingsViewCommand = new RelayCommand(() =>
@@ -158,22 +144,17 @@ namespace NoOpRunner.Client.Logic.ViewModels
                 IsSettingsViewOpen = true;
             }));
 
-        private ICommand _ExecuteUserQueryCommand;
-        public ICommand ExecuteUserQueryCommand =>
-            _ExecuteUserQueryCommand ?? (_ExecuteUserQueryCommand = new RelayCommand(() =>
+        public void ExecuteUserCommand(string query)
+        {
+            try
             {
-                var query = UserCommand;
-                UserCommand = "";
-
-                try
-                {
-                    var resultExpression = ExpressionTreeBuilder.Build(query);
-                    resultExpression.Interpret(new InterpreterContext(this));
-                }
-                catch (Exception e)
-                {
-                    Logging.Instance.Write($"The parsing of the user query failed. Exception: {e}", LoggingLevel.Trace);
-                }
-            }));
+                var resultExpression = ExpressionTreeBuilder.Build(query);
+                resultExpression.Interpret(new InterpreterContext(this));
+            }
+            catch (Exception e)
+            {
+                Logging.Instance.Write($"The parsing of the user query failed. Exception: {e}", LoggingLevel.Trace);
+            }
+        }
     }
 }

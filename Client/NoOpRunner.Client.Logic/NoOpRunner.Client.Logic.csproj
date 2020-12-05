@@ -50,6 +50,7 @@
     <Compile Include="Dto\DropdownDto.cs" />
     <Compile Include="Dto\ResolutionOptionDto.cs" />
     <Compile Include="Interfaces\ICommand.cs" />
+    <Compile Include="Interfaces\IMediator.cs" />
     <Compile Include="Interfaces\IMemento.cs" />
     <Compile Include="Interpreter\AbstractExpression.cs" />
     <Compile Include="Interpreter\ExpressionTreeBuilder.cs" />

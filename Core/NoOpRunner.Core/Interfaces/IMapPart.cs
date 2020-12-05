@@ -22,5 +22,7 @@ namespace NoOpRunner.Core.Interfaces
         List<T> GetOfType<T>() where T : IMapPart;
 
         void Accept(INodeVisitor visitor);
+
+        void SetMapMediator(IMapMediator mediator);
     }
 }
