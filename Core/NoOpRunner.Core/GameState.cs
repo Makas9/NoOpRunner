@@ -1,6 +1,4 @@
-﻿using NoOpRunner.Core.Constants;
-using NoOpRunner.Core.Dtos;
-using NoOpRunner.Core.Interfaces;
+﻿using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Iterators;
 using NoOpRunner.Core.Shapes;
 using NoOpRunner.Core.Visitors;
@@ -9,7 +7,7 @@ using System.Linq;
 
 namespace NoOpRunner.Core
 {
-    public class GameState : IMapPart, IMapMediator
+    public class GameState : IMapPart
     {
         public IMapPart Platforms { get; set; }
 
@@ -83,14 +81,6 @@ namespace NoOpRunner.Core
                 PowerUpsContainer.IsAtPos(centerPosX, centerPosY);
         }
 
-        public void Notify(object sender, MediatorMessageDto message)
-        {
-            if (sender is BaseShape shape && message.Event == MediatorEvents.BaseShapeClicked)
-            {
-                Logging.Instance.Write($"[Mediator] Base shape clicked. Coordinates: {shape.CenterPosX}, {shape.CenterPosY}", LoggingLevel.Mediator);
-            }
-        }
-
         public WindowPixelCollection Render()
         {
             Logging.Instance.Write($"[Composite/{nameof(GameState)}] {nameof(Render)}", LoggingLevel.Composite);
@@ -111,13 +101,6 @@ namespace NoOpRunner.Core
 
             // Do nothing
             return null;
-        }
-
-        public void SetMapMediator(IMapMediator mediator)
-        {
-            Platforms?.SetMapMediator(mediator);
-            Player?.SetMapMediator(mediator);
-            PowerUpsContainer?.SetMapMediator(mediator);
         }
 
         public void ShiftShapes()

@@ -151,13 +151,5 @@ namespace NoOpRunner.Core
                 shape.Accept(visitor);
             }
         }
-
-        public void SetMapMediator(IMapMediator mediator)
-        {
-            foreach (IMapPart shape in Shapes)
-            {
-                shape.SetMapMediator(mediator);
-            }
-        }
     }
 }

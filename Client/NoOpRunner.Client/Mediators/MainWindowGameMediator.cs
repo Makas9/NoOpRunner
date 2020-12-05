@@ -2,6 +2,7 @@
 using NoOpRunner.Client.Constants;
 using NoOpRunner.Client.Logic.Interfaces;
 using NoOpRunner.Client.Logic.ViewModels;
+using NoOpRunner.Core;
 using System.Threading.Tasks;
 
 namespace NoOpRunner.Client.Mediators
@@ -29,25 +30,35 @@ namespace NoOpRunner.Client.Mediators
 
         public async Task Notify(object sender, string evnt)
         {
+            Logging.Instance.Write($"[Mediator] Received event: {evnt}", LoggingLevel.Mediator);
+
             switch (evnt)
             {
                 case MediatorConstants.StartHosting:
+                    Logging.Instance.Write($"[Mediator] Starting to host", LoggingLevel.Mediator);
+
                     game.StartHosting();
                     StartHostingButton.IsEnabled = false;
                     ConnectToHostButton.IsEnabled = false;
 
                     break;
                 case MediatorConstants.ConnectToHost:
+                    Logging.Instance.Write($"[Mediator] Connecting to host", LoggingLevel.Mediator);
+
                     await game.ConnectToHub();
                     StartHostingButton.IsEnabled = false;
                     ConnectToHostButton.IsEnabled = false;
 
                     break;
                 case MediatorConstants.OpenSettings:
+                    Logging.Instance.Write($"[Mediator] Opening settings view", LoggingLevel.Mediator);
+
                     mainViewModel.IsSettingsViewOpen = true;
 
                     break;
                 case MediatorConstants.Play:
+                    Logging.Instance.Write($"[Mediator] Starting play mode", LoggingLevel.Mediator);
+
                     mainWindow.StartPlaying();
                     mainViewModel.IsPlaying = true;
                     UserInputTextBox.IsEnabled = false;
@@ -55,6 +66,8 @@ namespace NoOpRunner.Client.Mediators
 
                     break;
                 case MediatorConstants.ExecuteUserInput:
+                    Logging.Instance.Write($"[Mediator] Executing user input", LoggingLevel.Mediator);
+
                     var query = UserInputTextBox.Text;
                     UserInputTextBox.Text = string.Empty;
 
