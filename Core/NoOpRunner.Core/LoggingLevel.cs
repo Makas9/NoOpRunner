@@ -18,6 +18,7 @@ namespace NoOpRunner.Core
         Command = 1024,
         Builder = 2048,
         Bridge = 4096,
-        Memento = 8192
+        Memento = 8192,
+        Proxy = 16384
     }
 }
