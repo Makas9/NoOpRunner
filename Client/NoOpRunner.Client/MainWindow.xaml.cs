@@ -58,7 +58,6 @@ namespace NoOpRunner.Client
                 var viewModel = (MainViewModel)DataContext;
 
                 Game = viewModel.Game;
-                
                 ConfigureMainScreenInterface();
             };
         }
@@ -98,7 +97,6 @@ namespace NoOpRunner.Client
 
         public void StartPlaying()
         {
-
             SetUpBackground();
 
             var viewModel = (MainViewModel)DataContext;
