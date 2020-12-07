@@ -28,11 +28,11 @@ namespace NoOpRunner.Client.Mediators
             this.mainViewModel = mainViewModel;
         }
 
-        public async Task Notify(object sender, string evnt)
+        public async Task Notify(object s, string e)
         {
-            Logging.Instance.Write($"[Mediator] Received event: {evnt}", LoggingLevel.Mediator);
+            Logging.Instance.Write($"[Mediator] Received event: {e}", LoggingLevel.Mediator);
 
-            switch (evnt)
+            switch (e)
             {
                 case MediatorConstants.StartHosting:
                     Logging.Instance.Write($"[Mediator] Starting to host", LoggingLevel.Mediator);

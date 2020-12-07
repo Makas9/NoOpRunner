@@ -18,7 +18,8 @@ namespace NoOpRunner.Client.Logic.ViewModels
         {
             //var connectionManager = new ConnectionManager();
             //Logging.Instance.DisableLevel(LoggingLevel.Trace); // Message logging floods the logs if enabled
-            var connectionManager = new LoggingConnectionManagerAdapter(new LoggingConnectionManager(Logging.Instance));
+            var loggingConnectionManager = new LoggingConnectionManagerAdapter(new LoggingConnectionManager(Logging.Instance));
+            var connectionManager = new ConnectionProxy(loggingConnectionManager);
 
             Game = new Core.NoOpRunner(connectionManager);
             SettingsViewModel = new SettingsViewModel(this);
