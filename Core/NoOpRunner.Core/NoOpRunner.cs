@@ -55,7 +55,7 @@ namespace NoOpRunner.Core
             var platformsBlocks = PlatformsContainer.GetNextBlocks();
 
             var powerUp = PowerUpsContainer.GeneratePowerUpOnMove();
-            
+
             if (powerUp != null)
             {
                 var random = new Random(DateTime.Now.Millisecond).NextDouble();
@@ -70,12 +70,12 @@ namespace NoOpRunner.Core
                     .First();
 
                 var generatedPowerUp = new PowerUp(
-                    PlatformsContainer.SizeX-1,
+                    PlatformsContainer.SizeX - 1,
                     platformCenterPositions.Item2 + block.OffsetY + 1,
-                    (PowerUps) powerUp);
-                
+                    (PowerUps)powerUp);
+
                 PowerUpsContainer.AddShape(generatedPowerUp);
-                
+
                 await connectionManager.SendMessageToClient(new MessageDto()
                 {
                     MessageType = MessageType.PowerUpsUpdate,
@@ -94,7 +94,7 @@ namespace NoOpRunner.Core
                     MessageType = MessageType.PowerUpsUpdate
                 });
             }
-            
+
             Player.OnMapMoveLoopFired((WindowPixel[,])PlatformsContainer.RenderPixels().Clone());
 
             await connectionManager.SendMessageToClient(new MessageDto()
@@ -108,11 +108,11 @@ namespace NoOpRunner.Core
         {
             if (IsHost)
             {
-                await connectionManager.SendMessageToClient(new MessageDto {Payload = "Testing message to client"});
+                await connectionManager.SendMessageToClient(new MessageDto { Payload = "Testing message to client" });
             }
             else
             {
-                await connectionManager.SendMessageToHost(new MessageDto {Payload = "Testing message to host"});
+                await connectionManager.SendMessageToHost(new MessageDto { Payload = "Testing message to host" });
             }
         }
 

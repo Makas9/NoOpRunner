@@ -13,7 +13,7 @@ namespace NoOpRunner.Core.Interfaces
 
         WindowPixelCollection Render();
 
-        bool IsAtPos(int centerPosX, int centerPosY);
+        IMapPart GetAtPos(int centerPosX, int centerPosY);
 
         void ShiftShapes();
 
@@ -22,5 +22,7 @@ namespace NoOpRunner.Core.Interfaces
         List<T> GetOfType<T>() where T : IMapPart;
 
         void Accept(INodeVisitor visitor);
+
+        void SetMap(IMapPart map);
     }
 }

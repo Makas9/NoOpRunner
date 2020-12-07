@@ -45,7 +45,7 @@ namespace NoOpRunner.Core
         }
         public PowerUp GetPowerUpAt(int centerPosX, int centerPosY)
         {
-            return Shapes.GetItems().FirstOrDefault(x => x.IsAtPos(centerPosX, centerPosY)) as PowerUp;
+            return Shapes.GetItems().FirstOrDefault(x => x.GetAtPos(centerPosX, centerPosY) != null) as PowerUp;
         }
 
         public override void ShiftShapes()
