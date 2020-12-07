@@ -76,11 +76,11 @@ namespace NoOpRunner.Client
                     
                     playerTwoMouseClickHandler = new PowerUpHandler(Game);
                     
-                    var chain = new ClickEffectHandler(Game);
+                    var chain = new ClickEffectHandler(Game, viewModel.SettingsViewModel.VolumeLevelDisplay);
                     
-                    var chain1 = new StaticShapeHandler(Game);
+                    var chain1 = new StaticShapeHandler(Game, viewModel.SettingsViewModel.VolumeLevelDisplay);
                     
-                    chain1.SetNextChainItem(new PlayerHandler(Game));
+                    chain1.SetNextChainItem(new PlayerHandler(Game, viewModel.SettingsViewModel.VolumeLevelDisplay));
                     
                     chain.SetNextChainItem(chain1);
                     
