@@ -7,7 +7,6 @@ using NoOpRunner.Core.Dtos;
 using System;
 using System.Threading.Tasks;
 
-
 namespace NoOpRunner.Networking
 {
     // Pretend that we can't just refactor this to implement IConnectionManager

@@ -1,5 +1,8 @@
+using NoOpRunner.Client.Components;
+using NoOpRunner.Client.Constants;
 using NoOpRunner.Client.Controls;
 using NoOpRunner.Client.Logic.ViewModels;
+using NoOpRunner.Client.Mediators;
 using NoOpRunner.Core;
 using NoOpRunner.Core.Controls;
 using System;
@@ -50,68 +53,13 @@ namespace NoOpRunner.Client
                 }
             };
             
-            play_button.Click += (s, e) =>
+            this.Loaded += (s, e) =>
             {
-                SetUpBackground();
-
-                var viewModel = (MainViewModel) DataContext;
-                // I'm not sure why this part wasn't done properly with commands in the first place
-                viewModel.StartPlayingCommand.Execute(null);
+                var viewModel = (MainViewModel)DataContext;
 
                 Game = viewModel.Game;
-
-
-                InputHandlerImplementor inputHandlerImpl;
-                if (Game.IsHost)
-                {
-                    renderingFacade = new HostRenderingFacade();
-
-                    inputHandlerImpl = new InputHandlerImplementorPlayerOne(Game.Player);
-                }
-                else
-                {
-                    renderingFacade = new ClientRenderingFacade();
-                    
-                    inputHandlerImpl = new InputHandlerImplementorPlayerTwo(Game.PlayerTwo);
-                    
-                    playerTwoMouseClickHandler = new PowerUpHandler(Game);
-                    
-                    var chain = new ClickEffectHandler(Game, viewModel.SettingsViewModel.VolumeLevelDisplay);
-                    
-                    var chain1 = new StaticShapeHandler(Game, viewModel.SettingsViewModel.VolumeLevelDisplay);
-                    
-                    chain1.SetNextChainItem(new PlayerHandler(Game, viewModel.SettingsViewModel.VolumeLevelDisplay));
-                    
-                    chain.SetNextChainItem(chain1);
-                    
-                    playerTwoMouseClickHandler.SetNextChainItem(chain);
-                }
-
-
-                inputHandler = new InputHandlerAbstractionArrows(inputHandlerImpl);
-                //inputHandler = new InputHandlerAbstractionWasd(inputHandlerImpl);
-
-                ConfigureKeys();
-
-                timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(GameSettings.TimeBetweenFramesMs);
-                timer.Tick += async (o, a) => { await TriggerRender(); };
-
-                timer.Start();
-                Game.IsGameStarted = true;
-
-                if (!Game.IsHost)
-                {
-                    GameGrid.MouseLeftButtonDown += (o, a) =>
-                    {
-                        var pos = a.GetPosition(background_panel);
-                        var cellWidth = (int)background_panel.ActualWidth / GameSettings.HorizontalCellCount;
-                        var cellHeight = (int)background_panel.ActualHeight / GameSettings.VerticalCellCount;
-
-                       playerTwoMouseClickHandler.Handle((int)pos.X / cellWidth, (int)(background_panel.ActualHeight - pos.Y) / cellHeight);
-                    };
-                }
                 
+                ConfigureMainScreenInterface();
             };
         }
 
@@ -146,6 +94,103 @@ namespace NoOpRunner.Client
             {
                 inputHandler.HandleKeyUpEvent(e, (WindowPixel[,])Game.PlatformsContainer.RenderPixels(!Game.IsHost).Clone());
             };
+        }
+
+        public void StartPlaying()
+        {
+
+            SetUpBackground();
+
+            var viewModel = (MainViewModel)DataContext;
+
+            InputHandlerImplementor inputHandlerImpl;
+            if (Game.IsHost)
+            {
+                renderingFacade = new HostRenderingFacade();
+
+                inputHandlerImpl = new InputHandlerImplementorPlayerOne(Game.Player);
+            }
+            else
+            {
+                renderingFacade = new ClientRenderingFacade();
+
+                inputHandlerImpl = new InputHandlerImplementorPlayerTwo(Game.PlayerTwo);
+            }
+
+            inputHandler = new InputHandlerAbstractionArrows(inputHandlerImpl);
+            //inputHandler = new InputHandlerAbstractionWasd(inputHandlerImpl);
+
+            ConfigureKeys();
+
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(GameSettings.TimeBetweenFramesMs);
+            timer.Tick += async (o, a) => { await TriggerRender(); };
+
+            timer.Start();
+            Game.IsGameStarted = true;
+
+            if (!Game.IsHost)
+            {
+                    GameGrid.MouseLeftButtonDown += (o, a) =>
+                    {
+                        var pos = a.GetPosition(background_panel);
+                        var cellWidth = (int)background_panel.ActualWidth / GameSettings.HorizontalCellCount;
+                        var cellHeight = (int)background_panel.ActualHeight / GameSettings.VerticalCellCount;
+
+                       playerTwoMouseClickHandler.Handle((int)pos.X / cellWidth, (int)(background_panel.ActualHeight - pos.Y) / cellHeight);
+                    };
+            }
+        }
+
+        private void ConfigureMainScreenInterface()
+        {
+            var mainWindowMediator = new MainWindowGameMediator(this, Game, (MainViewModel)DataContext);
+            var startHostingButton = new MediatorButton(mainWindowMediator, MediatorConstants.StartHosting)
+            {
+                Content = "Start Hosting"
+            };
+            Grid.SetColumn(startHostingButton, 0);
+
+            var connectToHostBtn = new MediatorButton(mainWindowMediator, MediatorConstants.ConnectToHost)
+            {
+                Content = "Connect"
+            };
+            Grid.SetColumn(connectToHostBtn, 1);
+
+            var openSettingsBtn = new MediatorButton(mainWindowMediator, MediatorConstants.OpenSettings)
+            {
+                Content = "Settings"
+            };
+            Grid.SetColumn(openSettingsBtn, 2);
+
+            var playBtn = new MediatorButton(mainWindowMediator, MediatorConstants.Play)
+            {
+                Content = "Play"
+            };
+            Grid.SetColumn(playBtn, 3);
+
+            var userInputTextBox = new MediatorTextBox(mainWindowMediator, MediatorConstants.UserInputValueChanged);
+            Grid.SetColumn(userInputTextBox, 0);
+
+            var executeUserInputBtn = new MediatorButton(mainWindowMediator, MediatorConstants.ExecuteUserInput)
+            {
+                Content = "Execute"
+            };
+            Grid.SetColumn(executeUserInputBtn, 1);
+
+            mainWindowMediator.StartHostingButton = startHostingButton;
+            mainWindowMediator.ConnectToHostButton = connectToHostBtn;
+            mainWindowMediator.OpenSettingsButton = openSettingsBtn;
+            mainWindowMediator.PlayButton = playBtn;
+            mainWindowMediator.UserInputTextBox = userInputTextBox;
+            mainWindowMediator.ExecuteUserInputButton = executeUserInputBtn;
+
+            button_grid.Children.Add(startHostingButton);
+            button_grid.Children.Add(connectToHostBtn);
+            button_grid.Children.Add(openSettingsBtn);
+            button_grid.Children.Add(playBtn);
+            input_grid.Children.Add(userInputTextBox);
+            input_grid.Children.Add(executeUserInputBtn);
         }
     }
 }

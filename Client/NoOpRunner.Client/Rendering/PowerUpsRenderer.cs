@@ -57,6 +57,8 @@ namespace NoOpRunner.Client.Rendering
                             rec.SetValue(FrameworkElement.HeightProperty, rectangleHeight);
                         }
                         
+                        rec.SetValue(GifImage.GifSourceProperty, ResourcesUriHandler.GetPowerUp(powerUp));
+                        
                     }
                     else
                     {

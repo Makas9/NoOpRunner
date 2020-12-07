@@ -60,6 +60,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ClientRenderingFacade.cs" />
+    <Compile Include="Components\MediatorButton.cs" />
+    <Compile Include="Components\MediatorTextBox.cs" />
+    <Compile Include="Constants\MediatorConstants.cs" />
     <Compile Include="Controls\InputHandlerAbstraction.cs" />
     <Compile Include="Controls\InputHandlerAbstractionArrows.cs" />
     <Compile Include="Controls\InputHandlerAbstractionWasd.cs" />
@@ -72,6 +75,7 @@
     <Compile Include="MouseClickHandlers\PlayerHandler.cs" />
     <Compile Include="MouseClickHandlers\PowerUpHandler.cs" />
     <Compile Include="MouseClickHandlers\StaticShapeHandler.cs" />
+    <Compile Include="Mediators\MainWindowGameMediator.cs" />
     <Compile Include="RenderingFacade.cs" />
     <Compile Include="Rendering\BaseRenderer.cs" />
     <Compile Include="Rendering\GifImage.cs" />
