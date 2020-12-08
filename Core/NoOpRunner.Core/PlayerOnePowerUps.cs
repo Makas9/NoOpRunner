@@ -36,9 +36,9 @@ namespace NoOpRunner.Core
         }
 
         [JsonProperty]
-        private IDictionary<PowerUps, int> activePowerUps;
+        private List<ActivePowerUp> activePowerUps;
 
-        public IList<PowerUps> ActivePowerUps => activePowerUps.Keys.ToList();
+        public IList<PowerUps> ActivePowerUps => activePowerUps.Select(x=> x.PowerUp).ToList();
 
         [JsonProperty]
         private IList<PowerUps> availablePowerUps;
@@ -46,30 +46,24 @@ namespace NoOpRunner.Core
         public PlayerOnePowerUps()
         {
             this.exhaustedPowerUps = new List<PowerUps?>();
-            this.activePowerUps = new Dictionary<PowerUps, int>();
+            this.activePowerUps = new List<ActivePowerUp>();
             this.availablePowerUps = new List<PowerUps>();
         }
 
         public void OnLoopFired()
         {
-            foreach (var powerUp in activePowerUps.Keys.ToList())
-            {
-                activePowerUps[powerUp]--;
-            }
+            activePowerUps.ForEach(x=> x.OnLoopFired());
 
-            foreach (var powerUp in activePowerUps.Where((x) => x.Value <= 0).Select(x => x.Key).ToList())
+            foreach (var powerUp in activePowerUps.Where((x) => x.FramesLeft <= 0).ToList())
             {
                 activePowerUps.Remove(powerUp);
-                ExhaustedPowerUp = powerUp;
+                ExhaustedPowerUp = powerUp.PowerUp;
             }
         }
 
         public void TakePowerUp(PowerUps powerUp)
         {
-            if (!availablePowerUps.Contains(powerUp))
-            {
-                availablePowerUps.Add(powerUp);
-            }
+            availablePowerUps.Add(powerUp);
         }
 
         public bool UsePowerUp(PowerUps powerUp)
@@ -80,17 +74,16 @@ namespace NoOpRunner.Core
 
             availablePowerUps.Remove(powerUp);
 
-            if (powerUp == PowerUps.Double_Jump)
-            {
-                activePowerUps[powerUp] = 1;
-            }
-            else
-            {
-                //two sec
-                activePowerUps[powerUp] = 1000 * 5 / GameSettings.TimeBetweenFramesMs;
-            }
+            activePowerUps.Add(powerUp == PowerUps.Double_Jump
+                ? new ActivePowerUp(powerUp, 1)
+                : new ActivePowerUp(powerUp, 1000 * 5 / GameSettings.TimeBetweenFramesMs));
 
             return true;
+        }
+
+        public bool IsAvailable(PowerUps powerUps)
+        {
+            return availablePowerUps.Contains(powerUps);
         }
     }
 }

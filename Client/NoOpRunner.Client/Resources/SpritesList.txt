@@ -10,10 +10,12 @@ background4=/Resources/Sprites/Background/plx-4.png
 background5=/Resources/Sprites/Background/plx-5.png
 
 PlayerInvulnerabilityVisual=/Resources/Sprites/PlayerOne/PowerUps/InvincibilityEyes.gif
-Invulnerability=/Resources/Sprites/PowerUps/PlayerOne/Invincibility.png
+Invulnerability=/Resources/Sprites/PowerUps/PlayerOne/Invincibility.gif
 
 PlayerDoubleJumpVisual=/Resources/Sprites/PlayerOne/PowerUps/DoubleJump.gif
-DoubleJump=/Resources/Sprites/PowerUps/PlayerOne/DoubleJump.png
+DoubleJump=/Resources/Sprites/PowerUps/PlayerOne/DoubleJump.gif
 
 PlayerSpeedBoostVisual=/Resources/Sprites/PlayerOne/PowerUps/SpeedBoost.gif
-SpeedBoost=/Resources/Sprites/PowerUps/PlayerOne/SpeedBoost.png
+SpeedBoost=/Resources/Sprites/PowerUps/PlayerOne/SpeedBoost.gif
+
+Saw=/Resources/Sprites/Traps/Saw.gif

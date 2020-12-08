@@ -39,14 +39,14 @@ namespace NoOpRunner.Core.Tests
         [InlineData(1, 1, 1, 1)]
         [InlineData(2, 2, 2, 2)]
         [InlineData(3, 3, 3, 3)]
-        public void IsAtPos_WhenCalledExistingShape_ShouldReturnTrue(int x, int y, int expectedX, int expectedY)
+        public void GetAtPos_WhenCalledExistingShape_ShouldReturnObject(int x, int y, int expectedX, int expectedY)
         {
             // Arrange
             var shape = new PowerUp(x, y, PowerUps.Double_Jump);
             AddShape(shape);
 
             // Act
-            var actualValue = IsAtPos(expectedX, expectedY);
+            var actualValue = GetAtPos(expectedX, expectedY) != null;
 
             // Assert
             actualValue.ShouldBeTrue();
@@ -56,14 +56,14 @@ namespace NoOpRunner.Core.Tests
         [InlineData(1, 1, 0, 0)]
         [InlineData(1, 1, 0, 1)]
         [InlineData(1, 1, 1, 0)]
-        public void IsAtPos_WhenCalledNonExistantShape_ShouldReturnFalse(int x, int y, int expectedX, int expectedY)
+        public void GetAtPos_WhenCalledNonExistantShape_ShouldReturnObject(int x, int y, int expectedX, int expectedY)
         {
             // Arrange
             var shape = new PowerUp(x, y, PowerUps.Double_Jump);
             AddShape(shape);
 
             // Act
-            var actualValue = IsAtPos(expectedX, expectedY);
+            var actualValue = GetAtPos(expectedX, expectedY) != null;
 
             // Assert
             actualValue.ShouldBeFalse();

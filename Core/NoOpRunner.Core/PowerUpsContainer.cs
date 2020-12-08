@@ -32,12 +32,7 @@ namespace NoOpRunner.Core
 
         public IList<Tuple<WindowPixel, PowerUps>> GetPowerUpsEnumerable()
         {
-            var shapesPixels = GetWindowsPixelCollection().GetItems();//WHY RETURN REVERSE???? OH MY GOD
-            shapesPixels.Reverse();
-            
-            var shapesPowerUps = Shapes.GetItems().Select(x => ((PowerUp) x).PowerUpType).ToList();
-
-            return shapesPixels.Zip(shapesPowerUps, (shapesPixel, shapesPowerUp)=> new Tuple<WindowPixel, PowerUps>(shapesPixel, shapesPowerUp)).ToList();
+            return Shapes.GetItems().Select(x => new Tuple<WindowPixel, PowerUps>(new WindowPixel(((PowerUp) x).CenterPosX, ((PowerUp) x).CenterPosY, true), ((PowerUp) x).PowerUpType)).ToList();
         }
         public void RemovePowerUp(int centerPosX, int centerPosY)
         {

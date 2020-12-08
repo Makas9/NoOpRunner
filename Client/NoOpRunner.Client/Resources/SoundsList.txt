@@ -1,1 +1,7 @@
 SpeedBoost=/Resources/Sounds/sanic.mp3
+
+ClickP2=/Resources/Sounds/oof.mp3
+
+Saw=/Resources/Sounds/saw.mp3
+
+Click=/Resources/Sounds/click.mp3

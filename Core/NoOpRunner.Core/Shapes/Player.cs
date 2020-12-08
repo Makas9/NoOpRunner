@@ -7,6 +7,7 @@ using NoOpRunner.Core.Shapes.GenerationStrategies;
 using NoOpRunner.Core.Shapes.StaticShapes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NoOpRunner.Core.Shapes
 {
@@ -47,44 +48,48 @@ namespace NoOpRunner.Core.Shapes
 
         public override void OnLoopFired(WindowPixel[,] gameScreen)
         {
-            base.OnLoopFired(gameScreen);
-
-            if (isJumping)
+            for (int i = 0; i <= ActivePowerUps.Count(x => x == PowerUps.Speed_Boost); i++)//Stack speed boost
             {
-                if (VerticalAccelerationPool >= JumpAcceleration)
-                {
-                    VerticalAcceleration += JumpAcceleration;
-                    VerticalAccelerationPool -= JumpAcceleration;
+                base.OnLoopFired(gameScreen);
 
-                    if (VerticalAccelerationPool <= 0)
+                if (isJumping)
+                {
+                    if (VerticalAccelerationPool >= JumpAcceleration)
                     {
-                        isJumping = false;
-                        VerticalSpeed = 0;
+                        VerticalAcceleration += JumpAcceleration;
+                        VerticalAccelerationPool -= JumpAcceleration;
+
+                        if (VerticalAccelerationPool <= 0)
+                        {
+                            isJumping = false;
+                            VerticalSpeed = 0;
+                        }
                     }
-                }
-            }
-            else
-            {
-                if (!IsShapeHit(gameScreen, CenterPosX, CenterPosY - MovementIncrement))
-                {
-                    StateMachine.Land();
-                    CenterPosY -= MovementIncrement;
-                    canJump = false;
                 }
                 else
                 {
-                    canJump = true;
-
-                    if (HorizontalSpeed == 0)
+                    if (!IsShapeHit(gameScreen, CenterPosX, CenterPosY - MovementIncrement))
                     {
-                        StateMachine.Idle();
+                        StateMachine.Land();
+                        CenterPosY -= MovementIncrement;
+                        canJump = false;
+                    }
+                    else
+                    {
+                        canJump = true;
+
+                        if (HorizontalSpeed == 0)
+                        {
+                            StateMachine.Idle();
+                        }
                     }
                 }
-            }
 
-            if (Math.Abs(HorizontalSpeed) > 0 && canJump)
-            {
-                StateMachine.Run();
+                if (Math.Abs(HorizontalSpeed) > 0 && canJump)
+                {
+                    StateMachine.Run();
+                }
+                            
             }
         }
 

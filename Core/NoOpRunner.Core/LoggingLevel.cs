@@ -20,6 +20,7 @@ namespace NoOpRunner.Core
         Bridge = 4096,
         Memento = 8192,
         Proxy = 16384,
-        Mediator = 32768
+        Mediator = 32768,
+        ChainOfResponsibility = 65536
     }
 }

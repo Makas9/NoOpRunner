@@ -18,15 +18,32 @@ namespace NoOpRunner.Core
             soundsReader = new ResourceReader(@"..\..\..\..\Client\NoOpRunner.Client\Resources\SoundsList.resources");
         }
 
+        public static Uri GetCharacterClickSound()
+        {
+            soundsReader.GetResourceData("ClickP2", out _, out byte[] data);
+
+            return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
+                           System.Text.Encoding.UTF8.GetString(data).Substring(1));
+        }
+        
+        public static Uri GetP2ClickSound()
+        {
+            soundsReader.GetResourceData("Click", out _, out byte[] data);
+
+            return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
+                           System.Text.Encoding.UTF8.GetString(data).Substring(1));
+        }
+        
         public static Uri GetPowerUpSound(PowerUps powerUpType)
         {
+            byte[] data;
             switch (powerUpType)
             {
                 case PowerUps.Speed_Boost:
-                    soundsReader.GetResourceData("SpeedBoost", out _, out byte[] speedBoostData);
+                    soundsReader.GetResourceData("SpeedBoost", out _, out data);
 
                     return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
-                                   System.Text.Encoding.UTF8.GetString(speedBoostData).Substring(1));
+                                   System.Text.Encoding.UTF8.GetString(data).Substring(1));
                 case PowerUps.Invisibility:
                     break;
                 case PowerUps.Invulnerability:
@@ -38,7 +55,10 @@ namespace NoOpRunner.Core
                 case PowerUps.Proximity_Mine:
                     break;
                 case PowerUps.Saw:
-                    break;
+                    soundsReader.GetResourceData("Saw", out _, out data);
+
+                    return new Uri(AppDomain.CurrentDomain.BaseDirectory + @"..\.." +
+                                   System.Text.Encoding.UTF8.GetString(data).Substring(1));
                 case PowerUps.Knockback_Bomb:
                     break;
                 default:

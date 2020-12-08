@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivePowerUp.cs" />
     <Compile Include="Builders\GameStateBuilder.cs" />
     <Compile Include="Builders\ShapeBuilder.cs" />
     <Compile Include="Configurators\GameStateConfigurator.cs" />
@@ -87,6 +88,8 @@
     <Compile Include="PlayerStates\JumpingState.cs" />
     <Compile Include="PlayerStates\IdleState.cs" />
     <Compile Include="PlayerStates\PlayerState.cs" />
+    <Compile Include="PlayerTwo.cs" />
+    <Compile Include="PlayerTwoPowerUps.cs" />
     <Compile Include="PowerUpsContainer.cs" />
     <Compile Include="Shapes\EntityShapes\Rocket.cs" />
     <Compile Include="Shapes\EntityShapes\Saw.cs" />
