@@ -19,7 +19,7 @@ namespace NoOpRunner.Client.Logic.ViewModels
             mementoCaretaker = new MementoCaretaker();
         }
 
-        private int volumeLevel = 0;
+        private int volumeLevel = 20;//FUCK YOU
         public int VolumeLevel
         {
             get => volumeLevel;
