@@ -27,6 +27,8 @@ namespace NoOpRunner.Client.MouseClickHandlers
 
         protected override void HandleMouseClick(int positionX, int positionY)
         {
+            Logging.Instance.Write("Chain of responsibility: PowerUpHandler", LoggingLevel.ChainOfResponsibility);
+            
             if (Game.PlatformsContainer.GetShapes(true)[positionX, positionY] == default) 
                 
                 return;

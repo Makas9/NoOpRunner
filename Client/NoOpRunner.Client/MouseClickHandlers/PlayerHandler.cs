@@ -27,6 +27,8 @@ namespace NoOpRunner.Client.MouseClickHandlers
 
         protected override void HandleMouseClick(int positionX, int positionY)
         {
+            Logging.Instance.Write("Chain of responsibility: PlayerHandler", LoggingLevel.ChainOfResponsibility);
+            
             if (Game.Player.CenterPosX != positionX || Game.Player.CenterPosY != positionY)
                 
                 return;

@@ -13,6 +13,7 @@ namespace NoOpRunner.Client.MouseClickHandlers
         
         public ClickEffectHandler(Core.NoOpRunner game, int volume) : base(game)
         {
+            
             mediaPlayer = new MediaPlayer();
             
             mediaPlayer.Open(ResourcesUriHandler.GetP2ClickSound());
@@ -28,6 +29,8 @@ namespace NoOpRunner.Client.MouseClickHandlers
 
         protected override void HandleMouseClick(int positionX, int positionY)
         {
+            Logging.Instance.Write("Chain of responsibility: ClickEffectHandler", LoggingLevel.ChainOfResponsibility);
+            
             mediaPlayer.Play();
         }
     }

@@ -5,10 +5,6 @@ namespace NoOpRunner.Client.MouseClickHandlers
 {
     public abstract class MouseClickHandler
     {
-        /// <summary>
-        /// YES YES YES, I know, this is dumb
-        /// change in the future with Proxy pattern
-        /// </summary>
         protected Core.NoOpRunner Game { get; set; }
 
         protected MouseClickHandler(Core.NoOpRunner game)

@@ -30,7 +30,7 @@ namespace NoOpRunner.Client
             var endMemory = GC.GetTotalMemory(false);
             
             Console.WriteLine("Object creation time elapsed: "+stopwatch.Elapsed.Milliseconds);
-            Console.WriteLine("Object creation memory used: "+ ((endMemory-startMemory)/1024)+"KB"+" arba "+((endMemory-startMemory)/1024/1024)+"MB");
+            Console.WriteLine("Object creation memory used: "+ ((endMemory-startMemory)/1024)+"KB"+" or "+((endMemory-startMemory)/1024/1024)+"MB");
 
             PushAllChildrenToPool();
                 
@@ -50,7 +50,7 @@ namespace NoOpRunner.Client
             endMemory = GC.GetTotalMemory(false);
             
             Console.WriteLine("Flyweight time elapsed: "+stopwatch.Elapsed.Milliseconds);
-            Console.WriteLine("Flyweight memory used: "+ ((endMemory-startMemory)/1024)+"KB"+" arba "+((endMemory-startMemory)/1024/1024)+"MB");
+            Console.WriteLine("Flyweight memory used: "+ ((endMemory-startMemory)/1024)+"KB"+" or "+((endMemory-startMemory)/1024/1024)+"MB");
         }
 
         private void InitCanvasChildrens()

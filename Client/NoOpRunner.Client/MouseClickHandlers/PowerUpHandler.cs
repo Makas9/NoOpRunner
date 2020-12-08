@@ -1,4 +1,5 @@
-﻿using NoOpRunner.Core.Enums;
+﻿using NoOpRunner.Core;
+using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Shapes;
 
 namespace NoOpRunner.Client.MouseClickHandlers
@@ -11,6 +12,8 @@ namespace NoOpRunner.Client.MouseClickHandlers
 
         protected override void HandleMouseClick(int positionX, int positionY)
         {
+            Logging.Instance.Write("Chain of responsibility: PowerUpHandler", LoggingLevel.ChainOfResponsibility);
+
             if (Game.Player.CenterPosX == positionX && Game.Player.CenterPosY == positionY)
                 
                 return;

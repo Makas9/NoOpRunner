@@ -113,6 +113,18 @@ namespace NoOpRunner.Client
                 renderingFacade = new ClientRenderingFacade();
 
                 inputHandlerImpl = new InputHandlerImplementorPlayerTwo(Game.PlayerTwo);
+                
+                playerTwoMouseClickHandler = new PowerUpHandler(Game);
+
+                var chain = new ClickEffectHandler(Game, viewModel.SettingsViewModel.VolumeLevelDisplay);
+
+                var chain1 = new StaticShapeHandler(Game, viewModel.SettingsViewModel.VolumeLevelDisplay);
+
+                chain1.SetNextChainItem(new PlayerHandler(Game, viewModel.SettingsViewModel.VolumeLevelDisplay));
+
+                chain.SetNextChainItem(chain1);
+
+                playerTwoMouseClickHandler.SetNextChainItem(chain);
             }
 
             inputHandler = new InputHandlerAbstractionArrows(inputHandlerImpl);
