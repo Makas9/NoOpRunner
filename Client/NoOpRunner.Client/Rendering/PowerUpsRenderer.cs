@@ -28,86 +28,48 @@ namespace NoOpRunner.Client.Rendering
             var rectangleWidth = canvas.ActualWidth / ShapesContainer.SizeX;
             var rectangleHeight = canvas.ActualHeight / ShapesContainer.SizeY;
 
-
-            var pixels = ((PowerUpsContainer) ShapesContainer).GetPowerUpsEnumerable();
-
-            foreach (var (windowPixel, powerUp) in pixels)
+            foreach (var (windowPixel, powerUp) in ((PowerUpsContainer) ShapesContainer).GetPowerUpsEnumerable())
             {
                 if (canvasChildIndex >= canvasChildCount)
                 {
                     FrameworkElement rec;
-
-                    if (powerUp == PowerUps.Saw)
+                    
+                    if (!DisposedObjectsPool.Contains<GifImage>())
                     {
-                        if (!DisposedObjectsPool.Contains<GifImage>())
+                        rec = new GifImage
                         {
-                            rec = new GifImage
-                            {
-                                Width = rectangleWidth,
-                                Height = rectangleHeight,
-                                GifSource = ResourcesUriHandler.GetPowerUp(powerUp),
-                                Stretch = Stretch.Fill
-                            };
-                        }
-                        else
-                        {
-                            rec = DisposedObjectsPool.Pop<GifImage>();
-
-                            rec.SetValue(FrameworkElement.WidthProperty, rectangleWidth);
-                            rec.SetValue(FrameworkElement.HeightProperty, rectangleHeight);
-                        }
-                        
-                        rec.SetValue(GifImage.GifSourceProperty, ResourcesUriHandler.GetPowerUp(powerUp));
-                        
+                            Width = rectangleWidth,
+                            Height = rectangleHeight,
+                            GifSource = ResourcesUriHandler.GetPowerUp(powerUp),
+                            Stretch = Stretch.Fill
+                        };
                     }
                     else
                     {
+                        rec = DisposedObjectsPool.Pop<GifImage>();
 
-                        if (!DisposedObjectsPool.Contains<Rectangle>())
-                        {
-                            rec = new Rectangle
-                            {
-                                Width = rectangleWidth,
-                                Height = rectangleHeight
-                            };
-                        }
-                        else
-                        {
-                            rec = DisposedObjectsPool.Pop<Rectangle>();
-
-                            rec.SetValue(FrameworkElement.WidthProperty, rectangleWidth);
-                            rec.SetValue(FrameworkElement.HeightProperty, rectangleHeight);
-                        }
-                        
-                        rec.SetValue(Shape.FillProperty,
-                            new ImageBrush(new BitmapImage(ResourcesUriHandler.GetPowerUp(powerUp))));
+                        rec.SetValue(FrameworkElement.WidthProperty, rectangleWidth);
+                        rec.SetValue(FrameworkElement.HeightProperty, rectangleHeight);
                     }
+
+                    rec.SetValue(GifImage.GifSourceProperty, ResourcesUriHandler.GetPowerUp(powerUp));
 
                     Canvas.SetLeft(rec, rectangleWidth * windowPixel.X);
                     Canvas.SetBottom(rec, rectangleHeight * windowPixel.Y);
-                    
+
                     canvas.Children.Add(rec);
                 }
                 else
                 {
-                    Canvas.SetLeft(canvas.Children[canvasChildIndex], 
-                        rectangleWidth * pixels[canvasChildIndex].Item1.X);
-                    
-                    Canvas.SetBottom(canvas.Children[canvasChildIndex], 
-                        rectangleHeight * pixels[canvasChildIndex].Item1.Y);
+                    Canvas.SetLeft(canvas.Children[canvasChildIndex],
+                        rectangleWidth * windowPixel.X);
 
-                    if (powerUp == PowerUps.Saw)
-                    {
-                        canvas.Children[canvasChildIndex].SetValue(GifImage.GifSourceProperty,
-                            ResourcesUriHandler.GetPowerUp(powerUp));
-                    }
-                    else
-                    {
-                        canvas.Children[canvasChildIndex].SetValue(Shape.FillProperty,
-                            new ImageBrush(new BitmapImage(ResourcesUriHandler.GetPowerUp(powerUp))));
-                    }
-                    
-                    
+                    Canvas.SetBottom(canvas.Children[canvasChildIndex],
+                        rectangleHeight * windowPixel.Y);
+
+                    canvas.Children[canvasChildIndex].SetValue(GifImage.GifSourceProperty,
+                        ResourcesUriHandler.GetPowerUp(powerUp));
+
                     canvasChildIndex++;
                 }
             }

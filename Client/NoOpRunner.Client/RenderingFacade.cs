@@ -4,8 +4,10 @@ using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using NoOpRunner.Core.Shapes;
 
@@ -33,7 +35,8 @@ namespace NoOpRunner.Client
         public abstract Task CycleGameFrames(Core.NoOpRunner game, Canvas playerCanvas, Canvas powerUpsCanvas,
             Canvas platformsCanvas);
 
-        protected void BaseCycle(Core.NoOpRunner game, Canvas playerCanvas, Canvas platformsCanvas, Canvas powerUpsCanvas)
+        protected void BaseCycle(Core.NoOpRunner game, Canvas playerCanvas, Canvas platformsCanvas,
+            Canvas powerUpsCanvas)
         {
             if (PlayerRenderer == null || PlatformsRenderer == null || PowerUpsRenderer == null)
             {
@@ -47,16 +50,16 @@ namespace NoOpRunner.Client
             game.Player.LoopPowerUps();
 
             PowerUp powerUp = null;
-            
-            for (int i = 0; i < 2; i++)//All height of character
+
+            for (int i = 0; i < 2; i++) //All height of character
             {
-                powerUp = game.PowerUpsContainer.GetPowerUpAt(game.Player.CenterPosX, game.Player.CenterPosY+i);
-                
-                if (powerUp!= null)
-                
+                powerUp = game.PowerUpsContainer.GetPowerUpAt(game.Player.CenterPosX, game.Player.CenterPosY + i);
+
+                if (powerUp != null)
+
                     break;
             }
-            
+
 
             if (powerUp != null)
             {
@@ -64,15 +67,18 @@ namespace NoOpRunner.Client
                 {
                     game.Player.TakePowerUp(powerUp.PowerUpType); //Player pick up power up    
                 }
-                
-                if (powerUp.PowerUpType == PowerUps.Double_Jump && !DisplayingPlayerOnePowerUps.Contains(powerUp.PowerUpType))
+
+                if (powerUp.PowerUpType == PowerUps.Double_Jump &&
+                    !DisplayingPlayerOnePowerUps.Contains(powerUp.PowerUpType))
                 {
                     AddDecoratorLayer(powerUp.PowerUpType); //Add decorator layer   
-                    
+
                     DisplayingPlayerOnePowerUps.Add(powerUp.PowerUpType);
                 }
 
-                game.PowerUpsContainer.RemovePowerUp(powerUp.CenterPosX, powerUp.CenterPosY); //Remove power up from display
+                game.PowerUpsContainer.RemovePowerUp(powerUp.CenterPosX,
+                    powerUp.CenterPosY); //Remove power up from display
+
             }
 
             foreach (var usingPowerUp in game.Player.ActivePowerUps)
@@ -91,15 +97,16 @@ namespace NoOpRunner.Client
             if (playerUsedPowerUp != null)
             {
                 DisplayingPlayerOnePowerUps.Remove((PowerUps) playerUsedPowerUp);
-                
+
                 GifImage animation;
                 //Remove layer
-                if (PlayerRenderer.GetType()!=typeof(PlayerRenderer))
+                if (PlayerRenderer.GetType() != typeof(PlayerRenderer))
                 {
                     switch (playerUsedPowerUp)
                     {
                         case PowerUps.Speed_Boost:
-                            PlayerRenderer = ((PlayerDecorator) PlayerRenderer).RemoveLayer(VisualElementType.SpeedBoost);
+                            PlayerRenderer =
+                                ((PlayerDecorator) PlayerRenderer).RemoveLayer(VisualElementType.SpeedBoost);
 
                             animation = playerCanvas.Children.OfType<GifImage>()
                                 .FirstOrDefault(x => x.VisualType == VisualElementType.SpeedBoost);
@@ -121,13 +128,15 @@ namespace NoOpRunner.Client
                         case PowerUps.Double_Jump:
                             if (!game.Player.PlayerOnePowerUps.IsAvailable(PowerUps.Double_Jump))
                             {
-                                PlayerRenderer = ((PlayerDecorator) PlayerRenderer).RemoveLayer(VisualElementType.DoubleJump);
+                                PlayerRenderer =
+                                    ((PlayerDecorator) PlayerRenderer).RemoveLayer(VisualElementType.DoubleJump);
 
                                 animation = playerCanvas.Children.OfType<GifImage>()
                                     .FirstOrDefault(x => x.VisualType == VisualElementType.DoubleJump);
 
-                                playerCanvas.Children.Remove(animation);    
+                                playerCanvas.Children.Remove(animation);
                             }
+
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -162,7 +171,5 @@ namespace NoOpRunner.Client
                     throw new ArgumentOutOfRangeException(nameof(elementType), elementType, null);
             }
         }
-        
-        
     }
 }
