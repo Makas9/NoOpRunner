@@ -41,6 +41,7 @@ namespace NoOpRunner.Core.Shapes
         private bool isJumping = false;
         private bool canJump = true;
         public bool CanPassPlatforms { get; set; } = false;
+        public bool IsDroppingDown { get; set; } = false;
 
         private decimal VerticalAccelerationPool;
 
@@ -191,7 +192,7 @@ namespace NoOpRunner.Core.Shapes
                 case PowerUp _:
                     return true;
                 case PassablePlatform _:
-                    return CanPassPlatforms;
+                    return CanPassPlatforms && IsDroppingDown;
                 case ImpassablePlatform _:
                     return false;
                 default:
@@ -229,7 +230,6 @@ namespace NoOpRunner.Core.Shapes
         public bool IsTurning => StateMachine.IsTurning;
 
         public bool StateHasChanged => StateMachine.StateHasChanged;
-
 
         public void Update(MessageDto message)
         {
