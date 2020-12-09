@@ -197,7 +197,7 @@ namespace NoOpRunner.Core.Shapes
                 case PowerUp _:
                     return true;
                 case PassablePlatform _:
-                    return CanPassPlatforms && IsDroppingDown;
+                    return CanPassPlatforms && (IsDroppingDown || isJumping);
                 case ImpassablePlatform _:
                     return false;
                 default:
