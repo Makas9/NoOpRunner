@@ -25,14 +25,15 @@ namespace NoOpRunner.Core.Controls
 
         public override void HandleUp(WindowPixel[,] gameScreen)
         {
-            player.Jump(gameScreen);
             player.CanPassPlatforms = true;
+            player.Jump(gameScreen);
         }
 
         public override void HandleDown(WindowPixel[,] gameScreen)
         {
-            player.DropDown(gameScreen);
             player.CanPassPlatforms = true;
+            player.IsDroppingDown = true;
+            player.DropDown(gameScreen);
         }
 
         public override void HandlePower1(WindowPixel[,] gameScreen)
@@ -63,6 +64,7 @@ namespace NoOpRunner.Core.Controls
         public override void HandleDownRelease(WindowPixel[,] gameScreen)
         {
             player.CanPassPlatforms = false;
+            player.IsDroppingDown = false;
         }
     }
 }

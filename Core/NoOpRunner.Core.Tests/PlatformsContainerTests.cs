@@ -25,7 +25,7 @@ namespace NoOpRunner.Core.Tests
             ShiftShapes();
 
             // Assert
-            Shapes.GetItems().Exists(o => o.IsAtPos(expectedX, expectedY)).ShouldBeTrue();
+            Shapes.GetItems().Exists(o => o.GetAtPos(expectedX, expectedY) != null).ShouldBeTrue();
         }
 
     }

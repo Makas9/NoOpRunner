@@ -98,11 +98,11 @@ namespace NoOpRunner.Core
             Shapes.Add(mapPart);
         }
 
-        public bool IsAtPos(int centerPosX, int centerPosY)
+        public IMapPart GetAtPos(int centerPosX, int centerPosY)
         {
-            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(IsAtPos)}", LoggingLevel.Composite);
+            Logging.Instance.Write($"[Composite/{nameof(ShapesContainer)}] {nameof(GetAtPos)}", LoggingLevel.Composite);
 
-            return Shapes.GetItems().Any(x => x.IsAtPos(centerPosX, centerPosY));
+            return Shapes.GetItems().FirstOrDefault(x => x.GetAtPos(centerPosX, centerPosY) != null);
         }
 
         public List<List<ShapeBlock>> GetNextBlocks()
@@ -149,6 +149,14 @@ namespace NoOpRunner.Core
             foreach(var shape in Shapes.GetItems())
             {
                 shape.Accept(visitor);
+            }
+        }
+
+        public void SetMap(IMapPart map)
+        {
+            foreach (IMapPart shape in Shapes)
+            {
+                shape.SetMap(map);
             }
         }
     }

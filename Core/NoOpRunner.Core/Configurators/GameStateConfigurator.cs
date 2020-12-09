@@ -138,6 +138,7 @@ namespace NoOpRunner.Core.Configurators
             var shape = action(gameState);
 
             gameState.Player = new Player(shape.CenterPosX, shape.CenterPosY + 1);
+            gameState.Player.SetMap(gameState);
 
             Logging.Instance.Write("[GameStateBuilder] Added player", LoggingLevel.Builder);
 

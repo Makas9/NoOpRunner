@@ -72,13 +72,13 @@ namespace NoOpRunner.Core
             return platforms.Union(powerups).ToList();
         }
 
-        public bool IsAtPos(int centerPosX, int centerPosY)
+        public IMapPart GetAtPos(int centerPosX, int centerPosY)
         {
-            Logging.Instance.Write($"[Composite/{nameof(GameState)}] {nameof(IsAtPos)}", LoggingLevel.Composite);
+            Logging.Instance.Write($"[Composite/{nameof(GameState)}] {nameof(GetAtPos)}", LoggingLevel.Composite);
 
-            return Platforms.IsAtPos(centerPosX, centerPosY) ||
-                Player.IsAtPos(centerPosX, centerPosY) ||
-                PowerUpsContainer.IsAtPos(centerPosX, centerPosY);
+            return Platforms.GetAtPos(centerPosX, centerPosY) ??
+                Player.GetAtPos(centerPosX, centerPosY) ??
+                PowerUpsContainer.GetAtPos(centerPosX, centerPosY);
         }
 
         public WindowPixelCollection Render()
@@ -101,6 +101,13 @@ namespace NoOpRunner.Core
 
             // Do nothing
             return null;
+        }
+
+        public void SetMap(IMapPart map)
+        {
+            Platforms?.SetMap(map);
+            Player?.SetMap(map);
+            PowerUpsContainer?.SetMap(map);
         }
 
         public void ShiftShapes()

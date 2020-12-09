@@ -2,7 +2,6 @@
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Interfaces;
-using NoOpRunner.Core.Iterators;
 using NoOpRunner.Core.PlayerStates;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
 using NoOpRunner.Core.Shapes.StaticShapes;
@@ -43,6 +42,7 @@ namespace NoOpRunner.Core.Shapes
         private bool isJumping = false;
         private bool canJump = true;
         public bool CanPassPlatforms { get; set; } = false;
+        public bool IsDroppingDown { get; set; } = false;
 
         private decimal VerticalAccelerationPool;
 
@@ -192,22 +192,32 @@ namespace NoOpRunner.Core.Shapes
 
         public override bool CanOverlap(BaseShape other)
         {
-            // TODO: This is currently not used, but collision handling needs heavy refactoring, as we currently check for collisions only with WindowPixels -> I have no type info to work with.
-            // It'll be fixed with a separate PR
             switch(other)
             {
-                case PassablePlatform p:
-                    return CanPassPlatforms;
+                case PowerUp _:
+                    return true;
+                case PassablePlatform _:
+                    return CanPassPlatforms && (IsDroppingDown || isJumping);
                 case ImpassablePlatform _:
                     return false;
                 default:
-                    throw new NotImplementedException();
+                    return false;
             }
         }
 
-        public override void OnCollision(BaseShape other)
+        /// <summary>
+        /// Handle collision with another shape.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns>True if shape can be passed through, false otherwise.</returns>
+        public override bool OnCollision(BaseShape other)
         {
-            throw new NotImplementedException();
+            if (other is PowerUp powerUp)
+            {
+                // TODO: Interact with powerup
+            }
+
+            return CanOverlap(other);
         }
 
         public bool IsLookingLeft
@@ -225,7 +235,6 @@ namespace NoOpRunner.Core.Shapes
         public bool IsTurning => StateMachine.IsTurning;
 
         public bool StateHasChanged => StateMachine.StateHasChanged;
-
 
         public void Update(MessageDto message)
         {
@@ -275,9 +284,9 @@ namespace NoOpRunner.Core.Shapes
             }
         }
 
-        public void AddMapPart(IMapPart mapPart)
+        public override IMapPart GetAtPos(int centerPosX, int centerPosY)
         {
-            // Do nothing
+            return null;
         }
     }
 }

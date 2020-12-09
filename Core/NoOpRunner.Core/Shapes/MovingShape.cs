@@ -44,11 +44,18 @@ namespace NoOpRunner.Core.Shapes
 
         protected bool IsShapeHit(WindowPixel[,] gameScreen, int x, int y)
         {
+            var shape = Map?.GetAtPos(x, y);
+
+            if (OnCollision(shape as BaseShape))
+            {
+                return false;
+            }
+
             return x > gameScreen.GetUpperBound(0) ||
                 y > gameScreen.GetUpperBound(1) ||
                 x < 0 ||
                 y < 0 ||
-                (gameScreen[x, y] != default && gameScreen[x, y].IsShape);
+                shape != null;
         }
 
         public override void Accept(INodeVisitor visitor)

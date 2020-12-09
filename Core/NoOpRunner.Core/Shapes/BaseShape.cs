@@ -18,6 +18,7 @@ namespace NoOpRunner.Core.Shapes
         protected List<ShapeBlock> ShapeBlocks = new List<ShapeBlock>();
         protected IEnumerable<ShapeBlock> VisibleShapeBlocks => ShapeBlocks.Where(x => x.OffsetX < GameSettings.HorizontalCellCount);
 
+        protected IMapPart Map { get; set; }
         protected GenerationStrategy Strategy { get; set; }
         protected int lowerBoundY;
         protected int upperBoundY;
@@ -103,8 +104,8 @@ namespace NoOpRunner.Core.Shapes
             // Do nothing by default
         }
 
-        public abstract bool CanOverlap(BaseShape other);
-        public abstract void OnCollision(BaseShape other);
+        public virtual bool CanOverlap(BaseShape other) => false;
+        public virtual bool OnCollision(BaseShape other) => false;
 
         public BaseShape Clone()
         {
@@ -130,11 +131,11 @@ namespace NoOpRunner.Core.Shapes
             // Do nothing
         }
 
-        public bool IsAtPos(int centerPosX, int centerPosY)
+        public virtual IMapPart GetAtPos(int centerPosX, int centerPosY)
         {
-            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(IsAtPos)}", LoggingLevel.Composite);
+            Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(GetAtPos)}", LoggingLevel.Composite);
 
-            return CenterPosX == centerPosX && CenterPosY == centerPosY;
+            return ShapeBlocks.Any(x => x.OffsetX + CenterPosX == centerPosX && x.OffsetY + CenterPosY == centerPosY) ? this : null;
         }
 
         public void ShiftShapes()
@@ -163,6 +164,11 @@ namespace NoOpRunner.Core.Shapes
         public virtual void Accept(INodeVisitor visitor)
         {
             throw new NotImplementedException("Visitor does not know how to handle the provided type");
+        }
+
+        public void SetMap(IMapPart map)
+        {
+            Map = map;
         }
     }
 }

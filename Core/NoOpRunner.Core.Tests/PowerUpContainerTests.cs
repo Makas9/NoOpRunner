@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using NoOpRunner.Core.Enums;
+﻿using NoOpRunner.Core.Enums;
 using NoOpRunner.Core.Shapes;
-using Xunit;
 using Shouldly;
+using System.Linq;
+using Xunit;
 
 namespace NoOpRunner.Core.Tests
 {
@@ -79,7 +79,7 @@ namespace NoOpRunner.Core.Tests
             ShiftShapes();
 
             // Assert
-            Shapes.GetItems().Exists(o => o.IsAtPos(expectedX, expectedY)).ShouldBeTrue();
+            Shapes.GetItems().Exists(o => o.GetAtPos(expectedX, expectedY) != null).ShouldBeTrue();
         }
     }
 }
