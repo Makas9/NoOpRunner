@@ -4,7 +4,7 @@
     {
         Speed_Boost,
         Invisibility,
-        Invulnerability,
+        Health_Crystal,
         Double_Jump,
         Rocket,
         Proximity_Mine,

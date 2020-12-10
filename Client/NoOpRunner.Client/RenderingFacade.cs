@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using NoOpRunner.Core.Shapes;
+using NoOpRunner.Core.Exceptions;
 
 namespace NoOpRunner.Client
 {
@@ -60,12 +61,19 @@ namespace NoOpRunner.Client
                     break;
             }
 
-
             if (powerUp != null)
             {
                 if (game.IsHost)
                 {
                     game.Player.TakePowerUp(powerUp.PowerUpType); //Player pick up power up    
+
+                    if (powerUp.PowerUpType == PowerUps.Health_Crystal)
+                    {
+                        if (!game.PlayerTwo.Hit())
+                        {
+                            throw new GameOverException(true);
+                        }
+                    }
                 }
 
                 if (powerUp.PowerUpType == PowerUps.Double_Jump &&
@@ -117,7 +125,7 @@ namespace NoOpRunner.Client
                         case PowerUps.Invisibility:
 
                             break;
-                        case PowerUps.Invulnerability:
+                        case PowerUps.Health_Crystal:
                             PlayerRenderer =
                                 ((PlayerDecorator) PlayerRenderer).RemoveLayer(VisualElementType.Invulnerability);
 
@@ -161,7 +169,7 @@ namespace NoOpRunner.Client
                     break;
                 case PowerUps.Invisibility:
                     break;
-                case PowerUps.Invulnerability:
+                case PowerUps.Health_Crystal:
                     PlayerRenderer = new PlayerInvulnerabilityDecorator(PlayerRenderer);
 
                     return;

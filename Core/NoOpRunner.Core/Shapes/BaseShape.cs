@@ -175,5 +175,10 @@ namespace NoOpRunner.Core.Shapes
         {
             Map = map;
         }
+
+        public void Notify(string e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

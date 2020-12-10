@@ -43,7 +43,7 @@ namespace NoOpRunner.Core.Controls
 
         public override void HandlePower2(WindowPixel[,] gameScreen)
         {
-            player.UsePowerUp(PowerUps.Invulnerability);
+            player.UsePowerUp(PowerUps.Health_Crystal);
         }
 
         public override void HandleLeftRelease(WindowPixel[,] gameScreen)

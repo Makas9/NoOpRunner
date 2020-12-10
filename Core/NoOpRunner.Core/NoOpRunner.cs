@@ -2,7 +2,6 @@ using Newtonsoft.Json.Linq;
 using NoOpRunner.Core.Builders;
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
-using NoOpRunner.Core.Exceptions;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
@@ -78,6 +77,7 @@ namespace NoOpRunner.Core
                     platformCenterPositions.Item2 + block.OffsetY + 1,
                     (PowerUps)powerUp);
 
+                generatedPowerUp.SetMap(Map);
                 PowerUpsContainer.AddShape(generatedPowerUp);
 
                 await connectionManager.SendMessageToClient(new MessageDto()
@@ -174,6 +174,7 @@ namespace NoOpRunner.Core
                     else
                     {
                         Notify(message);
+                        PlayerTwo.CurrentHealth = (message.Payload as PlayerStateDto)?.PlayerTwoHealthPoints ?? 0;
                     }
 
                     break;
@@ -212,6 +213,7 @@ namespace NoOpRunner.Core
                 {
                     State = Player.State,
                     HealthPoints = Player.HealthPoints,
+                    PlayerTwoHealthPoints = PlayerTwo.CurrentHealth,
                     CenterPosX = Player.CenterPosX,
                     CenterPosY = Player.CenterPosY,
                     IsLookingLeft = Player.IsLookingLeft,
@@ -260,12 +262,12 @@ namespace NoOpRunner.Core
                 .AddPassableShape(f => f.CreateStaticShape(Shape.Platform, new PlatformerGenerationStrategy(), 0, GameSettings.VerticalCellCount / 3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount * 2 / 3))
                 .AddPassableShape(f => f.CreateStaticShape(Shape.Platform, new RandomlySegmentedGenerationStrategy(), 0, GameSettings.VerticalCellCount * 2 / 3 + 1, GameSettings.HorizontalCellCount, GameSettings.VerticalCellCount - 3))
                 .AddPlayer(map => map.GetOfType<StaticShape>().Skip(1).First(p => p.GetType() == typeof(PassablePlatform)))
-                .AddPowerUp(PowerUps.Speed_Boost, map =>
+                .AddPowerUp(PowerUps.Health_Crystal, map =>
                 {
                     var plat = map.GetOfType<StaticShape>().First(p => p.GetType() == typeof(ImpassablePlatform));
                     int xCoord = plat.CenterPosX + 10;
                     int yCoord = plat.getClosestY(xCoord) + 1;
-                    return new PowerUp(xCoord, yCoord, PowerUps.Speed_Boost);
+                    return new PowerUp(xCoord, yCoord, PowerUps.Health_Crystal);
                 })
                 .AddPowerUp(PowerUps.Double_Jump, map =>
                 {
@@ -274,18 +276,20 @@ namespace NoOpRunner.Core
                     int yCoord = plat.getClosestY(xCoord) + 1;
                     return new PowerUp(xCoord, yCoord, PowerUps.Double_Jump);
                 })
-                .AddPowerUp(PowerUps.Invulnerability, map =>
+                .AddPowerUp(PowerUps.Health_Crystal, map =>
                 {
                     var plat = map.GetOfType<StaticShape>().First(p => p.GetType() == typeof(ImpassablePlatform));
                     int xCoord = plat.CenterPosX + 25;
                     int yCoord = plat.getClosestY(xCoord) + 1;
-                    return new PowerUp(xCoord, yCoord, PowerUps.Invulnerability);
+                    return new PowerUp(xCoord, yCoord, PowerUps.Health_Crystal);
                 })
                 //.AddShape(f => f.GetShape(Shape.Saw, 2, 5)) // DEMO: Factory Pattern
                 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^WTF^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                 .Build();
 
             Map = initialGameState;
+            Map.SetMap(Map);
+            ((GameState)Map).PlayerTwo = PlayerTwo;
 
             BuildSawWall();
 

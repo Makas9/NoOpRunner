@@ -46,7 +46,7 @@ namespace NoOpRunner.Core
                                    System.Text.Encoding.UTF8.GetString(data).Substring(1));
                 case PowerUps.Invisibility:
                     break;
-                case PowerUps.Invulnerability:
+                case PowerUps.Health_Crystal:
                     break;
                 case PowerUps.Double_Jump:
                     break;
@@ -169,7 +169,7 @@ namespace NoOpRunner.Core
                     resource = "Invisibility";
                     break;
 
-                case PowerUps.Invulnerability:
+                case PowerUps.Health_Crystal:
                     resource = "Invulnerability";
                     break;
 
