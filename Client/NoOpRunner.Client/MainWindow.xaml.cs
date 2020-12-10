@@ -3,8 +3,10 @@ using NoOpRunner.Client.Constants;
 using NoOpRunner.Client.Controls;
 using NoOpRunner.Client.Logic.ViewModels;
 using NoOpRunner.Client.Mediators;
+using NoOpRunner.Client.MouseClickHandlers;
 using NoOpRunner.Core;
 using NoOpRunner.Core.Controls;
+using NoOpRunner.Core.Exceptions;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,7 +15,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using NoOpRunner.Client.MouseClickHandlers;
 
 namespace NoOpRunner.Client
 {
@@ -58,15 +59,33 @@ namespace NoOpRunner.Client
                 var viewModel = (MainViewModel)DataContext;
 
                 Game = viewModel.Game;
+                Game.OnMessageReceived += (o, a) =>
+                {
+                    if (a.MessageType == Core.Enums.MessageType.GameOver)
+                    {
+                        HandleGameOver(false);
+                    }
+                };
+
                 ConfigureMainScreenInterface();
             };
         }
 
         private async Task TriggerRender()
         {
-            if (Game.PlatformsContainer != null && Game.Player != null && Game.PowerUpsContainer != null)
+            try
             {
-                await renderingFacade.CycleGameFrames(Game, player_window, power_ups, game_platforms);
+                
+                ((MainViewModel)DataContext).UpdatePlayerHp();
+
+                if (Game.PlatformsContainer != null && Game.Player != null && Game.PowerUpsContainer != null)
+                {
+                    await renderingFacade.CycleGameFrames(Game, player_window, power_ups, game_platforms);
+                }
+            }
+            catch (GameOverException ex)
+            {
+                HandleGameOver(ex.PlayerOneWon);
             }
         }
 
@@ -150,6 +169,20 @@ namespace NoOpRunner.Client
                        playerTwoMouseClickHandler.Handle((int)pos.X / cellWidth, (int)(background_panel.ActualHeight - pos.Y) / cellHeight);
                     };
             }
+        }
+
+        private void HandleGameOver(bool playerOneWon)
+        {
+            timer.Stop();
+
+            var dataContext = (MainViewModel)DataContext;
+
+            dataContext.IsGameOverScreenOpen = true;
+            dataContext.PlayerOneWon = playerOneWon;
+            dataContext.IsPlaying = false;
+
+            if (Game.IsHost)
+                dataContext.Game.SendGameOverMessage();
         }
 
         private void ConfigureMainScreenInterface()

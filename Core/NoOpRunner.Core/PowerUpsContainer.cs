@@ -34,10 +34,12 @@ namespace NoOpRunner.Core
         {
             return Shapes.GetItems().Select(x => new Tuple<WindowPixel, PowerUps>(new WindowPixel(((PowerUp) x).CenterPosX, ((PowerUp) x).CenterPosY, true), ((PowerUp) x).PowerUpType)).ToList();
         }
+
         public void RemovePowerUp(int centerPosX, int centerPosY)
         {
             Shapes.GetItems().Remove(GetPowerUpAt(centerPosX, centerPosY));
         }
+
         public PowerUp GetPowerUpAt(int centerPosX, int centerPosY)
         {
             return Shapes.GetItems().FirstOrDefault(x => x.GetAtPos(centerPosX, centerPosY) != null) as PowerUp;

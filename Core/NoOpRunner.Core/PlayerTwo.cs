@@ -1,5 +1,4 @@
-﻿using System;
-using NoOpRunner.Core.Enums;
+﻿using NoOpRunner.Core.Enums;
 
 namespace NoOpRunner.Core
 {
@@ -9,7 +8,7 @@ namespace NoOpRunner.Core
 
         private int maxHealth = 3;
         
-        private int CurrentHealth { get; set; }
+        public int CurrentHealth { get; private set; }
 
         public PlayerTwo()
         {

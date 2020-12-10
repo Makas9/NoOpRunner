@@ -20,12 +20,21 @@ namespace NoOpRunner.Core.Shapes
         public int VerticalSpeedLimit = 1;
         public int HorizontalSpeedLimit = 1;
 
+        protected int HorizontalSpeedModifier = 0;
+        protected int HorizontalSpeedModifierRate = 1;
+
         public override void OnLoopFired(WindowPixel[,] gameScreen)
         {
             var oldCenterPosX = CenterPosX;
             var oldCenterPosY = CenterPosY;
-            HorizontalSpeed = Math.Min((int)(HorizontalSpeed + HorizontalAcceleration), HorizontalSpeedLimit);
+            HorizontalSpeed = Math.Min((int)(HorizontalSpeed + HorizontalAcceleration), HorizontalSpeedLimit) + HorizontalSpeedModifier;
             VerticalSpeed = Math.Min((int)(VerticalSpeed + VerticalAcceleration), VerticalSpeedLimit);
+
+            if (HorizontalSpeedModifier >= HorizontalSpeedModifierRate)
+                HorizontalSpeedModifier -= HorizontalSpeedModifierRate;
+            else if (HorizontalSpeedModifier < 0)
+                HorizontalSpeedModifier += HorizontalSpeedModifierRate;
+
             CenterPosX += HorizontalSpeed;
             CenterPosY += VerticalSpeed;
 

@@ -76,8 +76,9 @@ namespace NoOpRunner.Client
                     DisplayingPlayerOnePowerUps.Add(powerUp.PowerUpType);
                 }
 
-                game.PowerUpsContainer.RemovePowerUp(powerUp.CenterPosX,
-                    powerUp.CenterPosY); //Remove power up from display
+                if (!powerUp.IsStatic)
+                    game.PowerUpsContainer.RemovePowerUp(powerUp.CenterPosX,
+                        powerUp.CenterPosY); //Remove power up from display
 
             }
 

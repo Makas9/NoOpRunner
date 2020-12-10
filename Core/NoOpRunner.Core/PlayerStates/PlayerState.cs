@@ -6,6 +6,8 @@ namespace NoOpRunner.Core.PlayerStates
     {
         protected PlayerOneStateMachine player;
 
+        public int HealthPoints { get; set; } = 3;
+
         public void SetPlayer(PlayerOneStateMachine player)
         {
             this.player = player;

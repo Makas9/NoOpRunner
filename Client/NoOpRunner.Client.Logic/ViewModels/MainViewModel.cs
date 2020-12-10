@@ -86,9 +86,21 @@ namespace NoOpRunner.Client.Logic.ViewModels
             set
             {
                 SetField(ref _IsSettingsViewOpen, value);
-                RaisePropertyChanged(nameof(IsGameViewOpen));
+                IsGameViewOpen = !value;
             }
         }
+
+        private bool _IsGameOverScreenOpen = false;
+        public bool IsGameOverScreenOpen
+        {
+            get => _IsGameOverScreenOpen;
+            set
+            {
+                SetField(ref _IsGameOverScreenOpen, value);
+            }
+        }
+
+        public bool PlayerOneWon { get; set; }
 
         private int screenWidth = 800;
         public int ScreenWidth
@@ -104,7 +116,23 @@ namespace NoOpRunner.Client.Logic.ViewModels
             set => SetField(ref screenHeight, value);
         }
 
-        public bool IsGameViewOpen => !IsSettingsViewOpen;
+        public int PlayerOneHp => Game.Map != null ? Game?.Player?.HealthPoints ?? 0 : 0;
+
+        public int PlayerTwoHp => Game.Map != null ? Game?.PlayerTwo?.CurrentHealth ?? 0 : 0;
+
+        public string PlayerOneHpFormatted => $"Player One HP: {PlayerOneHp}";
+
+        public string PlayerTwoHpFormatted => $"Player Two HP: {PlayerTwoHp}";
+
+        private bool _IsGameViewOpen = true;
+        public bool IsGameViewOpen
+        {
+            get => _IsGameViewOpen;
+            set
+            {
+                SetField(ref _IsGameViewOpen, value);
+            }
+        }
 
         public bool IsWaitingForClientConnection => IsHosting && !IsClientConnected;
 
@@ -156,6 +184,12 @@ namespace NoOpRunner.Client.Logic.ViewModels
             {
                 Logging.Instance.Write($"The parsing of the user query failed. Exception: {e}", LoggingLevel.Trace);
             }
+        }
+
+        public void UpdatePlayerHp()
+        {
+            RaisePropertyChanged(nameof(PlayerOneHpFormatted));
+            RaisePropertyChanged(nameof(PlayerTwoHpFormatted));
         }
     }
 }
