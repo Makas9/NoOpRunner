@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
+using NoOpRunner.Core.Exceptions;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.PlayerStates;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
@@ -14,17 +15,17 @@ namespace NoOpRunner.Core.Shapes
     public class Player : MovingShape, IObserver, IMapPart
     {
         private const int MaxHealth = 3;
-        private int currentHealth = 0;
-
         private const int HitBoxWidth = 1;
         private const int HitBoxHeight = 2;
+
+        public int HealthPoints { get; private set; } = 0;
 
         public Player(int x, int y) : base(new FillGenerationStrategy(), x, y, x + HitBoxWidth, y + HitBoxHeight)
         {
             StateMachine = new PlayerOneStateMachine();
             PlayerOnePowerUps = new PlayerOnePowerUps();
 
-            currentHealth = MaxHealth;
+            HealthPoints = MaxHealth;
         }
 
         private const int MovementIncrement = 1;
@@ -43,6 +44,7 @@ namespace NoOpRunner.Core.Shapes
         private bool canJump = true;
         public bool CanPassPlatforms { get; set; } = false;
         public bool IsDroppingDown { get; set; } = false;
+        private int invulnerableCycles = 0;
 
         private decimal VerticalAccelerationPool;
 
@@ -122,7 +124,7 @@ namespace NoOpRunner.Core.Shapes
 
         public void MoveRight(WindowPixel[,] gameScreen)
         {
-            if (!IsShapeHit(gameScreen, CenterPosX + HorizontalSpeed, CenterPosY))
+            if (!IsShapeHit(gameScreen, CenterPosX + (int)HorizontalSpeed, CenterPosY))
             {
                 HorizontalSpeed = Math.Min(HorizontalSpeed + 1, HorizontalSpeedLimit);
                 if (HorizontalSpeed > 0)
@@ -132,7 +134,7 @@ namespace NoOpRunner.Core.Shapes
 
         public void MoveLeft(WindowPixel[,] gameScreen)
         {
-            if (!IsShapeHit(gameScreen, CenterPosX - HorizontalSpeed, CenterPosY))
+            if (!IsShapeHit(gameScreen, CenterPosX - (int)HorizontalSpeed, CenterPosY))
             {
                 HorizontalSpeed = Math.Max(HorizontalSpeed - 1, -HorizontalSpeedLimit);
                 if (HorizontalSpeed < 0)
@@ -177,16 +179,26 @@ namespace NoOpRunner.Core.Shapes
 
         public void ModifyHealth(int healthPoints)
         {
-            currentHealth += healthPoints;
+            if (healthPoints < 0)
+            {
+                if (invulnerableCycles > 0)
+                    return;
 
-            if (currentHealth > MaxHealth)
-            {
-                currentHealth = MaxHealth;
+                invulnerableCycles = 2;
             }
-            else if (currentHealth < 1)
+                
+
+            HealthPoints += healthPoints;
+
+            if (HealthPoints > MaxHealth)
             {
-                currentHealth = 0;
-                // Stop the game
+                HealthPoints = MaxHealth;
+            }
+            else if (HealthPoints < 1)
+            {
+                HealthPoints = 0;
+
+                throw new GameOverException(false);
             }
         }
 
@@ -214,7 +226,15 @@ namespace NoOpRunner.Core.Shapes
         {
             if (other is PowerUp powerUp)
             {
-                // TODO: Interact with powerup
+                switch (powerUp.PowerUpType)
+                {
+                    case PowerUps.Saw:
+                        var modifier = 2;
+                        HorizontalSpeedModifier = IsLookingLeft || powerUp.IsStatic ? modifier : -modifier;
+                        ModifyHealth(-1);
+
+                        break;
+                }
             }
 
             return CanOverlap(other);
@@ -248,6 +268,8 @@ namespace NoOpRunner.Core.Shapes
             State = messageDto.State;
             IsLookingLeft = messageDto.IsLookingLeft;
 
+            HealthPoints = messageDto.HealthPoints;
+
             CenterPosX = messageDto.CenterPosX;
             CenterPosY = messageDto.CenterPosY;
 
@@ -270,18 +292,20 @@ namespace NoOpRunner.Core.Shapes
 
         public void OnMapMoveLoopFired(WindowPixel[,] windowPixels)
         {
-            if (CenterPosX-1 <= 0)
+            if (invulnerableCycles > 0)
+                invulnerableCycles -= 1;
+
+            if (CenterPosX - 1 == 0)
             {
-                Jump(windowPixels);
-                if (!IsShapeHit(windowPixels, CenterPosX + 1, CenterPosY))
+                if (!IsShapeHit(windowPixels, CenterPosX - 1, CenterPosY))
                 {
                     CenterPosX++;
                 }
             }
+            else if (CenterPosX - 1 < 0)
+                CenterPosX++;
             else
-            {
                 CenterPosX--;
-            }
         }
 
         public override IMapPart GetAtPos(int centerPosX, int centerPosY)

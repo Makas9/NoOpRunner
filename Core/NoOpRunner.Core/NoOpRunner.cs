@@ -2,10 +2,10 @@ using Newtonsoft.Json.Linq;
 using NoOpRunner.Core.Builders;
 using NoOpRunner.Core.Dtos;
 using NoOpRunner.Core.Enums;
+using NoOpRunner.Core.Exceptions;
 using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Shapes;
 using NoOpRunner.Core.Shapes.GenerationStrategies;
-using NoOpRunner.Core.Shapes.ShapeFactories;
 using NoOpRunner.Core.Shapes.StaticShapes;
 using NoOpRunner.Core.Visitors;
 using System;
@@ -211,6 +211,7 @@ namespace NoOpRunner.Core
                 Payload = new PlayerStateDto()
                 {
                     State = Player.State,
+                    HealthPoints = Player.HealthPoints,
                     CenterPosX = Player.CenterPosX,
                     CenterPosY = Player.CenterPosY,
                     IsLookingLeft = Player.IsLookingLeft,
@@ -238,6 +239,14 @@ namespace NoOpRunner.Core
                     X = x,
                     Y = y
                 }
+            });
+        }
+
+        public void SendGameOverMessage()
+        {
+            connectionManager.SendMessageToClient(new MessageDto
+            {
+                MessageType = MessageType.GameOver
             });
         }
 
@@ -278,6 +287,8 @@ namespace NoOpRunner.Core
 
             Map = initialGameState;
 
+            BuildSawWall();
+
             //LabTest.TestPrototype(); // DEMO: Prototype Pattern
 
             // Visitor demo
@@ -312,6 +323,17 @@ namespace NoOpRunner.Core
             if (Observers.Contains(observer))
             {
                 Observers.Remove(observer);
+            }
+        }
+
+        public void BuildSawWall()
+        {
+            for (int i = 0; i < GameSettings.VerticalCellCount; i++)
+            {
+                var saw = new PowerUp(0, i, PowerUps.Saw);
+                saw.IsStatic = true;
+
+                Map?.AddMapPart(saw);
             }
         }
     }

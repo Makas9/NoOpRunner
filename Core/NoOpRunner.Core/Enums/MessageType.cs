@@ -7,6 +7,7 @@
         InitialConnection,
         PlayerUpdate,
         PowerUpsUpdate,
-        PlayerTwoPowerUp
+        PlayerTwoPowerUp,
+        GameOver
     }
 }

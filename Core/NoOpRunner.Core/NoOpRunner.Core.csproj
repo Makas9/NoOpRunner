@@ -60,6 +60,7 @@
     <Compile Include="DisposedObjectsPool.cs" />
     <Compile Include="Dtos\CoordinatesDto.cs" />
     <Compile Include="Dtos\PowerUpUseDto.cs" />
+    <Compile Include="Exceptions\GameOverException.cs" />
     <Compile Include="GenerationConstants.cs" />
     <Compile Include="Interfaces\IMapPart.cs" />
     <Compile Include="Iterators\Iterator.cs" />

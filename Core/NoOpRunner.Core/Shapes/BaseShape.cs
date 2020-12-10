@@ -14,6 +14,8 @@ namespace NoOpRunner.Core.Shapes
         public int CenterPosX { get; set; }
         public int CenterPosY { get; set; }
 
+        public bool IsStatic { get; set; }
+
         [JsonProperty]
         protected List<ShapeBlock> ShapeBlocks = new List<ShapeBlock>();
         protected IEnumerable<ShapeBlock> VisibleShapeBlocks => ShapeBlocks.Where(x => x.OffsetX < GameSettings.HorizontalCellCount);
@@ -47,6 +49,9 @@ namespace NoOpRunner.Core.Shapes
         public virtual void ShiftBlocks()
         {
             Logging.Instance.Write($"[Composite/{nameof(BaseShape)}] {nameof(ShiftBlocks)}", LoggingLevel.Composite);
+
+            if (IsStatic)
+                return;
 
             CenterPosX -= 1;
 

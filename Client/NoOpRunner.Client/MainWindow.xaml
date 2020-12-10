@@ -27,7 +27,10 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="5" Text="{Binding StatusMessage}" Background="White"/>
+                <StackPanel Grid.Column="5" Background="White">
+                    <TextBlock Text="{Binding PlayerOneHpFormatted}"/>
+                    <TextBlock Text="{Binding PlayerTwoHpFormatted}"/>
+                </StackPanel>
             </Grid>
             <Grid x:Name="CanvasGrid" Grid.Row="0" Visibility="{Binding IsPlaying, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Grid x:Name="background_panel"></Grid>
@@ -42,8 +45,11 @@
                 </Grid.ColumnDefinitions>
             </Grid>
         </Grid>
-        <Grid Background="Yellow" Visibility="{Binding IsSettingsViewOpen, Converter={StaticResource BoolToVisibilityConverter}}">
+        <Grid Visibility="{Binding IsSettingsViewOpen, Converter={StaticResource BoolToVisibilityConverter}}">
             <ContentControl Content="{Binding SettingsViewModel}"/>
+        </Grid>
+        <Grid Background="White" Visibility="{Binding IsGameOverScreenOpen, Converter={StaticResource BoolToVisibilityConverter}}">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Game Over</TextBlock>
         </Grid>
     </Grid>
     
