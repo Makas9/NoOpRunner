@@ -187,7 +187,6 @@ namespace NoOpRunner.Core.Shapes
                 invulnerableCycles = 2;
             }
                 
-
             HealthPoints += healthPoints;
 
             if (HealthPoints > MaxHealth)
@@ -232,6 +231,10 @@ namespace NoOpRunner.Core.Shapes
                         var modifier = 2;
                         HorizontalSpeedModifier = IsLookingLeft || powerUp.IsStatic ? modifier : -modifier;
                         ModifyHealth(-1);
+
+                        break;
+                    case PowerUps.Health_Crystal:
+                        ModifyHealth(1);
 
                         break;
                 }

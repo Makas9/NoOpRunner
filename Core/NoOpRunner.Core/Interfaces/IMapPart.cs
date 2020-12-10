@@ -24,5 +24,7 @@ namespace NoOpRunner.Core.Interfaces
         void Accept(INodeVisitor visitor);
 
         void SetMap(IMapPart map);
+
+        void Notify(string e);
     }
 }

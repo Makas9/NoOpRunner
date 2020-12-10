@@ -159,5 +159,10 @@ namespace NoOpRunner.Core
                 shape.SetMap(map);
             }
         }
+
+        public void Notify(string e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

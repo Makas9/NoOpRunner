@@ -8,7 +8,7 @@ namespace NoOpRunner.Core
 
         private int maxHealth = 3;
         
-        public int CurrentHealth { get; private set; }
+        public int CurrentHealth { get; set; }
 
         public PlayerTwo()
         {

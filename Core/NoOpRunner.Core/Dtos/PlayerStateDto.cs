@@ -12,6 +12,7 @@ namespace NoOpRunner.Core.Dtos
         public int CenterPosY { get; set; }
 
         public int HealthPoints { get; set; }
+        public int PlayerTwoHealthPoints { get; set; }
         
         public PlayerOnePowerUps PlayerOnePowerUps { get; set; }
     }

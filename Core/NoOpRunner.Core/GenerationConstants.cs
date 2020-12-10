@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using NoOpRunner.Core.Enums;
+﻿using NoOpRunner.Core.Enums;
+using System.Collections.Generic;
 
 namespace NoOpRunner.Core
 {
@@ -11,7 +10,7 @@ namespace NoOpRunner.Core
         public static readonly Dictionary<PowerUps, double> PowerUpsPossibilities = new Dictionary<PowerUps, double>()
         {
             // {PowerUps.Invisibility, 0.25},
-            {PowerUps.Invulnerability, 0.1},
+            {PowerUps.Health_Crystal, 0.8},
             {PowerUps.Double_Jump, 0.8},
             {PowerUps.Speed_Boost, 1}
         };

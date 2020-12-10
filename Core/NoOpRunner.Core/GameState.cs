@@ -1,4 +1,5 @@
-﻿using NoOpRunner.Core.Interfaces;
+﻿using NoOpRunner.Core.Exceptions;
+using NoOpRunner.Core.Interfaces;
 using NoOpRunner.Core.Iterators;
 using NoOpRunner.Core.Shapes;
 using NoOpRunner.Core.Visitors;
@@ -14,6 +15,8 @@ namespace NoOpRunner.Core
         public IMapPart Player { get; set; }
 
         public IMapPart PowerUpsContainer { get; set; }
+
+        public PlayerTwo PlayerTwo { get; set; }
 
         public void Accept(INodeVisitor visitor)
         {
@@ -116,6 +119,16 @@ namespace NoOpRunner.Core
 
             Platforms.ShiftShapes();
             PowerUpsContainer.ShiftShapes();
+        }
+
+        public void Notify(string e)
+        {
+            if (e == "HealPlayerTwo")
+            {
+                PlayerTwo.Heal();
+
+                ((Player)Player).ModifyHealth(-1);
+            }
         }
     }
 }
